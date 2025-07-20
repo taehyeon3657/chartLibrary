@@ -1,0 +1,13 @@
+{
+    "name": "my-chart-library-monorepo",
+    "private": true, 
+    "scripts": {
+      "build": "turbo run build", 
+      "dev": "turbo run dev --parallel"
+    },
+    "devDependencies": {
+      "turbo": "latest",
+      "typescript": "latest"
+    
+    }
+  }
