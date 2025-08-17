@@ -1,13 +1,21 @@
 {
-    "name": "my-chart-library-monorepo",
-    "private": true, 
-    "scripts": {
-      "build": "turbo run build", 
-      "dev": "turbo run dev --parallel"
-    },
-    "devDependencies": {
-      "turbo": "latest",
-      "typescript": "latest"
-    
-    }
-  }
+  "name": "chart-library",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "turbo run build --filter=./packages/* && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.26.0",
+    "turbo": "^1.10.0",
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0"
+  },
+  "packageManager": "pnpm@8.6.0"
+}

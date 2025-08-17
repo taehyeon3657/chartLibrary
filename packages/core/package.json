@@ -1,0 +1,18 @@
+{
+  "name": "@my-charts/core",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "clean": "rm -rf dist"
+  },
+  "peerDependencies": {
+    "d3": "^7.0.0"
+  },
+  "devDependencies": {
+    "@my-charts/types": "workspace:*"
+  }
+}
