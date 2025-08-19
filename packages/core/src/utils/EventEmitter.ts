@@ -38,4 +38,12 @@ export class EventEmitter<T extends Record<string, any> = {}> {
         this.events.clear();
         return this;
     }
+
+    public listenerCount<K extends keyof T>(event: K): number {
+        return this.events.get(event)?.length ?? 0;
+    }
+
+    public eventNames(): (keyof T)[] {
+        return Array.from(this.events.keys());
+    }
 }
