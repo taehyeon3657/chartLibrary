@@ -1,5 +1,5 @@
 {
-  "name": "@my-charts/core",
+  "name": "@charts-library/core",
   "version": "1.0.0",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -13,6 +13,7 @@
     "d3": "^7.0.0"
   },
   "devDependencies": {
-    "@my-charts/types": "workspace:*"
+    "@charts-library/types": "workspace:*",
+    "@types/d3": "^7.4.3"
   }
 }
