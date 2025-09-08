@@ -4,7 +4,8 @@
     "outDir": "./dist",
     "declaration": true,
     "module": "NodeNext",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "composite": true
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

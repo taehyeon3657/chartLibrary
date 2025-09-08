@@ -2,18 +2,20 @@
   "name": "@charts-library/core",
   "version": "1.0.0",
   "main": "dist/index.js",
-  "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -c -w",
-    "clean": "rm -rf dist"
+    "build": "tsc --build",
+    "dev": "tsc --build --watch",
+    "clean": "rm -rf dist tsconfig.tsbuildinfo"
+  },
+  "dependencies": {
+    "@charts-library/types": "workspace:*"
   },
   "peerDependencies": {
     "d3": "^7.0.0"
   },
   "devDependencies": {
-    "@charts-library/types": "workspace:*",
-    "@types/d3": "^7.4.3"
+    "@types/d3": "^7.4.3",
+    "typescript": "^5.0.0"
   }
 }

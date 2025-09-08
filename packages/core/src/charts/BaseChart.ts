@@ -1,25 +1,46 @@
 import * as d3 from 'd3';
 import { EventEmitter } from '../utils/EventEmitter';
-import { ChartConfig, ChartData, ChartEvents} from '../types'
+import type { AllChartEvents, BaseChartConfig, ChartDataPoint } from '@charts-library/types';
 
-export abstract class BaseChart extends EventEmitter<ChartEvents> {
+export abstract class BaseChart extends EventEmitter<AllChartEvents> {
     protected container: HTMLElement;
-    protected svg: d3.Selection<SVGSVGElement, unknown, null, undefined>;
-    protected chartArea: d3.Selection<SVGGElement, unknown, null, undefined>;
-    protected config: ChartConfig;
-    protected data: ChartData[];
+    protected svg: d3.Selection<SVGSVGElement, unknown, null, undefined> | undefined;
+    protected chartArea: d3.Selection<SVGGElement, unknown, null, undefined> | undefined;
+    protected config: BaseChartConfig;
+    protected data: ChartDataPoint[];
 
     private static tooltip: d3.Selection<HTMLDivElement, unknown, HTMLElement, any> | null = null;
 
 
-    constructor(container: HTMLElement, config: Partial<ChartConfig>) {
+    constructor(container: HTMLElement, config: Partial<BaseChartConfig>) {
         super();
         this.container = container;
         this.config = {
             width: 400,
             height: 300,
             margin: { top: 20, right: 20, bottom: 40, left: 60 },
-            theme: {},
+            theme: {
+                colors: {
+                    primary: [],
+                    background: '',
+                    text: '',
+                    grid: '',
+                    axis: ''
+                },
+                fonts: {
+                    family: '',
+                    size: {
+                        small: 0,
+                        medium: 0,
+                        large: 0
+                    }
+                },
+                spacing: {
+                    small: 0,
+                    medium: 0,
+                    large: 0
+                }
+            },
             animation: { duration: 300, easing: 'ease-out' },
             ...config
         };
@@ -48,12 +69,12 @@ export abstract class BaseChart extends EventEmitter<ChartEvents> {
         return this.config.height - this.config.margin.top - this.config.margin.bottom;
     }
 
-    public setData(data: ChartData[]): this {
+    public setData(data: ChartDataPoint[]): this {
         this.data = data;
         return this;
     }
 
-    public updateConfig(config: Partial<ChartConfig>): this {
+    public updateConfig(config: Partial<BaseChartConfig>): this {
         this.config = { ...this.config, ...config };
         this.initializeSvg();
         return this;

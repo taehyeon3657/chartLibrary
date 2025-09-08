@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
-import { ProcessedDataPoint, Scales } from '../../types';
+import { ProcessedDataPoint } from '@charts-library/types';
+import { Scales } from '../../types/base';
 
 export const renderTrendExtension = (
   g: d3.Selection<SVGGElement, unknown, null, undefined>,

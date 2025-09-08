@@ -50,6 +50,9 @@ export interface LineChartConfig extends ChartConfig {
   // 포맷터
   xAxisTickFormat?: string;
   yAxisTickFormat?: string;
+
+  enableAnimation?: boolean;
+  animationDuration?: number;
   
   // 툴팁
   showTooltip?: boolean;

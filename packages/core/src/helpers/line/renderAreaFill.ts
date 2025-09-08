@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { ProcessedDataPoint } from '../../types';
+import { ProcessedDataPoint } from '@charts-library/types';
 import { createAreaGradient } from '../gradient';
 export const renderAreaFill = (
   g: d3.Selection<SVGGElement, unknown, null, undefined>,

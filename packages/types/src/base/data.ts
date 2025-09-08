@@ -1,4 +1,4 @@
-import { GroupAccessor, XAccessor, YAccessor } from "./accessors";
+import { GroupAccessor, XAccessor, YAccessor } from "./accessor";
 
 // 가장 기본이 되는 데이터 타입들
 export interface BaseDataPoint {
