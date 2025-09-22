@@ -56,7 +56,7 @@ export interface ChartData extends BaseDataPoint {
 export interface ProcessedDataPoint extends DataPoint {
   // 처리된 후 표준화된 필드들
   parsedDate: Date;
-  x: number | Date;
+  x: number | Date | string ;
   y: number;
   group: string;
   

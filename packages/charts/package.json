@@ -1,0 +1,49 @@
+{
+  "name": "@charts-library/charts",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
+    "./line": {
+      "types": "./dist/line/index.d.ts",
+      "import": "./dist/line/index.js",
+      "require": "./dist/line/index.js"
+    },
+    "./bar": {
+      "types": "./dist/bar/index.d.ts",
+      "import": "./dist/bar/index.js",
+      "require": "./dist/bar/index.js"
+    },
+    "./pie": {
+      "types": "./dist/pie/index.d.ts",
+      "import": "./dist/pie/index.js",
+      "require": "./dist/pie/index.js"
+    },
+    "./shared": {
+      "types": "./dist/shared/index.d.ts",
+      "import": "./dist/shared/index.js",
+      "require": "./dist/shared/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "dev": "tsc --build --watch",
+    "clean": "rm -rf dist tsconfig.tsbuildinfo"
+  },
+  "dependencies": {
+    "@charts-library/core": "workspace:*",
+    "@charts-library/types": "workspace:*"
+  },
+  "peerDependencies": {
+    "d3": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/d3": "^7.4.3",
+    "typescript": "^5.0.0"
+  }
+}
