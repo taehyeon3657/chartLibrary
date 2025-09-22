@@ -9,7 +9,7 @@ export type ColorAccessor = DataAccessor<string>;
 export type SizeAccessor = DataAccessor<number>;
 export type LabelAccessor = DataAccessor<string>;
 
-// 미리 정의된 접근자들
+
 export interface DataAccessors {
   x: XAccessor;
   y: YAccessor;
