@@ -3,13 +3,17 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
+    "build:deps": "turbo run build --filter=./packages/types --filter=./packages/core",
     "dev": "turbo run dev",
+    "dev:with-deps": "pnpm run build:deps && turbo run dev",
     "test": "turbo run test",
     "lint": "turbo run lint",
     "clean": "turbo run clean",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "turbo run build --filter=./packages/* && changeset publish"
+    "release": "turbo run build --filter=./packages/* && changeset publish",
+    "fresh": "pnpm run clean && pnpm install && pnpm run build",
+    "bootstrap": "pnpm install && pnpm run build:deps"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.0",

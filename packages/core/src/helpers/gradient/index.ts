@@ -1,5 +1,6 @@
+import { ProcessedDataPoint } from '@charts-library/types';
 import * as d3 from 'd3';
-import { ProcessedDataPoint } from '../../types';
+
 
 export const createAreaGradient = (
   defs: d3.Selection<SVGDefsElement, unknown, null, undefined>,
