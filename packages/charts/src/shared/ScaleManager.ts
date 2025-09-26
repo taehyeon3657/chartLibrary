@@ -38,13 +38,34 @@ export interface ScaleOptions {
   colorDomain?: string[];
 }
 
-export interface ChartScales {
-  xScale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number> | d3.ScaleOrdinal<string, number>;
+export interface TimeChartScales {
+  xScale: d3.ScaleTime<number, number>;
   yScale: d3.ScaleLinear<number, number>;
   colorScale: d3.ScaleOrdinal<string, string>;
   innerWidth: number;
   innerHeight: number;
+  scaleType: 'time';
 }
+
+export interface LinearChartScales {
+  xScale: d3.ScaleLinear<number, number>;
+  yScale: d3.ScaleLinear<number, number>;
+  colorScale: d3.ScaleOrdinal<string, string>;
+  innerWidth: number;
+  innerHeight: number;
+  scaleType: 'linear';
+}
+
+export interface OrdinalChartScales {
+  xScale: d3.ScaleOrdinal<string, number>;
+  yScale: d3.ScaleLinear<number, number>;
+  colorScale: d3.ScaleOrdinal<string, string>;
+  innerWidth: number;
+  innerHeight: number;
+  scaleType: 'ordinal';
+}
+
+export type ChartScales = TimeChartScales | LinearChartScales | OrdinalChartScales;
 
 export class ScaleManager {
   private config: ScaleConfig;
@@ -66,57 +87,152 @@ export class ScaleManager {
     return this;
   }
 
-  /**
-   * 모든 스케일 생성
+ /**
+   * 시간 스케일 생성 (Line Chart 기본)
    */
-  createScales(options: ScaleOptions = {}): ChartScales {
+  createTimeScales(options: ScaleOptions = {}): TimeChartScales {
     const innerWidth = this.config.width - this.config.margin.left - this.config.margin.right;
     const innerHeight = this.config.height - this.config.margin.top - this.config.margin.bottom;
 
+    const { xDomain, xPadding = 0 } = options;
+    
+    // 시간 도메인 계산
+    const domain = xDomain ? xDomain as [Date, Date] : this.calculateTimeDomain();
+
     return {
-      xScale: this.createXScale(options, innerWidth),
+      xScale: d3.scaleTime()
+        .domain(domain)
+        .range([xPadding, innerWidth - xPadding]),
       yScale: this.createYScale(options, innerHeight),
       colorScale: this.createColorScale(options),
       innerWidth,
-      innerHeight
+      innerHeight,
+      scaleType: 'time'
     };
   }
 
   /**
-   * X축 스케일 생성
+   * 선형 스케일 생성
    */
-  private createXScale(
-    options: ScaleOptions, 
-    width: number
-  ): d3.ScaleTime<number, number> | d3.ScaleLinear<number, number> | d3.ScaleOrdinal<string, number> {
-    const { xDomain, xScaleType = 'time', xPadding = 0 } = options;
+  createLinearScales(options: ScaleOptions = {}): LinearChartScales {
+    const innerWidth = this.config.width - this.config.margin.left - this.config.margin.right;
+    const innerHeight = this.config.height - this.config.margin.top - this.config.margin.bottom;
 
-    // 도메인 계산
-    const domain = xDomain || this.calculateXDomain();
+    const { xDomain, xPadding = 0 } = options;
+    
+    // 선형 도메인 계산
+    const domain = xDomain ? xDomain as [number, number] : this.calculateLinearDomain();
 
-    switch (xScaleType) {
+    return {
+      xScale: d3.scaleLinear()
+        .domain(domain)
+        .range([xPadding, innerWidth - xPadding]),
+      yScale: this.createYScale(options, innerHeight),
+      colorScale: this.createColorScale(options),
+      innerWidth,
+      innerHeight,
+      scaleType: 'linear'
+    };
+  }
+
+  /**
+   * 서수 스케일 생성
+   */
+  createOrdinalScales(options: ScaleOptions = {}): OrdinalChartScales {
+    const innerWidth = this.config.width - this.config.margin.left - this.config.margin.right;
+    const innerHeight = this.config.height - this.config.margin.top - this.config.margin.bottom;
+
+    const ordinalDomain = [...new Set(this.data.map(d => String(d.x)))];
+    const bandwidth = innerWidth / ordinalDomain.length;
+
+    return {
+      xScale: d3.scaleOrdinal<string, number>()
+        .domain(ordinalDomain)
+        .range(ordinalDomain.map((_, i) => i * bandwidth + bandwidth / 2)),
+      yScale: this.createYScale(options, innerHeight),
+      colorScale: this.createColorScale(options),
+      innerWidth,
+      innerHeight,
+      scaleType: 'ordinal'
+    };
+  }
+
+  /**
+   * 스케일 타입에 따른 자동 생성 (하위 호환성)
+   */
+  createScales(options: ScaleOptions = {}): ChartScales {
+    const scaleType = options.xScaleType || this.detectScaleType();
+    
+    switch (scaleType) {
       case 'time':
-        return d3.scaleTime()
-          .domain(domain as [Date, Date])
-          .range([xPadding, width - xPadding]);
-
+        return this.createTimeScales(options);
       case 'linear':
-        return d3.scaleLinear()
-          .domain(domain as [number, number])
-          .range([xPadding, width - xPadding]);
-
+        return this.createLinearScales(options);
       case 'ordinal':
-        const ordinalDomain = this.data.map(d => String(d.x));
-        return d3.scaleOrdinal<string, number>()
-          .domain([...new Set(ordinalDomain)])
-          .range(d3.range(0, width, width / ordinalDomain.length));
-
+        return this.createOrdinalScales(options);
       default:
-        return d3.scaleTime()
-          .domain(domain as [Date, Date])
-          .range([xPadding, width - xPadding]);
+        return this.createTimeScales(options);
     }
   }
+
+    /**
+   * 데이터 기반 스케일 타입 자동 감지
+   */
+  private detectScaleType(): 'time' | 'linear' | 'ordinal' {
+    if (this.data.length === 0) return 'time';
+
+    // 유효한 날짜가 있는지 확인
+    const hasValidDates = this.data.some(d => 
+      d.parsedDate && 
+      !isNaN(d.parsedDate.getTime()) && 
+      d.parsedDate.getFullYear() > 1900
+    );
+
+    if (hasValidDates) return 'time';
+
+    // 숫자인지 확인
+    const hasNumericX = this.data.some(d => typeof d.x === 'number');
+    if (hasNumericX) return 'linear';
+
+    // 나머지는 서수형
+    return 'ordinal';
+  }
+
+   /**
+   * 시간 도메인 계산
+   */
+  private calculateTimeDomain(): [Date, Date] {
+    if (this.data.length === 0) {
+      return [new Date(), new Date()];
+    }
+
+    const dates = this.data
+      .map(d => d.parsedDate)
+      .filter(d => d && !isNaN(d.getTime())) as Date[];
+
+    if (dates.length === 0) {
+      return [new Date(), new Date()];
+    }
+    
+    return d3.extent(dates) as [Date, Date];
+  }
+
+  /**
+   * 선형 도메인 계산
+   */
+  private calculateLinearDomain(): [number, number] {
+    if (this.data.length === 0) {
+      return [0, 1];
+    }
+
+    const xValues = this.data.map(d => {
+      const xVal = d.x;
+      return typeof xVal === 'number' ? xVal : 0;
+    });
+
+    return d3.extent(xValues) as [number, number];
+  }
+
 
   /**
    * Y축 스케일 생성
