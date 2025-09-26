@@ -13,7 +13,7 @@ export {
 } from './shared';
 
 // 편의 기능 (팩토리 등)
-// export { ChartFactory } from './ChartFactory';
+export { ChartFactory } from './ChartFactory';
 
 // 타입들 re-export
 export type {
