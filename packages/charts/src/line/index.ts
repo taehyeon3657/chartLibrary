@@ -1,6 +1,6 @@
 // Line Chart 진입점
 export { LineChart } from './LineChart';
-export type { LineChartState, RenderContext } from './LineChart';
+export type {  RenderContext } from './LineChart';
 
 // 공통 기능들도 re-export (편의성)
 export { 
