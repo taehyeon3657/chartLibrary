@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "composite": false,       // tsc 단독 빌드용
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": false, // JS와 DTS 같이 생성
+    "outDir": "./dist"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx"]
+}
