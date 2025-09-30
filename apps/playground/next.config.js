@@ -1,3 +1,5 @@
+const path = require('path');
+
 const nextConfig = {
   reactStrictMode: true,
   
@@ -9,14 +11,15 @@ const nextConfig = {
     '@charts-library/types'
   ],
 
-  // Experimental features
-  experimental: {
-    // Enable server actions if needed
-    serverActions: true,
-  },
-
   // Webpack configuration
   webpack: (config, { isServer }) => {
+    // TypeScript 소스 직접 사용하도록 alias 설정
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@charts-library/react': path.resolve(__dirname, '../../packages/react/src/index.tsx'),
+      '@charts-library/types': path.resolve(__dirname, '../../packages/types/src/index.ts'),
+    };
+
     // Handle D3 and other large libraries
     if (!isServer) {
       config.resolve.fallback = {
@@ -24,10 +27,10 @@ const nextConfig = {
         fs: false,
         net: false,
         tls: false,
-      }
+      };
     }
 
-    return config
+    return config;
   },
 
   // Environment variables
@@ -42,6 +45,6 @@ const nextConfig = {
   images: {
     domains: [],
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

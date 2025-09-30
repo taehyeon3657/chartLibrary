@@ -5,6 +5,7 @@
     "build": "turbo run build",
     "build:deps": "turbo run build --filter=./packages/types --filter=./packages/core",
     "dev": "turbo run dev",
+    "dev:playground": "pnpm run build:deps && turbo run dev --filter=playground",
     "dev:with-deps": "pnpm run build:deps && turbo run dev",
     "test": "turbo run test",
     "lint": "turbo run lint",
