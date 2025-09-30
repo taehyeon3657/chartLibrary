@@ -5,62 +5,62 @@ export default function Home() {
     {
       title: 'Basic Line Chart',
       description: 'Simple line chart with default settings',
-      href: '/examples/basic',
+      href: '/examples/line/basic',
     },
     {
       title: 'Multi-Series',
       description: 'Chart with multiple data series',
-      href: '/examples/multi-series',
+      href: '/examples/line/multi-series',
     },
     {
       title: 'Themes',
       description: 'Different theme variations (light, dark, colorful)',
-      href: '/examples/themes',
+      href: '/examples/line/themes',
     },
     {
       title: 'Presets',
       description: 'Pre-configured chart styles',
-      href: '/examples/presets',
+      href: '/examples/line/presets',
     },
     {
       title: 'Responsive',
       description: 'Responsive charts that adapt to container size',
-      href: '/examples/responsive',
+      href: '/examples/line/responsive',
     },
     {
       title: 'Animations',
       description: 'Charts with various animation effects',
-      href: '/examples/animations',
+      href: '/examples/line/animations',
     },
     {
       title: 'Interactive',
       description: 'Charts with hover, click, and selection events',
-      href: '/examples/interactive',
+      href: '/examples/line/interactive',
     },
     {
       title: 'Area Fill',
       description: 'Line charts with filled areas and gradients',
-      href: '/examples/area-fill',
+      href: '/examples/line/area-fill',
     },
     {
       title: 'Curve Types',
       description: 'Different line interpolation curves',
-      href: '/examples/curves',
+      href: '/examples/line/curves',
     },
     {
       title: 'Custom Styling',
       description: 'Heavily customized chart appearance',
-      href: '/examples/custom',
+      href: '/examples/line/custom',
     },
     {
       title: 'Trend Extensions',
       description: 'Charts with trend line predictions',
-      href: '/examples/trends',
+      href: '/examples/line/trends',
     },
     {
       title: 'Real-time Data',
       description: 'Live updating charts',
-      href: '/examples/realtime',
+      href: '/examples/line/realtime',
     },
   ]
 
