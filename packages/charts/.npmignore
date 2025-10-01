@@ -1,0 +1,68 @@
+# Source files
+src/
+*.ts
+*.tsx
+!*.d.ts
+
+# Config files
+tsconfig.json
+tsconfig.build.json
+tsconfig.*.json
+.eslintrc.json
+.eslintrc.js
+.prettierrc
+.prettierrc.json
+
+# Test files
+__tests__/
+__mocks__/
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+coverage/
+.nyc_output/
+
+# Build artifacts
+*.tsbuildinfo
+.turbo/
+tsconfig.tsbuildinfo
+
+# Development
+node_modules/
+.DS_Store
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-*
+.editorconfig
+
+# Version control
+.git/
+.gitignore
+.gitattributes
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+.circleci/
+
+# Documentation (source)
+docs/
+examples/
+
+# Misc
+*.orig
+.env
+.env.local
+.env.*.local
