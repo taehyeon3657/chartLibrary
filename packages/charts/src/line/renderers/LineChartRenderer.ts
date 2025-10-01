@@ -120,10 +120,12 @@ private initializeRenderContext(): RenderContext {
 
     // 제목 렌더링
     if (this.config.title) {
+      const margin = this.config.margin || { top: 20, right: 20, bottom: 40, left: 60 };
+
       svg.append('text')
         .attr('class', 'chart-title')
         .attr('x', this.calculateTitleX(this.config.titlePosition))
-        .attr('y', 20)
+        .attr('y', margin.top - 5) // margin.top 바로 위에 배치
         .attr('text-anchor', this.calculateTitleAnchor(this.config.titlePosition))
         .style('font-size', this.config.titleStyle?.fontSize || '16px')
         .style('font-weight', this.config.titleStyle?.fontWeight || 'bold')

@@ -1,6 +1,6 @@
-import type { 
-  ChartType, 
-  ChartDataPoint, 
+import type {
+  ChartType,
+  ChartDataPoint,
   BaseChartConfig,
   LineChartConfig
 } from '@charts-library/types';
@@ -8,7 +8,7 @@ import { LineChart } from './line';
 
 /**
  * 차트 생성을 위한 팩토리 클래스
- * 
+ *
  * 주요 기능:
  * - 타입 기반 차트 생성
  * - 공통 설정 관리
@@ -22,21 +22,21 @@ export class ChartFactory {
   static create(
     type: ChartType,
     container: HTMLElement,
-    config: BaseChartConfig 
+    config: BaseChartConfig
   ) {
     switch (type) {
       case 'line':
         return new LineChart(container, config as LineChartConfig);
-      
+
       // case 'bar':
       //   return new BarChart(container, config as BarChartConfig);
-      
+
       // case 'pie':
       //   return new PieChart(container, config as PieChartConfig);
-      
+
       // case 'area':
       //   return new AreaChart(container, config as AreaChartConfig);
-      
+
       default:
         throw new Error(`Unsupported chart type: ${type}`);
     }
@@ -46,8 +46,8 @@ export class ChartFactory {
    * 라인 차트 빠른 생성 (데이터 포함)
    */
   static createLineChart(
-    container: HTMLElement, 
-    data: ChartDataPoint[], 
+    container: HTMLElement,
+    data: ChartDataPoint[],
     config: Partial<LineChartConfig> = {}
   ): LineChart {
     return new LineChart(container, config)
@@ -74,7 +74,7 @@ export class ChartFactory {
     };
 
     const chart = this.create(type, container, responsiveConfig);
-    
+
     // 윈도우 리사이즈 이벤트 리스너
     if (responsiveConfig.responsive) {
       const handleResize = () => {
@@ -86,7 +86,7 @@ export class ChartFactory {
       };
 
       window.addEventListener('resize', handleResize);
-      
+
       // 정리 시 이벤트 리스너 제거
       const originalDestroy = chart.destroy.bind(chart);
       chart.destroy = () => {
@@ -187,86 +187,85 @@ export class ChartFactory {
     /**
    * 다중 차트 생성 (대시보드용)
    */
-  static createDashboard(
-    container: HTMLElement,
-    charts: Array<{
-      type: ChartType;
-      data: ChartDataPoint[];
-      config?: BaseChartConfig;
-      title?: string;
-    }>,
-    layout: 'grid' | 'horizontal' | 'vertical' = 'grid'
-  ) {
-    const chartInstances: any[] = [];
+static createDashboard(
+  container: HTMLElement,
+  charts: Array<{
+    type: ChartType;
+    data: ChartDataPoint[];
+    config?: BaseChartConfig;
+    title?: string;
+  }>,
+  layout: 'grid' | 'horizontal' | 'vertical' = 'grid'
+) {
+  const chartInstances: any[] = [];
 
-    // 레이아웃에 따른 컨테이너 생성
-    charts.forEach((chartConfig, index) => {
-      const chartContainer = document.createElement('div');
-      chartContainer.className = `chart-item chart-item-${index}`;
-      
-      // 레이아웃 스타일 적용
-      switch (layout) {
-        case 'grid':
-          const cols = Math.ceil(Math.sqrt(charts.length));
-          chartContainer.style.cssText = `
-            display: inline-block;
-            width: ${100 / cols}%;
-            height: 300px;
-            padding: 10px;
-            box-sizing: border-box;
-          `;
-          break;
-        case 'horizontal':
-          chartContainer.style.cssText = `
-            display: inline-block;
-            width: ${100 / charts.length}%;
-            height: 400px;
-            padding: 10px;
-            box-sizing: border-box;
-          `;
-          break;
-        case 'vertical':
-          chartContainer.style.cssText = `
-            width: 100%;
-            height: 300px;
-            margin-bottom: 20px;
-            padding: 10px;
-            box-sizing: border-box;
-          `;
-          break;
-      }
+  charts.forEach((chartConfig, index) => {
+    const chartContainer = document.createElement('div');
+    chartContainer.className = `chart-item chart-item-${index}`;
 
-      // 제목 추가
-      if (chartConfig.title) {
-        const titleElement = document.createElement('h3');
-        titleElement.textContent = chartConfig.title;
-        titleElement.style.cssText = 'margin: 0 0 10px 0; font-size: 16px; font-weight: bold;';
-        chartContainer.appendChild(titleElement);
-      }
+    // 레이아웃 스타일 적용
+    switch (layout) {
+      case 'grid':
+        const cols = Math.ceil(Math.sqrt(charts.length));
+        chartContainer.style.cssText = `
+          display: inline-block;
+          width: ${100 / cols}%;
+          height: 300px;
+          padding: 10px;
+          box-sizing: border-box;
+        `;
+        break;
+      case 'horizontal':
+        chartContainer.style.cssText = `
+          display: inline-block;
+          width: ${100 / charts.length}%;
+          height: 400px;
+          padding: 10px;
+          box-sizing: border-box;
+        `;
+        break;
+      case 'vertical':
+        chartContainer.style.cssText = `
+          width: 100%;
+          height: 300px;
+          margin-bottom: 20px;
+          padding: 10px;
+          box-sizing: border-box;
+        `;
+        break;
+    }
 
-      // 차트용 div 생성
-      const chartDiv = document.createElement('div');
-      chartDiv.style.cssText = 'width: 100%; height: calc(100% - 30px);';
-      chartContainer.appendChild(chartDiv);
+    // 제목 추가
+    if (chartConfig.title) {
+      const titleElement = document.createElement('h3');
+      titleElement.textContent = chartConfig.title;
+      titleElement.style.cssText = 'margin: 0 0 10px 0; font-size: 16px; font-weight: bold;';
+      chartContainer.appendChild(titleElement);
+    }
 
-      container.appendChild(chartContainer);
+    // 차트용 div 생성
+    const chartDiv = document.createElement('div');
+    chartDiv.style.cssText = 'width: 100%; height: calc(100% - 30px);';
+    chartContainer.appendChild(chartDiv);
 
-      // 차트 생성
-      const chart = this.create(chartConfig.type, chartDiv, {
-        width: chartDiv.offsetWidth,
-        height: chartDiv.offsetHeight,
-        margin: { top: 20, right: 20, bottom: 30, left: 40 }, // Default margin
-        ...chartConfig.config
-      }).setData(chartConfig.data).render();
+    container.appendChild(chartContainer);
 
-      chartInstances.push(chart);
-    });
+    // 차트 생성
+    const chart = this.create(chartConfig.type, chartDiv, {
+      width: chartDiv.offsetWidth,
+      height: chartDiv.offsetHeight,
+      margin: { top: 20, right: 20, bottom: 30, left: 40 },
+      ...chartConfig.config
+    }).setData(chartConfig.data).render();
 
-    return {
-      charts: chartInstances,
-      destroy: () => chartInstances.forEach(chart => chart.destroy())
-    };
-  }
+    chartInstances.push(chart);
+  });
+
+  return {
+    charts: chartInstances,
+    destroy: () => chartInstances.forEach(chart => chart.destroy())
+  };
+}
 
 
   /**
@@ -276,7 +275,7 @@ export class ChartFactory {
     const serializer = new XMLSerializer();
     const svgString = serializer.serializeToString(svg);
     const blob = new Blob([svgString], { type: 'image/svg+xml' });
-    
+
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
@@ -291,21 +290,21 @@ export class ChartFactory {
   private static downloadPNG(svg: SVGElement, filename: string): void {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d')!;
-    
+
     const svgRect = svg.getBoundingClientRect();
     canvas.width = svgRect.width * 2; // 고해상도
     canvas.height = svgRect.height * 2;
-    
+
     const img = new Image();
     const serializer = new XMLSerializer();
     const svgString = serializer.serializeToString(svg);
     const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
     const url = URL.createObjectURL(svgBlob);
-    
+
     img.onload = () => {
       ctx.scale(2, 2); // 고해상도
       ctx.drawImage(img, 0, 0);
-      
+
       canvas.toBlob((blob) => {
         if (blob) {
           const downloadUrl = URL.createObjectURL(blob);
@@ -316,10 +315,10 @@ export class ChartFactory {
           URL.revokeObjectURL(downloadUrl);
         }
       }, 'image/png');
-      
+
       URL.revokeObjectURL(url);
     };
-    
+
     img.src = url;
   }
 
@@ -368,7 +367,7 @@ export class ChartFactory {
     if (comparisonType === 'overlay') {
       // 모든 데이터를 하나의 차트에 오버레이
       const combinedData: ChartDataPoint[] = [];
-      
+
       datasets.forEach(dataset => {
         const dataWithGroup = dataset.data.map(point => ({
           ...point,

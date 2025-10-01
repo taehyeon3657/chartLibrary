@@ -89,7 +89,7 @@ export default function CustomExample() {
             gridColor: '#e5e7eb',
             axisColor: '#9ca3af',
             showLegend: true,
-            legendPosition: 'bottom',
+            legendPosition: 'right',
             enableAnimation: false,
             animationDuration: 1200,
             margin: { top: 60, right: 20, bottom: 60, left: 80 }
