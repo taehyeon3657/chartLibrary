@@ -4,6 +4,7 @@
   "scripts": {
     "build": "lerna run build",
     "build:deps": "lerna run build --scope=@charts-library/types --scope=@charts-library/core",
+    "build:playground": "lerna run build --scope=@charts-library/types --scope=@charts-library/core && lerna run build --scope=playground",
     "dev": "lerna run dev --parallel",
     "dev:playground": "pnpm run build:deps && lerna run dev --scope=playground",
     "dev:with-deps": "pnpm run build:deps && lerna run dev --parallel",
