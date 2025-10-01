@@ -37,6 +37,10 @@ export class LineChart extends BaseChart {
   private renderContext: RenderContext | null = null;
 
   constructor(container: HTMLElement, config: Partial<LineChartConfig> = {}) {
+
+     console.log('🏗️ LineChart constructor called');
+  console.log('📦 Container:', container);
+  console.log('⚙️ Config:', config);
     // 기본 설정
     const defaultConfig: Partial<LineChartConfig> = {
       width: 600,
@@ -62,16 +66,24 @@ export class LineChart extends BaseChart {
     };
 
     super(container, { ...defaultConfig, ...config });
+
+      console.log('📝 Final config:', this.config);
+  console.log('🎯 Container element:', this.container);
     
     // 구성 요소들 초기화
     this.state = new LineChartState();
+    console.log('✅ State initialized');
+
     this.calculator = new CoordinateCalculator(this.state, this.config as LineChartConfig);
+     console.log('✅ Calculator initialized');
+
     this.renderer = new LineChartRenderer(
       container, 
       this.state, 
       this.calculator, 
       this.config as LineChartConfig
     );
+     console.log('✅ Renderer initialized:', this.renderer);
     
     this.scaleManager = new ScaleManager({
       width: this.config.width!,
@@ -86,7 +98,11 @@ export class LineChart extends BaseChart {
       enableKeyboard: true
     });
 
+
     this.setupEventForwarding();
+
+      console.log('✅ LineChart constructor complete');
+
   }
 
   // ============================================
@@ -119,13 +135,30 @@ export class LineChart extends BaseChart {
   }
 
   public render(): this {
+      console.log('🎨 LineChart.render() called');
+  console.log('📊 State isEmpty?', this.state.isEmpty());
+  console.log('📦 Container:', this.container);
+  console.log('🎭 Renderer:', this.renderer);
     if (this.state.isEmpty()) {
       console.warn('No data to render');
       return this;
     }
 
+      console.log('🚀 Calling renderer.render()...');
+
+
     // 렌더링 실행
+  try {
     this.renderContext = this.renderer.render();
+    console.log('✅ Renderer.render() complete');
+    console.log('🖼️ RenderContext:', this.renderContext);
+    console.log('📐 SVG:', this.renderContext?.svg);
+    console.log('🎨 Container innerHTML:', this.container.innerHTML);
+    console.log('🔍 Container has SVG?', this.container.querySelector('svg'));
+  } catch (error) {
+    console.error('❌ Renderer.render() failed:', error);
+    throw error;
+  }
 
     // 상호작용 설정
     this.setupInteractions();

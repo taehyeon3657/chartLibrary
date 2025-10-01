@@ -5,11 +5,9 @@ import type { LineChartConfig, ChartDataPoint } from '@charts-library/types';
 export interface LineChartProps {
   data: ChartDataPoint[];
   config?: Partial<LineChartConfig>;
-  // 편의 기능 props
   theme?: 'light' | 'dark' | 'colorful';
   responsive?: boolean;
   preset?: 'minimal' | 'detailed' | 'presentation' | 'dashboard';
-  // 이벤트 핸들러
   onChartClick?: (event: any) => void;
   onChartHover?: (event: any) => void;
   onChartMouseenter?: (event: any) => void;
@@ -56,7 +54,8 @@ export interface LineChartRef {
  * />
  * ```
  */
-export const LineChart = forwardRef<LineChartRef, LineChartProps>(
+
+export const LineChart = forwardRef<any, LineChartProps>(
   (
     { 
       data, 
@@ -78,26 +77,18 @@ export const LineChart = forwardRef<LineChartRef, LineChartProps>(
   ) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const chartRef = useRef<any>(null);
-    const isInitialMount = useRef(true);
+    const chartCreatedRef = useRef(false); // 차트 생성 여부만 추적
 
-    // 명령형 API 제공 (ref를 통한 접근)
+    // 명령형 API 제공
     useImperativeHandle(ref, () => ({
       chart: chartRef.current,
-      update: () => {
-        chartRef.current?.update();
-      },
-      toggleGroup: (group: string) => {
-        chartRef.current?.toggleGroup(group);
-      },
+      update: () => chartRef.current?.update(),
+      toggleGroup: (group: string) => chartRef.current?.toggleGroup(group),
       updateConfig: (newConfig: Partial<LineChartConfig>) => {
         chartRef.current?.updateConfig(newConfig);
       },
-      destroy: () => {
-        chartRef.current?.destroy();
-      },
-      getState: () => {
-        return chartRef.current?.getState();
-      },
+      destroy: () => chartRef.current?.destroy(),
+      getState: () => chartRef.current?.getState(),
       exportChart: (format: 'png' | 'svg' | 'pdf', filename?: string) => {
         if (chartRef.current) {
           ChartFactory.exportChart(chartRef.current, format, filename);
@@ -105,22 +96,33 @@ export const LineChart = forwardRef<LineChartRef, LineChartProps>(
       }
     }));
 
-    // 차트 초기화 및 데이터 업데이트
+    // 차트 생성
     useEffect(() => {
+      // console.log('Chart creation effect', { 
+      //   hasContainer: !!containerRef.current,
+      //   chartCreated: chartCreatedRef.current,
+      //   hasChart: !!chartRef.current
+      // });
+
       if (!containerRef.current) return;
+      
+      // 이미 차트가 생성되었으면 스킵
+      if (chartCreatedRef.current && chartRef.current) {
 
-      // 최초 마운트 시: 차트 생성
-      if (isInitialMount.current) {
-        let finalConfig = { ...config };
+        return;
+      }
 
-        // preset 적용
-        if (preset) {
-          finalConfig = ChartFactory.applyPreset(finalConfig as any, preset);
-        }
 
-        // 차트 생성 방식 선택
+      
+      let finalConfig = { ...config };
+
+      if (preset) {
+        finalConfig = ChartFactory.applyPreset(finalConfig as any, preset);
+      }
+
+      // 차트 생성
+      try {
         if (theme) {
-          // 테마 기반 생성
           chartRef.current = ChartFactory.createWithTheme(
             'line',
             containerRef.current,
@@ -129,7 +131,6 @@ export const LineChart = forwardRef<LineChartRef, LineChartProps>(
             finalConfig as any
           );
         } else if (responsive) {
-          // 반응형 생성
           chartRef.current = ChartFactory.createResponsive(
             'line',
             containerRef.current,
@@ -137,7 +138,6 @@ export const LineChart = forwardRef<LineChartRef, LineChartProps>(
             finalConfig as any
           );
         } else {
-          // 일반 생성 (빠른 생성 메서드 사용)
           chartRef.current = ChartFactory.createLineChart(
             containerRef.current,
             data,
@@ -145,18 +145,41 @@ export const LineChart = forwardRef<LineChartRef, LineChartProps>(
           );
         }
 
-        isInitialMount.current = false;
-      } else {
-        // 데이터 변경 시: 업데이트
-        if (chartRef.current) {
-          chartRef.current.setData(data).update();
+        chartCreatedRef.current = true;
+        // console.log('Chart created successfully:', chartRef.current);
+        
+        // onRendered 콜백 실행
+        if (onRendered) {
+          setTimeout(() => {
+            if (containerRef.current?.querySelector('svg') && chartRef.current) {
+              onRendered({ chart: chartRef.current });
+            }
+          }, 50);
+        }
+      } catch (error) {
+        console.error('Chart creation failed:', error);
+      }
+    
+    }, []); // 빈 배열 - 마운트 시 한 번만
+
+    // 데이터 업데이트만 별도로 처리
+    useEffect(() => {
+      if (chartCreatedRef.current && chartRef.current) {
+        chartRef.current.setData(data).update();
+        
+        if (onUpdated) {
+          setTimeout(() => {
+            if (chartRef.current) {
+              onUpdated({ chart: chartRef.current });
+            }
+          }, 0);
         }
       }
-    }, [data, theme, responsive, preset]);
+    }, [data, onUpdated]);
 
     // 설정 변경 시 업데이트
     useEffect(() => {
-      if (!isInitialMount.current && chartRef.current && config) {
+      if (chartCreatedRef.current && chartRef.current && config) {
         let finalConfig = { ...config };
         if (preset) {
           finalConfig = ChartFactory.applyPreset(finalConfig as any, preset);
@@ -171,7 +194,6 @@ export const LineChart = forwardRef<LineChartRef, LineChartProps>(
 
       const chart = chartRef.current;
 
-      // 이벤트 핸들러 등록
       if (onChartClick) {
         chart.on('chartClick', onChartClick);
       }
@@ -187,26 +209,31 @@ export const LineChart = forwardRef<LineChartRef, LineChartProps>(
       if (onLegendToggle) {
         chart.on('legendToggle', onLegendToggle);
       }
-      if (onRendered) {
-        chart.on('rendered', onRendered);
-      }
-      if (onUpdated) {
-        chart.on('updated', onUpdated);
-      }
 
-      // Cleanup: 이벤트 리스너 제거
       return () => {
-        chart.removeAllListeners();
+        // 이벤트만 제거, 차트는 destroy 안 함
+        if (chart.removeAllListeners) {
+          chart.removeAllListeners();
+        }
       };
-    }, [onChartClick, onChartHover, onChartMouseenter, onChartMouseleave, onLegendToggle, onRendered, onUpdated]);
+    }, [onChartClick, onChartHover, onChartMouseenter, onChartMouseleave, onLegendToggle]);
 
-    // 컴포넌트 언마운트 시 정리
+    // 언마운트에서만 destroy (마지막 방어선)
     useEffect(() => {
       return () => {
-        if (chartRef.current) {
-          chartRef.current.destroy();
-          chartRef.current = null;
-        }
+        
+        // 실제 언마운트인지 확인
+        requestAnimationFrame(() => {
+          // DOM에서 컨테이너가 제거되었는지 확인
+          if (containerRef.current && !document.body.contains(containerRef.current)) {
+            
+            if (chartRef.current) {
+              chartRef.current.destroy();
+              chartRef.current = null;
+              chartCreatedRef.current = false;
+            }
+          } 
+        });
       };
     }, []);
 

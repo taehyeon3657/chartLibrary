@@ -18,6 +18,8 @@ const nextConfig = {
       ...config.resolve.alias,
       '@charts-library/react': path.resolve(__dirname, '../../packages/react/src/index.tsx'),
       '@charts-library/types': path.resolve(__dirname, '../../packages/types/src/index.ts'),
+      '@charts-library/charts': path.resolve(__dirname, '../../packages/charts/src/index.ts'),
+      '@charts-library/core': path.resolve(__dirname, '../../packages/core/src/index.ts'),
     };
 
     // Handle D3 and other large libraries

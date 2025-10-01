@@ -22,7 +22,7 @@ export function ExampleLayout({ title, description, children }: ExampleLayoutPro
       
       <main className="max-w-7xl mx-auto p-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">{title}</h1>
+          <h1 className="text-3xl font-bold mb-2 text-[#3B82F6]">{title}</h1>
           <p className="text-gray-600">{description}</p>
         </div>
         

@@ -37,6 +37,7 @@ function MyChart() {
       description="A simple line chart with default settings"
     >
       <ChartContainer title="Chart">
+        <div className='flex justify-center items-center h-full'>
         <LineChart 
           data={data}
           config={{
@@ -45,6 +46,7 @@ function MyChart() {
             margin: { top: 20, right: 20, bottom: 40, left: 60 }
           }}
         />
+          </div>
       </ChartContainer>
 
       <div className="mt-8">
