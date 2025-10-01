@@ -58,18 +58,18 @@ export class LegendRenderer {
     legendItems.attr('data-group', d => d.group);
   }
 
-  private calculateLegendTransform(position: string): string {
+ private calculateLegendTransform(position: string): string {
     switch (position) {
       case 'top':
-        return `translate(${this.config.margin?.left || 0}, 50)`;
+        return `translate(${this.config.margin?.left || 0}, 15)`;
       case 'bottom':
         return `translate(${this.config.margin?.left || 0}, ${(this.config.height || 0) - 15})`;
       case 'left':
-        return `translate(10, ${(this.config.margin?.top || 0) - 36})`;
+        return `translate(15, ${this.config.margin?.top || 0})`;
       case 'right':
-        return `translate(${(this.config.width || 0) - 100}, ${(this.config.margin?.top || 0) - 36})`;
+        return `translate(${(this.config.width || 0) - 100}, ${this.config.margin?.top || 0})`;
       default:
-        return `translate(${this.config.margin?.left || 0}, 50)`;
+        return `translate(${this.config.margin?.left || 0}, 15)`;
     }
   }
 
