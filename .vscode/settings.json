@@ -1,3 +1,13 @@
 {
-    "jira-plugin.workingProject": ""
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.rulers": [140],
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "files.trimTrailingWhitespace": true,
+  "eslint.enable": true,
+  "javascript.preferences.quoteStyle": "single",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "jira-plugin.workingProject": ""
 }

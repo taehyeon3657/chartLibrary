@@ -1,0 +1,15 @@
+0 silly argv {
+0 silly argv   _: [ 'run' ],
+0 silly argv   scope: [ '@charts-library/types', '@charts-library/core' ],
+0 silly argv   lernaVersion: '8.2.4',
+0 silly argv   '$0': 'node_modules/lerna/dist/cli.js',
+0 silly argv   script: 'build'
+0 silly argv }
+1 notice cli v8.2.4
+2 verbose packageConfigs Explicit "packages" configuration found in lerna.json. Resolving packages using the configured glob(s): ["packages/*","apps/*"]
+3 verbose rootPath /Users/taehyeon/workspace_chart/chartLibrary
+4 error Error: Permission denied (os error 13)
+4 error     at createProjectGraphAndSourceMapsAsync (/Users/taehyeon/workspace_chart/chartLibrary/node_modules/.pnpm/nx@20.8.2/node_modules/nx/src/project-graph/project-graph.js:229:15)
+4 error     at createProjectGraphAsync (/Users/taehyeon/workspace_chart/chartLibrary/node_modules/.pnpm/nx@20.8.2/node_modules/nx/src/project-graph/project-graph.js:219:45)
+4 error     at detectProjects (/Users/taehyeon/workspace_chart/chartLibrary/node_modules/.pnpm/lerna@8.2.4_@types+node@20.0.0/node_modules/lerna/dist/index.js:3223:74)
+4 error     at RunCommand.detectProjects (/Users/taehyeon/workspace_chart/chartLibrary/node_modules/.pnpm/lerna@8.2.4_@types+node@20.0.0/node_modules/lerna/dist/index.js:3437:56)

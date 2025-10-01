@@ -1,0 +1,27 @@
+{
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json",
+  "version": "independent",
+  "npmClient": "pnpm",
+  "packages": [
+    "packages/*",
+    "apps/*"
+  ],
+  "command": {
+    "version": {
+      "conventionalCommits": true,
+      "changelogPreset": "angular",
+      "message": "chore(release): publish"
+    },
+    "publish": {
+      "registry": "https://registry.npmjs.org/",
+      "ignoreChanges": [
+        "**/__tests__/**",
+        "**/*.test.ts",
+        "**/*.md"
+      ]
+    },
+    "run": {
+      "npmClient": "pnpm"
+    }
+  }
+}
