@@ -10,7 +10,7 @@ import { LegendRenderer } from './LegendRenderer';
 
 /**
  * 모든 렌더링을 총괄하는 메인 렌더러
- * 
+ *
  * 책임:
  * - 렌더링 컨텍스트 초기화
  * - 개별 렌더러들 조정
@@ -38,10 +38,10 @@ export class LineChartRenderer {
   render(): RenderContext {
     // 1. 렌더링 컨텍스트 초기화
     const context = this.initializeRenderContext();
-    
+
     // 2. 개별 렌더러들 초기화 (컨텍스트 생성 후)
     this.initializeRenderers(context);
-    
+
     // 3. 렌더링 실행 (순서 중요)
     this.axisRenderer?.render();
     this.lineRenderer?.render();
@@ -50,7 +50,7 @@ export class LineChartRenderer {
 
     // 4. 스타일 적용
     this.applyStyles(context);
-    
+
     return context;
   }
 
@@ -62,21 +62,21 @@ private initializeRenderContext(): RenderContext {
   // 기존 SVG 제거
   d3.select(this.container).selectAll('svg').remove();
 
-  // 새 SVG 생성 - select 대신 직접 container를 사용  
+  // 새 SVG 생성 - select 대신 직접 container를 사용
   const svg = d3.select(this.container)
     .append('svg')
     .attr('width', this.config.width || 600)
     .attr('height', this.config.height || 400);
-  
+
 
   const defs = svg.append('defs');
-  
+
 
   const margin = this.config.margin || { top: 20, right: 20, bottom: 40, left: 60 };
   const chartArea = svg.append('g')
     .attr('class', 'chart-area')
     .attr('transform', `translate(${margin.left}, ${margin.top})`);
-  
+
 
 
   return {
@@ -94,7 +94,7 @@ private initializeRenderContext(): RenderContext {
     this.axisRenderer = new AxisRenderer(this.state, this.calculator, this.config, context);
     this.lineRenderer = new LineRenderer(this.state, this.calculator, this.config, context);
     this.dotRenderer = new DotRenderer(this.state, this.calculator, this.config, context);
-    this.legendRenderer = new LegendRenderer(this.state, this.calculator, this.config, context);
+    this.legendRenderer = new LegendRenderer(this.calculator, this.config, context);
   }
 
   /**
@@ -113,7 +113,7 @@ private initializeRenderContext(): RenderContext {
     svg.selectAll('.axis .domain')
       .attr('stroke', this.config.axisColor || '#d0d0d0');
 
-    // 텍스트 스타일  
+    // 텍스트 스타일
     svg.selectAll('text')
       .style('font-family', 'Inter, system-ui, sans-serif')
       .attr('fill', '#666');
@@ -135,7 +135,7 @@ private initializeRenderContext(): RenderContext {
   private calculateTitleX(position?: string): number {
     const margin = this.config.margin || { top: 20, right: 20, bottom: 40, left: 60 };
     const width = this.config.width || 600;
-    
+
     switch (position) {
       case 'LEFT':
         return margin.left;
@@ -173,7 +173,7 @@ private initializeRenderContext(): RenderContext {
   }
 
   updateLegend(context: RenderContext): void {
-    this.legendRenderer = new LegendRenderer(this.state, this.calculator, this.config, context);
+    this.legendRenderer = new LegendRenderer( this.calculator, this.config, context);
     this.legendRenderer.render();
   }
 }
