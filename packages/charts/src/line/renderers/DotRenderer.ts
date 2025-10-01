@@ -3,6 +3,7 @@ import { CoordinateCalculator } from "../CoordinateCalculator";
 import { LineChartState } from "../LineChartState";
 import { RenderContext } from "../LineChart";
 import { RenderingUtils } from "../../shared";
+import * as d3 from 'd3';
 
 /**
  * 점(도트) 렌더링만 담당하는 클래스
@@ -41,6 +42,10 @@ export class DotRenderer {
       const color = colorScale(group);
       const dotColor = this.config.dotColors?.[groupIndex] || color;
 
+      const darkerStroke = d3.color(dotColor)
+  ? d3.hsl(dotColor).darker(0.7).toString()
+  : dotColor;
+
       const dotsGroup = this.context.chartArea.append('g')
         .attr('class', `dots-group dots-group-${this.sanitizeClassName(group)}`);
 
@@ -53,20 +58,20 @@ export class DotRenderer {
         .attr('cy', d => d.y)
         .attr('r', this.config.dotRadius || 4)
         .attr('fill', dotColor)
-        .attr('stroke', 'white')
-        .attr('stroke-width', 2)
+        .attr('stroke', darkerStroke)
+        .attr('stroke-width', 1)
         .style('cursor', 'pointer');
 
       // ARIA 접근성
-      dots.attr('aria-label', d => 
+      dots.attr('aria-label', d =>
         RenderingUtils.createAriaLabel(d.data, 'line')
       );
 
       // 점 애니메이션
       if (this.config.enableAnimation) {
         RenderingUtils.animateDots(
-          dots, 
-          this.config.dotRadius || 4, 
+          dots,
+          this.config.dotRadius || 4,
           this.config.animationDuration || 300,
           100 // 라인 애니메이션 후 지연
         );

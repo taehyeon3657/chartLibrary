@@ -1,6 +1,5 @@
 import { LineChartConfig } from "@charts-library/types";
 import { CoordinateCalculator } from "../CoordinateCalculator";
-import { LineChartState } from "../LineChartState";
 import { RenderContext } from "../LineChart";
 
 /**
@@ -8,7 +7,6 @@ import { RenderContext } from "../LineChart";
  */
 export class LegendRenderer {
   constructor(
-    private state: LineChartState,
     private calculator: CoordinateCalculator,
     private config: LineChartConfig,
     private context: RenderContext
@@ -28,7 +26,7 @@ export class LegendRenderer {
   private renderLegend(): void {
     const legendData = this.calculator.calculateLegendData();
     const legendPosition = this.config.legendPosition || 'top';
-    
+
     const legend = this.context.svg.append('g')
       .attr('class', 'legend')
       .attr('transform', this.calculateLegendTransform(legendPosition));
@@ -63,21 +61,21 @@ export class LegendRenderer {
   private calculateLegendTransform(position: string): string {
     switch (position) {
       case 'top':
-        return `translate(${this.config.margin?.left || 0}, 15)`;
+        return `translate(${this.config.margin?.left || 0}, 50)`;
       case 'bottom':
         return `translate(${this.config.margin?.left || 0}, ${(this.config.height || 0) - 15})`;
       case 'left':
-        return `translate(15, ${this.config.margin?.top || 0})`;
+        return `translate(10, ${(this.config.margin?.top || 0) - 36})`;
       case 'right':
-        return `translate(${(this.config.width || 0) - 120}, ${this.config.margin?.top || 0})`;
+        return `translate(${(this.config.width || 0) - 100}, ${(this.config.margin?.top || 0) - 36})`;
       default:
-        return `translate(${this.config.margin?.left || 0}, 15)`;
+        return `translate(${this.config.margin?.left || 0}, 50)`;
     }
   }
 
   private calculateLegendItemTransform(position: string, index: number): string {
     const spacing = 100;
-    
+
     if (position === 'left' || position === 'right') {
       return `translate(0, ${index * 20})`;
     } else {

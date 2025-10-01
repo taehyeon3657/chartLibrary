@@ -18,7 +18,7 @@ export default function InteractiveExample() {
 
   const code = `import { LineChart } from '@charts-library/react'
 
-<LineChart 
+<LineChart
   data={data}
   config={{
     width: 800,
@@ -39,7 +39,7 @@ export default function InteractiveExample() {
       description="Charts with click, hover, and other interaction events"
     >
       <ChartContainer title="Hover and Click on Data Points">
-        <LineChart 
+        <LineChart
           data={data}
           config={{
             width: 800,
@@ -57,7 +57,7 @@ export default function InteractiveExample() {
       </ChartContainer>
 
       <ChartContainer title="Event Log (Last 10 Events)">
-        <div className="bg-gray-100 rounded p-4 h-64 overflow-y-auto font-mono text-sm">
+        <div className="bg-gray-500 rounded p-4 h-64 overflow-y-auto font-mono text-sm">
           {events.length === 0 ? (
             <p className="text-gray-500">Interact with the chart to see events...</p>
           ) : (

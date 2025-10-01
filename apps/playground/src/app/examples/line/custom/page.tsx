@@ -11,12 +11,12 @@ export default function CustomExample() {
 
   const code = `import { LineChart } from '@charts-library/react'
 
-<LineChart 
+<LineChart
   data={data}
   config={{
     width: 800,
     height: 500,
-    
+
     // Title styling
     title: 'Monthly Sales Performance',
     titlePosition: 'LEFT',
@@ -25,19 +25,19 @@ export default function CustomExample() {
       fontWeight: 'bold',
       color: '#1f2937'
     },
-    
+
     // Lines
     lineColors: ['#8b5cf6', '#06b6d4'],
     lineWidth: 3,
-    
+
     // Dots
     showDots: true,
     dotRadius: 6,
-    
+
     // Area
     showAreaFill: true,
     areaFillOpacity: 0.15,
-    
+
     // Axes
     showXAxis: true,
     showYAxis: true,
@@ -46,11 +46,11 @@ export default function CustomExample() {
     gridLines: true,
     gridColor: '#e5e7eb',
     axisColor: '#9ca3af',
-    
+
     // Legend
     showLegend: true,
     legendPosition: 'top',
-    
+
     // Animation
     enableAnimation: true,
     animationDuration: 1200
@@ -63,7 +63,7 @@ export default function CustomExample() {
       description="Heavily customized chart with various styling options"
     >
       <ChartContainer>
-        <LineChart 
+        <LineChart
           data={data}
           config={{
             width: 800,
@@ -78,7 +78,7 @@ export default function CustomExample() {
             lineColors: ['#8b5cf6', '#06b6d4'],
             lineWidth: 1,
             showDots: true,
-            dotRadius: 6,
+            dotRadius: 3,
             showAreaFill: true,
             areaFillOpacity: 0.15,
             showXAxis: true,
@@ -89,7 +89,7 @@ export default function CustomExample() {
             gridColor: '#e5e7eb',
             axisColor: '#9ca3af',
             showLegend: true,
-            legendPosition: 'right',
+            legendPosition: 'bottom',
             enableAnimation: false,
             animationDuration: 1200,
             margin: { top: 60, right: 20, bottom: 60, left: 80 }
