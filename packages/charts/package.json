@@ -1,6 +1,7 @@
 {
   "name": "@charts-library/charts",
   "version": "1.0.0",
+  "description": "Chart implementations for charts library",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
@@ -30,14 +31,46 @@
       "require": "./dist/shared/index.js"
     }
   },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc --build",
     "dev": "tsc --build --watch",
-    "clean": "rm -rf dist tsconfig.tsbuildinfo"
+    "clean": "rm -rf dist tsconfig.tsbuildinfo",
+    "prepublishOnly": "pnpm run build"
+  },
+  "keywords": [
+    "chart",
+    "line-chart",
+    "bar-chart",
+    "pie-chart",
+    "area-chart",
+    "d3",
+    "visualization",
+    "data-visualization",
+    "svg",
+    "interactive-charts"
+  ],
+  "author": "TaeHyeon",
+  "license": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/taehyeon3657/chartLibrary.git",
+    "directory": "packages/charts"
+  },
+  "bugs": {
+    "url": "https://github.com/taehyeon3657/chartLibrary/issues"
+  },
+  "homepage": "https://github.com/taehyeon3657/chartLibrary/tree/main/packages/charts#readme",
+  "publishConfig": {
+    "access": "public"
   },
   "dependencies": {
-    "@charts-library/core": "workspace:*",
-    "@charts-library/types": "workspace:*"
+    "@charts-library/core": "^1.0.0",
+    "@charts-library/types": "^1.0.0"
   },
   "peerDependencies": {
     "d3": "^7.0.0"
@@ -45,5 +78,6 @@
   "devDependencies": {
     "@types/d3": "^7.4.3",
     "typescript": "^5.0.0"
-  }
+  },
+  "gitHead": "e6a85cf539e5fc6461dd192461c531fd91b2b12c"
 }

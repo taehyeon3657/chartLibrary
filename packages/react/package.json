@@ -1,7 +1,7 @@
 {
   "name": "@charts-library/react",
   "version": "0.1.0",
-  "description": "React components for chart library",
+  "description": "React components for charts library",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -10,17 +10,50 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
-    },
-    "./src/*": "./src/*"
+    }
   },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc --project tsconfig.build.json",
     "clean": "rm -rf dist",
-    "lint": "eslint src --ext .ts,.tsx"
+    "lint": "eslint src --ext .ts,.tsx",
+    "prepublishOnly": "pnpm run build"
+  },
+  "keywords": [
+    "react",
+    "chart",
+    "react-chart",
+    "react-component",
+    "d3",
+    "visualization",
+    "data-visualization",
+    "line-chart",
+    "bar-chart",
+    "pie-chart",
+    "hooks",
+    "typescript"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "hhttps://github.com/taehyeon3657/chartLibrary.git",
+    "directory": "packages/react"
+  },
+  "bugs": {
+    "url": "https://github.com/taehyeon3657/chartLibrary/issues"
+  },
+  "homepage": "https://github.com/taehyeon3657/chartLibrary/tree/main/packages/react#readme",
+  "publishConfig": {
+    "access": "public"
   },
   "dependencies": {
-    "@charts-library/charts": "workspace:*",
-    "@charts-library/types": "workspace:*"
+    "@charts-library/charts": "^1.0.0",
+    "@charts-library/types": "^1.0.0"
   },
   "peerDependencies": {
     "react": "^18.0.0",
@@ -29,9 +62,14 @@
   "devDependencies": {
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "eslint-plugin-react": "^7.33.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "typescript": "^5.0.0",
-    "eslint": "^8.0.0"
-  }
+    "typescript": "^5.0.0"
+  },
+  "gitHead": "e6a85cf539e5fc6461dd192461c531fd91b2b12c"
 }
