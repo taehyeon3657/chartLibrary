@@ -5,6 +5,7 @@
   "description": "A modern chart library built with D3.js and React",
   "scripts": {
     "build": "lerna run build",
+    "build:vercel": "lerna run build",
     "build:deps": "lerna run build --scope=@charts-library/types --scope=@charts-library/core",
     "dev": "lerna run dev --parallel",
     "test": "lerna run test",
