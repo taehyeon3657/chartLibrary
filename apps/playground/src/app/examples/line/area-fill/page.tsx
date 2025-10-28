@@ -11,7 +11,7 @@ export default function AreaFillExample() {
 
   const code = `import { LineChart } from '@charts-library/react'
 
-<LineChart 
+<LineChart
   data={data}
   config={{
     width: 800,
@@ -26,11 +26,12 @@ export default function AreaFillExample() {
 
   return (
     <ExampleLayout
+      type="line"
       title="Area Fill Charts"
       description="Line charts with filled areas and gradient effects"
     >
       <ChartContainer title="Area Fill with Gradient">
-        <LineChart 
+        <LineChart
           data={data}
           config={{
             width: 800,
@@ -45,7 +46,7 @@ export default function AreaFillExample() {
       </ChartContainer>
 
       <ChartContainer title="Higher Opacity">
-        <LineChart 
+        <LineChart
           data={data}
           config={{
             width: 800,

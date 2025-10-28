@@ -16,7 +16,7 @@ export default function AnimationsExample() {
 
   const code = `import { LineChart } from '@charts-library/react'
 
-<LineChart 
+<LineChart
   data={data}
   config={{
     width: 800,
@@ -30,6 +30,7 @@ export default function AnimationsExample() {
 
   return (
     <ExampleLayout
+      type="line"
       title="Animated Charts"
       description="Charts with smooth animations and transitions"
     >
@@ -42,8 +43,8 @@ export default function AnimationsExample() {
             Regenerate Data (Watch Animation)
           </button>
         </div>
-        
-        <LineChart 
+
+        <LineChart
           data={data}
           config={{
             width: 800,

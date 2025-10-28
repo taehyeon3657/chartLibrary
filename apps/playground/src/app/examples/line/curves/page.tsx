@@ -21,7 +21,7 @@ export default function CurvesExample() {
   const code = `import { LineChart } from '@charts-library/react'
 
 // Different curve types
-<LineChart 
+<LineChart
   data={data}
   config={{
     enableCurve: true,
@@ -31,13 +31,14 @@ export default function CurvesExample() {
 
   return (
     <ExampleLayout
+      type="line"
       title="Curve Interpolation Types"
       description="Different line interpolation methods"
     >
       <div className="grid grid-cols-2 gap-4">
         {curveTypes.map(({ type, label }) => (
           <ChartContainer key={type} title={label}>
-            <LineChart 
+            <LineChart
               data={data}
               config={{
                 width: 380,

@@ -19,7 +19,7 @@ export default function RealtimeExample() {
     }
     return initial
   })
-  
+
   const [isRunning, setIsRunning] = useState(false)
   const chartRef = useRef<LineChartRef>(null)
 
@@ -30,18 +30,18 @@ export default function RealtimeExample() {
       setData(prevData => {
         const newData = [...prevData]
         const lastValue = newData[newData.length - 1].value || 50
-        
+
         // Add new data point
         newData.push({
           date: new Date(),
           value: Math.max(0, lastValue + (Math.random() - 0.5) * 20)
         })
-        
+
         // Keep only last 30 points
         if (newData.length > 30) {
           newData.shift()
         }
-        
+
         return newData
       })
     }, 1000)
@@ -54,32 +54,32 @@ import { LineChart } from '@charts-library/react'
 
 function RealtimeChart() {
   const [data, setData] = useState(initialData)
-  
+
   useEffect(() => {
     const interval = setInterval(() => {
       setData(prevData => {
         const newData = [...prevData]
         const lastValue = newData[newData.length - 1].value
-        
+
         newData.push({
           date: new Date(),
           value: lastValue + (Math.random() - 0.5) * 20
         })
-        
+
         // Keep sliding window of 30 points
         if (newData.length > 30) {
           newData.shift()
         }
-        
+
         return newData
       })
     }, 1000) // Update every second
-    
+
     return () => clearInterval(interval)
   }, [])
-  
+
   return (
-    <LineChart 
+    <LineChart
       data={data}
       config={{
         enableAnimation: true,
@@ -91,6 +91,7 @@ function RealtimeChart() {
 
   return (
     <ExampleLayout
+      type="line"
       title="Real-time Data Updates"
       description="Live updating charts with streaming data"
     >
@@ -99,14 +100,14 @@ function RealtimeChart() {
           <button
             onClick={() => setIsRunning(!isRunning)}
             className={`px-4 py-2 rounded font-medium ${
-              isRunning 
-                ? 'bg-red-600 hover:bg-red-700 text-white' 
+              isRunning
+                ? 'bg-red-600 hover:bg-red-700 text-white'
                 : 'bg-green-600 hover:bg-green-700 text-white'
             }`}
           >
             {isRunning ? 'Stop' : 'Start'} Live Updates
           </button>
-          
+
           <button
             onClick={() => {
               setData(prevData => {
@@ -129,14 +130,14 @@ function RealtimeChart() {
 
         <div className="bg-gray-100 rounded p-2 mb-4">
           <span className="text-sm font-mono">
-            Data Points: {data.length} | 
+            Data Points: {data.length} |
             Status: <span className={isRunning ? 'text-green-600' : 'text-red-600'}>
               {isRunning ? '● LIVE' : '○ STOPPED'}
             </span>
           </span>
         </div>
-        
-        <LineChart 
+
+        <LineChart
           ref={chartRef}
           data={data}
           config={{
