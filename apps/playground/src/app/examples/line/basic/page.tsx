@@ -20,7 +20,7 @@ const data = [
 
 function MyChart() {
   return (
-    <LineChart 
+    <LineChart
       data={data}
       config={{
         width: 800,
@@ -33,12 +33,13 @@ function MyChart() {
 
   return (
     <ExampleLayout
+      type="line"
       title="Basic Line Chart"
       description="A simple line chart with default settings"
     >
       <ChartContainer title="Chart">
         <div className='flex justify-center items-center h-full'>
-        <LineChart 
+        <LineChart
           data={data}
           config={{
             width: 800,

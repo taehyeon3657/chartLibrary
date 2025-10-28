@@ -11,7 +11,7 @@ export default function TrendsExample() {
 
   const code = `import { LineChart } from '@charts-library/react'
 
-<LineChart 
+<LineChart
   data={data}
   config={{
     width: 800,
@@ -27,11 +27,12 @@ export default function TrendsExample() {
 
   return (
     <ExampleLayout
+      type="line"
       title="Trend Extension Lines"
       description="Predict future trends based on recent data"
     >
       <ChartContainer title="Chart with Trend Predictions">
-        <LineChart 
+        <LineChart
           data={data}
           config={{
             width: 800,
@@ -51,8 +52,8 @@ export default function TrendsExample() {
       <div className="bg-blue-50 border border-blue-200 rounded p-4 mb-6">
         <h4 className="font-semibold text-blue-900 mb-2">How It Works</h4>
         <p className="text-blue-800 text-sm">
-          The trend extension uses linear regression on the last N data points 
-          (configured by <code className="bg-blue-100 px-1 rounded">trendAnalysisPoints</code>) 
+          The trend extension uses linear regression on the last N data points
+          (configured by <code className="bg-blue-100 px-1 rounded">trendAnalysisPoints</code>)
           to project future values. The dashed line shows the predicted trend.
         </p>
       </div>

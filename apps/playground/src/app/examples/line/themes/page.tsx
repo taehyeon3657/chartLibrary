@@ -22,11 +22,12 @@ export default function ThemesExample() {
 
   return (
     <ExampleLayout
+      type="line"
       title="Theme Variations"
       description="Pre-built themes for different visual styles"
     >
       <ChartContainer title="Light Theme">
-        <LineChart 
+        <LineChart
           data={data}
           theme="light"
           config={{
@@ -39,7 +40,7 @@ export default function ThemesExample() {
 
       <ChartContainer title="Dark Theme">
         <div className="bg-gray-900 p-4 rounded">
-          <LineChart 
+          <LineChart
             data={data}
             theme="dark"
             config={{
@@ -52,7 +53,7 @@ export default function ThemesExample() {
       </ChartContainer>
 
       <ChartContainer title="Colorful Theme">
-        <LineChart 
+        <LineChart
           data={data}
           theme="colorful"
           config={{

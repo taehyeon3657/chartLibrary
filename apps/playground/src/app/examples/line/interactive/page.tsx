@@ -35,6 +35,7 @@ export default function InteractiveExample() {
 
   return (
     <ExampleLayout
+      type="line"
       title="Interactive Events"
       description="Charts with click, hover, and other interaction events"
     >

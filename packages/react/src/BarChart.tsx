@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useImperativeHandle, forwardRef } from 'react';
 import { ChartFactory } from '@charts-library/charts';
-import type { LineChartConfig, ChartDataPoint } from '@charts-library/types';
+import type { BarChartConfig, ChartDataPoint } from '@charts-library/types';
 
-export interface LineChartProps {
+export interface BarChartProps {
   data: ChartDataPoint[];
-  config?: Partial<LineChartConfig>;
+  config?: Partial<BarChartConfig>;
   theme?: 'light' | 'dark' | 'colorful';
   responsive?: boolean;
   preset?: 'minimal' | 'detailed' | 'presentation' | 'dashboard';
@@ -19,43 +19,17 @@ export interface LineChartProps {
   style?: React.CSSProperties;
 }
 
-export interface LineChartRef {
+export interface BarChartRef {
   chart: any;
   update: () => void;
   toggleGroup: (group: string) => void;
-  updateConfig: (config: Partial<LineChartConfig>) => void;
+  updateConfig: (config: Partial<BarChartConfig>) => void;
   destroy: () => void;
   getState: () => any;
   exportChart: (format: 'png' | 'svg' | 'pdf', filename?: string) => void;
 }
 
-/**
- * React wrapper for LineChart using ChartFactory
- *
- * 사용 예시:
- * ```tsx
- * // 기본 사용
- * <LineChart
- *   data={data}
- *   config={{ width: 800, height: 400 }}
- * />
- *
- * // 테마 적용
- * <LineChart
- *   data={data}
- *   theme="dark"
- *   preset="presentation"
- * />
- *
- * // 반응형
- * <LineChart
- *   data={data}
- *   responsive={true}
- * />
- * ```
- */
-
-export const LineChart = forwardRef<any, LineChartProps>(
+export const BarChart = forwardRef<any, BarChartProps>(
   (
     {
       data,
@@ -77,14 +51,13 @@ export const LineChart = forwardRef<any, LineChartProps>(
   ) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const chartRef = useRef<any>(null);
-    const chartCreatedRef = useRef(false); // 차트 생성 여부만 추적
+    const chartCreatedRef = useRef(false);
 
-    // 명령형 API 제공
     useImperativeHandle(ref, () => ({
       chart: chartRef.current,
       update: () => chartRef.current?.update(),
       toggleGroup: (group: string) => chartRef.current?.toggleGroup(group),
-      updateConfig: (newConfig: Partial<LineChartConfig>) => {
+      updateConfig: (newConfig: Partial<BarChartConfig>) => {
         chartRef.current?.updateConfig(newConfig);
       },
       destroy: () => chartRef.current?.destroy(),
@@ -98,21 +71,7 @@ export const LineChart = forwardRef<any, LineChartProps>(
 
     // 차트 생성
     useEffect(() => {
-      // console.log('Chart creation effect', {
-      //   hasContainer: !!containerRef.current,
-      //   chartCreated: chartCreatedRef.current,
-      //   hasChart: !!chartRef.current
-      // });
-
-      if (!containerRef.current) return;
-
-      // 이미 차트가 생성되었으면 스킵
-      if (chartCreatedRef.current && chartRef.current) {
-
-        return;
-      }
-
-
+      if (!containerRef.current || chartCreatedRef.current) return;
 
       let finalConfig = { ...config };
 
@@ -120,11 +79,10 @@ export const LineChart = forwardRef<any, LineChartProps>(
         finalConfig = ChartFactory.applyPreset(finalConfig as any, preset);
       }
 
-      // 차트 생성
       try {
         if (theme) {
           chartRef.current = ChartFactory.createWithTheme(
-            'line',
+            'bar',
             containerRef.current,
             data,
             theme,
@@ -132,13 +90,13 @@ export const LineChart = forwardRef<any, LineChartProps>(
           );
         } else if (responsive) {
           chartRef.current = ChartFactory.createResponsive(
-            'line',
+            'bar',
             containerRef.current,
             data,
             finalConfig as any
           );
         } else {
-          chartRef.current = ChartFactory.createLineChart(
+          chartRef.current = ChartFactory.createBarChart(
             containerRef.current,
             data,
             finalConfig
@@ -146,9 +104,7 @@ export const LineChart = forwardRef<any, LineChartProps>(
         }
 
         chartCreatedRef.current = true;
-        // console.log('Chart created successfully:', chartRef.current);
 
-        // onRendered 콜백 실행
         if (onRendered) {
           setTimeout(() => {
             if (containerRef.current?.querySelector('svg') && chartRef.current) {
@@ -159,10 +115,9 @@ export const LineChart = forwardRef<any, LineChartProps>(
       } catch (error) {
         console.error('Chart creation failed:', error);
       }
+    }, []);
 
-    }, []); // 빈 배열 - 마운트 시 한 번만
-
-    // 데이터 업데이트만 별도로 처리
+    // 데이터 업데이트
     useEffect(() => {
       if (chartCreatedRef.current && chartRef.current) {
         chartRef.current.setData(data).update();
@@ -194,39 +149,24 @@ export const LineChart = forwardRef<any, LineChartProps>(
 
       const chart = chartRef.current;
 
-      if (onChartClick) {
-        chart.on('chartClick', onChartClick);
-      }
-      if (onChartHover) {
-        chart.on('chartHover', onChartHover);
-      }
-      if (onChartMouseenter) {
-        chart.on('chartMouseenter', onChartMouseenter);
-      }
-      if (onChartMouseleave) {
-        chart.on('chartMouseleave', onChartMouseleave);
-      }
-      if (onLegendToggle) {
-        chart.on('legendToggle', onLegendToggle);
-      }
+      if (onChartClick) chart.on('chartClick', onChartClick);
+      if (onChartHover) chart.on('chartHover', onChartHover);
+      if (onChartMouseenter) chart.on('chartMouseenter', onChartMouseenter);
+      if (onChartMouseleave) chart.on('chartMouseleave', onChartMouseleave);
+      if (onLegendToggle) chart.on('legendToggle', onLegendToggle);
 
       return () => {
-        // 이벤트만 제거, 차트는 destroy 안 함
         if (chart.removeAllListeners) {
           chart.removeAllListeners();
         }
       };
     }, [onChartClick, onChartHover, onChartMouseenter, onChartMouseleave, onLegendToggle]);
 
-    // 언마운트에서만 destroy (마지막 방어선)
+    // 언마운트
     useEffect(() => {
       return () => {
-
-        // 실제 언마운트인지 확인
         requestAnimationFrame(() => {
-          // DOM에서 컨테이너가 제거되었는지 확인
           if (containerRef.current && !document.body.contains(containerRef.current)) {
-
             if (chartRef.current) {
               chartRef.current.destroy();
               chartRef.current = null;
@@ -247,4 +187,4 @@ export const LineChart = forwardRef<any, LineChartProps>(
   }
 );
 
-LineChart.displayName = 'LineChart';
+BarChart.displayName = 'BarChart';

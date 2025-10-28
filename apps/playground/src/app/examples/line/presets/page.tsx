@@ -25,11 +25,12 @@ export default function PresetsExample() {
 
   return (
     <ExampleLayout
+      type="line"
       title="Configuration Presets"
       description="Pre-configured chart styles for different use cases"
     >
       <ChartContainer title="Minimal Preset">
-        <LineChart 
+        <LineChart
           data={data}
           preset="minimal"
           config={{ width: 800, height: 250 }}
@@ -37,7 +38,7 @@ export default function PresetsExample() {
       </ChartContainer>
 
       <ChartContainer title="Detailed Preset">
-        <LineChart 
+        <LineChart
           data={data}
           preset="detailed"
           config={{ width: 800, height: 250 }}
@@ -45,7 +46,7 @@ export default function PresetsExample() {
       </ChartContainer>
 
       <ChartContainer title="Presentation Preset">
-        <LineChart 
+        <LineChart
           data={data}
           preset="presentation"
           config={{ width: 800, height: 250 }}
@@ -53,7 +54,7 @@ export default function PresetsExample() {
       </ChartContainer>
 
       <ChartContainer title="Dashboard Preset">
-        <LineChart 
+        <LineChart
           data={data}
           preset="dashboard"
           config={{ width: 800, height: 250 }}

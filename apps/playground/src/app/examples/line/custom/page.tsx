@@ -59,6 +59,7 @@ export default function CustomExample() {
 
   return (
     <ExampleLayout
+      type="line"
       title="Custom Styled Chart"
       description="Heavily customized chart with various styling options"
     >

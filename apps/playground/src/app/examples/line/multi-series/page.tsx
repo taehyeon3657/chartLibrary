@@ -20,7 +20,7 @@ const data = [
 
 function MyChart() {
   return (
-    <LineChart 
+    <LineChart
       data={data}
       config={{
         width: 800,
@@ -37,11 +37,12 @@ function MyChart() {
 
   return (
     <ExampleLayout
+      type="line"
       title="Multi-Series Line Chart"
       description="Display multiple data series in a single chart"
     >
       <ChartContainer>
-        <LineChart 
+        <LineChart
           data={data}
           config={{
             width: 800,

@@ -12,7 +12,7 @@ export default function ResponsiveExample() {
   const code = `import { LineChart } from '@charts-library/react'
 
 // Chart will automatically resize with container
-<LineChart 
+<LineChart
   data={data}
   responsive={true}
   config={{
@@ -23,12 +23,13 @@ export default function ResponsiveExample() {
 
   return (
     <ExampleLayout
+      type="line"
       title="Responsive Charts"
       description="Charts that automatically adapt to container size"
     >
       <ChartContainer title="Responsive Chart - Try resizing your browser">
         <div style={{ width: '100%', height: '400px' }}>
-          <LineChart 
+          <LineChart
             data={data}
             responsive={true}
             config={{
@@ -42,7 +43,7 @@ export default function ResponsiveExample() {
       <div className="grid grid-cols-2 gap-4">
         <ChartContainer title="Small Container">
           <div style={{ width: '100%', height: '200px' }}>
-            <LineChart 
+            <LineChart
               data={data}
               responsive={true}
             />
@@ -51,7 +52,7 @@ export default function ResponsiveExample() {
 
         <ChartContainer title="Small Container">
           <div style={{ width: '100%', height: '200px' }}>
-            <LineChart 
+            <LineChart
               data={data}
               responsive={true}
             />
