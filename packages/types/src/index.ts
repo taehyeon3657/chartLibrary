@@ -1,7 +1,7 @@
 // 기본 타입들
 export * from './base';
 
-// 이벤트 타입들  
+// 이벤트 타입들
 export * from './events';
 
 // 차트별 설정 타입들
@@ -11,14 +11,13 @@ export * from './charts';
 export * from './utils';
 
 // 편의를 위한 타입 별칭들
-export type { 
+export type {
   DataPoint as ChartDataPoint,
   ChartConfig as BaseChartConfig,
-  
 } from './base';
 
 export type {
-    ChartEvents as AllChartEvents
+  ChartEvents as AllChartEvents
 } from './events';
 
 // 자주 사용되는 유니온 타입들
