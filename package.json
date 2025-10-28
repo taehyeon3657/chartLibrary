@@ -18,10 +18,12 @@
     "publish": "pnpm run build && lerna publish from-package",
     "publish:canary": "lerna publish --canary --preid canary --dist-tag canary"
   },
+  "dependencies": {
+    "typescript": "^5.0.0"
+  },
   "devDependencies": {
     "@types/node": "^20.0.0",
-    "lerna": "^8.2.4",
-    "typescript": "^5.0.0"
+    "lerna": "^8.2.4"
   },
   "packageManager": "pnpm@8.6.0",
   "engines": {

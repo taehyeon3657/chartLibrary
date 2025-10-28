@@ -1,6 +1,9 @@
 {
   "version": 2,
-  "buildCommand": "cd ../.. && pnpm install && pnpm run build:deps && cd apps/playground && pnpm run build",
-  "installCommand": "pnpm install --frozen-lockfile",
-  "outputDirectory": "apps/playground/.next"
+  "buildCommand": "pnpm run build:vercel",
+  "installCommand": "pnpm install --frozen-lockfile --shamefully-hoist",
+  "outputDirectory": "apps/playground/.next",
+  "env": {
+    "NPM_CONFIG_SHAMEFULLY_HOIST": "true"
+  }
 }
