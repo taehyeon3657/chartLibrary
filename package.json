@@ -5,9 +5,10 @@
   "description": "A modern chart library built with D3.js and React",
   "scripts": {
     "build": "lerna run build",
-    "build:vercel": "lerna run build",
-    "build:deps": "lerna run build --scope=@charts-library/types --scope=@charts-library/core",
+    "build:vercel": "lerna run build --scope=@charts-library/types --scope=@charts-library/core --scope=@charts-library/charts --scope=@charts-library/react && cd apps/playground && pnpm run build",
+    "build:deps": "lerna run build --scope=@charts-library/types --scope=@charts-library/core --scope=@charts-library/charts --scope=@charts-library/react",
     "dev": "lerna run dev --parallel",
+    "dev:playground": "cd apps/playground && pnpm run dev",
     "test": "lerna run test",
     "lint": "lerna run lint",
     "clean": "lerna run clean",
@@ -32,5 +33,5 @@
     "url": "https://github.com/taehyeon3657/chartLibrary.git"
   },
   "author": "TaeHyeon",
-  "license": ""
+  "license": "MIT"
 }

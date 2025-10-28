@@ -40,8 +40,10 @@ const nextConfig = {
     NEXT_PUBLIC_APP_NAME: 'Chart Library Playground',
   },
 
-  // Output configuration
-  // output: 'standalone',
+  // Vercel 배포 최적화
+  experimental: {
+    outputFileTracingRoot: path.join(__dirname, '../../'),
+  },
 
   // Image optimization
   images: {

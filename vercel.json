@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "buildCommand": "cd ../.. && pnpm install && pnpm run build:deps && cd apps/playground && pnpm run build",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "outputDirectory": "apps/playground/.next"
+}
