@@ -7,7 +7,7 @@ export default function Home() {
       title: 'Line Charts',
       description: 'Visualize trends and patterns over time with smooth, elegant line charts',
       icon: LineChartIcon,
-      href: '/example/line',
+      href: '/examples/line',
       gradient: 'from-blue-500 to-cyan-500',
       examples: 12
     },
@@ -15,7 +15,7 @@ export default function Home() {
       title: 'Bar Charts',
       description: 'Compare categories and values with powerful, customizable bar charts',
       icon: BarChart3,
-      href: '/example/bar',
+      href: '/examples/bar',
       gradient: 'from-purple-500 to-pink-500',
       examples: 10
     }
