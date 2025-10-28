@@ -2,9 +2,11 @@ import type {
   ChartType,
   ChartDataPoint,
   BaseChartConfig,
-  LineChartConfig
+  LineChartConfig,
+  BarChartConfig
 } from '@charts-library/types';
 import { LineChart } from './line';
+import { BarChart } from './bar';
 
 /**
  * 차트 생성을 위한 팩토리 클래스
@@ -16,7 +18,7 @@ import { LineChart } from './line';
  */
 
 export class ChartFactory {
-     /**
+  /**
    * 차트 타입에 따른 인스턴스 생성
    */
   static create(
@@ -28,8 +30,8 @@ export class ChartFactory {
       case 'line':
         return new LineChart(container, config as LineChartConfig);
 
-      // case 'bar':
-      //   return new BarChart(container, config as BarChartConfig);
+      case 'bar':
+        return new BarChart(container, config as BarChartConfig);
 
       // case 'pie':
       //   return new PieChart(container, config as PieChartConfig);
@@ -42,7 +44,7 @@ export class ChartFactory {
     }
   }
 
-   /**
+  /**
    * 라인 차트 빠른 생성 (데이터 포함)
    */
   static createLineChart(
@@ -55,7 +57,20 @@ export class ChartFactory {
       .render();
   }
 
-   /**
+  /**
+   * 바 차트 빠른 생성 (데이터 포함)
+   */
+  static createBarChart(
+    container: HTMLElement,
+    data: ChartDataPoint[],
+    config: Partial<BarChartConfig> = {}
+  ): BarChart {
+    return new BarChart(container, config)
+      .setData(data)
+      .render();
+  }
+
+  /**
    * 반응형 차트 생성
    */
   static createResponsive(
@@ -97,7 +112,8 @@ export class ChartFactory {
 
     return chart.setData(data).render();
   }
-   /**
+
+  /**
    * 테마 기반 차트 생성
    */
   static createWithTheme(
@@ -110,18 +126,21 @@ export class ChartFactory {
     const themeConfigs = {
       light: {
         lineColors: ['#3b82f6', '#ef4444', '#10b981', '#f59e0b'],
+        barColors: ['#3b82f6', '#ef4444', '#10b981', '#f59e0b'],
         gridColor: '#f0f0f0',
         axisColor: '#d0d0d0',
         titleStyle: { color: '#333' }
       },
       dark: {
         lineColors: ['#60a5fa', '#f87171', '#34d399', '#fbbf24'],
+        barColors: ['#60a5fa', '#f87171', '#34d399', '#fbbf24'],
         gridColor: '#374151',
         axisColor: '#6b7280',
         titleStyle: { color: '#f9fafb' }
       },
       colorful: {
         lineColors: ['#8b5cf6', '#06b6d4', '#f97316', '#ec4899', '#84cc16'],
+        barColors: ['#8b5cf6', '#06b6d4', '#f97316', '#ec4899', '#84cc16'],
         gridColor: '#e5e7eb',
         axisColor: '#9ca3af',
         titleStyle: { color: '#1f2937' }
@@ -184,89 +203,88 @@ export class ChartFactory {
     return chart;
   }
 
-    /**
+  /**
    * 다중 차트 생성 (대시보드용)
    */
-static createDashboard(
-  container: HTMLElement,
-  charts: Array<{
-    type: ChartType;
-    data: ChartDataPoint[];
-    config?: BaseChartConfig;
-    title?: string;
-  }>,
-  layout: 'grid' | 'horizontal' | 'vertical' = 'grid'
-) {
-  const chartInstances: any[] = [];
+  static createDashboard(
+    container: HTMLElement,
+    charts: Array<{
+      type: ChartType;
+      data: ChartDataPoint[];
+      config?: BaseChartConfig;
+      title?: string;
+    }>,
+    layout: 'grid' | 'horizontal' | 'vertical' = 'grid'
+  ) {
+    const chartInstances: any[] = [];
 
-  charts.forEach((chartConfig, index) => {
-    const chartContainer = document.createElement('div');
-    chartContainer.className = `chart-item chart-item-${index}`;
+    charts.forEach((chartConfig, index) => {
+      const chartContainer = document.createElement('div');
+      chartContainer.className = `chart-item chart-item-${index}`;
 
-    // 레이아웃 스타일 적용
-    switch (layout) {
-      case 'grid':
-        const cols = Math.ceil(Math.sqrt(charts.length));
-        chartContainer.style.cssText = `
-          display: inline-block;
-          width: ${100 / cols}%;
-          height: 300px;
-          padding: 10px;
-          box-sizing: border-box;
-        `;
-        break;
-      case 'horizontal':
-        chartContainer.style.cssText = `
-          display: inline-block;
-          width: ${100 / charts.length}%;
-          height: 400px;
-          padding: 10px;
-          box-sizing: border-box;
-        `;
-        break;
-      case 'vertical':
-        chartContainer.style.cssText = `
-          width: 100%;
-          height: 300px;
-          margin-bottom: 20px;
-          padding: 10px;
-          box-sizing: border-box;
-        `;
-        break;
-    }
+      // 레이아웃 스타일 적용
+      switch (layout) {
+        case 'grid':
+          const cols = Math.ceil(Math.sqrt(charts.length));
+          chartContainer.style.cssText = `
+            display: inline-block;
+            width: ${100 / cols}%;
+            height: 300px;
+            padding: 10px;
+            box-sizing: border-box;
+          `;
+          break;
+        case 'horizontal':
+          chartContainer.style.cssText = `
+            display: inline-block;
+            width: ${100 / charts.length}%;
+            height: 400px;
+            padding: 10px;
+            box-sizing: border-box;
+          `;
+          break;
+        case 'vertical':
+          chartContainer.style.cssText = `
+            width: 100%;
+            height: 300px;
+            margin-bottom: 20px;
+            padding: 10px;
+            box-sizing: border-box;
+          `;
+          break;
+      }
 
-    // 제목 추가
-    if (chartConfig.title) {
-      const titleElement = document.createElement('h3');
-      titleElement.textContent = chartConfig.title;
-      titleElement.style.cssText = 'margin: 0 0 10px 0; font-size: 16px; font-weight: bold;';
-      chartContainer.appendChild(titleElement);
-    }
+      // 제목 추가
+      if (chartConfig.title) {
+        const titleElement = document.createElement('h3');
+        titleElement.textContent = chartConfig.title;
+        titleElement.style.cssText = 'margin: 0 0 10px 0; font-size: 16px; font-weight: bold;';
+        chartContainer.appendChild(titleElement);
+      }
 
-    // 차트용 div 생성
-    const chartDiv = document.createElement('div');
-    chartDiv.style.cssText = 'width: 100%; height: calc(100% - 30px);';
-    chartContainer.appendChild(chartDiv);
+      // 차트용 div 생성
+      const chartDiv = document.createElement('div');
+      chartDiv.style.cssText = 'width: 100%; height: calc(100% - 30px);';
+      chartContainer.appendChild(chartDiv);
 
-    container.appendChild(chartContainer);
+      container.appendChild(chartContainer);
 
-    // 차트 생성
-    const chart = this.create(chartConfig.type, chartDiv, {
-      width: chartDiv.offsetWidth,
-      height: chartDiv.offsetHeight,
-      margin: { top: 20, right: 20, bottom: 30, left: 40 },
-      ...chartConfig.config
-    }).setData(chartConfig.data).render();
+      // 차트 생성
+      const chart = this.create(chartConfig.type, chartDiv, {
+        width: chartDiv.offsetWidth,
+        height: chartDiv.offsetHeight,
+        margin: { top: 20, right: 20, bottom: 30, left: 40 },
+        ...chartConfig.config
+      }).setData(chartConfig.data).render();
 
-    chartInstances.push(chart);
-  });
+      chartInstances.push(chart);
+    });
 
-  return {
-    charts: chartInstances,
-    destroy: () => chartInstances.forEach(chart => chart.destroy())
-  };
-}
-
+    return {
+      charts: chartInstances,
+      destroy: () => chartInstances.forEach(chart => chart.destroy())
+    };
+  }
 
   /**
    * SVG 다운로드
@@ -284,7 +302,7 @@ static createDashboard(
     URL.revokeObjectURL(url);
   }
 
-    /**
+  /**
    * PNG 다운로드
    */
   private static downloadPNG(svg: SVGElement, filename: string): void {
@@ -322,7 +340,6 @@ static createDashboard(
     img.src = url;
   }
 
-
   /**
    * 차트 내보내기 기능
    */
@@ -352,7 +369,7 @@ static createDashboard(
     }
   }
 
- /**
+  /**
    * 차트 비교 뷰 생성
    */
   static createComparison(
@@ -360,9 +377,10 @@ static createDashboard(
     datasets: Array<{
       name: string;
       data: ChartDataPoint[];
-      config?: Partial<LineChartConfig>;
+      config?: Partial<LineChartConfig | BarChartConfig>;
     }>,
-    comparisonType: 'overlay' | 'sideBySide' = 'overlay'
+    comparisonType: 'overlay' | 'sideBySide' = 'overlay',
+    chartType: 'line' | 'bar' = 'line'
   ) {
     if (comparisonType === 'overlay') {
       // 모든 데이터를 하나의 차트에 오버레이
@@ -376,17 +394,26 @@ static createDashboard(
         combinedData.push(...dataWithGroup);
       });
 
-      return this.createLineChart(container, combinedData, {
-        showLegend: true,
-        legendPosition: 'top',
-        title: 'Data Comparison'
-      });
+      if (chartType === 'line') {
+        return this.createLineChart(container, combinedData, {
+          showLegend: true,
+          legendPosition: 'top',
+          title: 'Data Comparison'
+        });
+      } else {
+        return this.createBarChart(container, combinedData, {
+          showLegend: true,
+          legendPosition: 'top',
+          title: 'Data Comparison',
+          grouped: true
+        });
+      }
     } else {
       // 나란히 배치
       return this.createDashboard(
         container,
         datasets.map(dataset => ({
-          type: 'line' as ChartType,
+          type: chartType as ChartType,
           data: dataset.data,
           config: dataset.config as BaseChartConfig,
           title: dataset.name
@@ -410,6 +437,7 @@ static createDashboard(
         gridLines: false,
         showLegend: false,
         showDots: false,
+        showValues: false,
         lineWidth: 1
       },
       detailed: {
@@ -418,6 +446,7 @@ static createDashboard(
         gridLines: true,
         showLegend: true,
         showDots: true,
+        showValues: true,
         showAreaFill: true,
         enableAnimation: true,
         showTooltip: true
@@ -428,6 +457,7 @@ static createDashboard(
         gridLines: true,
         showLegend: true,
         showDots: true,
+        showValues: true,
         lineWidth: 3,
         dotRadius: 6,
         enableAnimation: true,
@@ -440,6 +470,7 @@ static createDashboard(
         gridLines: true,
         showLegend: true,
         showDots: false,
+        showValues: false,
         lineWidth: 2,
         margin: { top: 20, right: 20, bottom: 30, left: 40 }
       }
@@ -447,5 +478,4 @@ static createDashboard(
 
     return { ...config, ...presets[preset] };
   }
-
 }
