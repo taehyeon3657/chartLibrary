@@ -128,7 +128,7 @@ export class ChartFactory {
         lineColors: ['#3b82f6', '#ef4444', '#10b981', '#f59e0b'],
         barColors: ['#3b82f6', '#ef4444', '#10b981', '#f59e0b'],
         gridColor: '#f0f0f0',
-        axisColor: '#d0d0d0',
+        axisColor: '#111',
         titleStyle: { color: '#333' }
       },
       dark: {

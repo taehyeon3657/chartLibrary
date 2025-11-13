@@ -82,7 +82,6 @@ export function generateBarChartData(
   return categories.map(category => ({
     x: category,
     value: Math.max(0, baseValue + (Math.random() - 0.5) * volatility * 2),
-    date: new Date()
   }))
 }
 
@@ -101,7 +100,6 @@ export function generateMultiSeriesBarData(
         x: category,
         value: Math.max(0, baseValue + offset + (Math.random() - 0.5) * volatility * 2),
         group: seriesName,
-        date: new Date()
       })
     })
   })
@@ -121,7 +119,7 @@ export function generateStackedBarData(
         x: category,
         value: Math.floor(Math.random() * 50) + 20,
         group: seriesName,
-        date: new Date()
+        date: new Date().toDateString(),
       })
     })
   })

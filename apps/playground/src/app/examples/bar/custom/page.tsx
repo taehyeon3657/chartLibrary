@@ -72,15 +72,10 @@ export default function CustomExample() {
           config={{
             width: 800,
             height: 500,
-            title: 'Monthly Sales Performance',
-            titlePosition: 'LEFT',
-            titleStyle: {
-              fontSize: 24,
-              fontWeight: 'bold',
-              color: '#1f2937'
-            },
             grouped: true,
+            xAxisLabelPosition: 'center',
             barColors: ['#8b5cf6', '#06b6d4'],
+            barWidth: 20,
             barBorderRadius: 6,
             barPadding: 0.2,
             showValues: true,
@@ -88,17 +83,12 @@ export default function CustomExample() {
             valueFontSize: 11,
             showXAxis: true,
             showYAxis: true,
-            xAxisLabel: 'Month',
-            yAxisLabel: 'Amount ($)',
             gridLines: true,
             horizontalGridLines: true,
             verticalGridLines: false,
             gridColor: '#e5e7eb',
             axisColor: '#9ca3af',
-            showLegend: true,
-            legendPosition: 'right',
             enableAnimation: false,
-            animationDuration: 1000,
             margin: { top: 60, right: 20, bottom: 60, left: 80 }
           }}
         />

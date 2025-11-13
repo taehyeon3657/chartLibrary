@@ -100,10 +100,10 @@ export class BarChartRenderer {
 
     // 축 스타일
     svg.selectAll('.axis .domain')
-      .attr('stroke', this.config.axisColor || '#d0d0d0');
+      .attr('stroke', this.config.axisColor || '#111');
 
     svg.selectAll('.axis .tick line')
-      .attr('stroke', this.config.axisColor || '#d0d0d0');
+      .attr('stroke', this.config.axisColor || '#111');
 
     // 텍스트 스타일
     svg.selectAll('text')

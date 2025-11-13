@@ -20,7 +20,7 @@ D3.js와 모듈러 아키텍처로 구축된 현대적이고 TypeScript 우선 �
 # npm 사용
 npm install @charts-library/charts
 
-# pnpm 사용  
+# pnpm 사용
 pnpm add @charts-library/charts
 
 # yarn 사용
@@ -127,36 +127,36 @@ interface LineChartConfig {
   width?: number;
   height?: number;
   margin?: { top: number; right: number; bottom: number; left: number };
-  
+
   // 스타일링
   lineColors?: string[];
   lineWidth?: number;
   dotRadius?: number;
   showDots?: boolean;
-  
+
   // 곡선
   enableCurve?: boolean;
   curveType?: 'linear' | 'monotoneX' | 'monotoneY' | 'natural' | 'step';
-  
+
   // 영역 채우기
   showAreaFill?: boolean;
   areaFillOpacity?: number;
   areaGradient?: boolean;
-  
+
   // 축
   showXAxis?: boolean;
   showYAxis?: boolean;
   gridLines?: boolean;
-  
-  // 범례 & 제목  
+
+  // 범례 & 제목
   title?: string;
   showLegend?: boolean;
   legendPosition?: 'top' | 'right' | 'bottom' | 'left';
-  
+
   // 애니메이션
   enableAnimation?: boolean;
   animationDuration?: number;
-  
+
   // 상호작용
   showTooltip?: boolean;
   enableZoom?: boolean;
@@ -169,11 +169,11 @@ interface LineChartConfig {
 const customConfig = {
   lineColors: ['#8b5cf6', '#06b6d4', '#f97316'],
   gridColor: '#f0f0f0',
-  axisColor: '#d0d0d0',
-  titleStyle: { 
-    color: '#333', 
-    fontSize: 18, 
-    fontWeight: 'bold' 
+  axisColor: '#111',
+  titleStyle: {
+    color: '#333',
+    fontSize: 18,
+    fontWeight: 'bold'
   },
 };
 ```
@@ -205,7 +205,7 @@ const dashboard = ChartFactory.createDashboard(
       config: { showAreaFill: true }
     },
     {
-      type: 'line', 
+      type: 'line',
       data: visitorData,
       title: '웹사이트 방문자',
       config: { lineColors: ['#ef4444'] }
@@ -273,9 +273,9 @@ const chart = new LineChart(container, {
 });
 
 // 수동 크기 조정
-chart.updateConfig({ 
-  width: newWidth, 
-  height: newHeight 
+chart.updateConfig({
+  width: newWidth,
+  height: newHeight
 }).update();
 ```
 
@@ -296,7 +296,7 @@ const chart = new LineChart(container, presetConfig);
 ```
 packages/
 ├── types/          # TypeScript 타입 정의
-├── core/           # 기본 클래스 및 유틸리티  
+├── core/           # 기본 클래스 및 유틸리티
 └── charts/         # 차트 구현
     ├── line/       # 선형 차트 컴포넌트
     ├── shared/     # 공유 유틸리티
