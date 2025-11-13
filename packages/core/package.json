@@ -1,6 +1,6 @@
 {
   "name": "@beaubrain/core",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Core functionality for charts library",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -46,7 +46,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@beaubrain/types": "^1.1.0"
+    "@beaubrain/types": "^1.2.0"
   },
   "peerDependencies": {
     "d3": "^7.0.0"

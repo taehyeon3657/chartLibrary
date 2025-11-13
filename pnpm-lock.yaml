@@ -65,10 +65,10 @@ importers:
   packages/charts:
     dependencies:
       '@beaubrain/core':
-        specifier: ^1.1.0
+        specifier: ^1.2.0
         version: link:../core
       '@beaubrain/types':
-        specifier: ^1.1.0
+        specifier: ^1.2.0
         version: link:../types
       d3:
         specifier: ^7.0.0
@@ -84,7 +84,7 @@ importers:
   packages/core:
     dependencies:
       '@beaubrain/types':
-        specifier: ^1.1.0
+        specifier: ^1.2.0
         version: link:../types
       d3:
         specifier: ^7.0.0
@@ -100,10 +100,10 @@ importers:
   packages/react:
     dependencies:
       '@beaubrain/charts':
-        specifier: ^1.1.0
+        specifier: ^1.2.0
         version: link:../charts
       '@beaubrain/types':
-        specifier: ^1.1.0
+        specifier: ^1.2.0
         version: link:../types
     devDependencies:
       '@types/react':
