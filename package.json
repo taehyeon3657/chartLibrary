@@ -1,6 +1,8 @@
 {
   "name": "charts-library",
-  "private": true,
+   "publishConfig": {
+    "access": "public"
+  },
   "version": "1.0.0",
   "description": "A modern chart library built with D3.js and React",
   "scripts": {
