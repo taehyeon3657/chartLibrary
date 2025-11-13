@@ -2,23 +2,23 @@ import type { ChartConfig } from '../base/config';
 
 export interface BarChartConfig extends ChartConfig {
   // 바 방향
-  orientation?: 'vertical' | 'horizontal'; // vertical: 세로(위로), horizontal: 가로(오른쪽으로)
+  orientation?: 'vertical' | 'horizontal';
 
   // 바 스타일링
   barColors?: string[];
-  barWidth?: number; // px 단위
-  barPadding?: number; // 바 사이 간격 (0-1 비율)
-  barGroupPadding?: number; // 그룹 간 간격 (0-1 비율)
-  barBorderRadius?: number; // 바 모서리 둥글기 (px)
+  barWidth?: number;
+  barPadding?: number;
+  barGroupPadding?: number;
+  barBorderRadius?: number;
 
   // 바 유형
-  stacked?: boolean; // 쌓기 모드
-  grouped?: boolean; // 그룹화 모드 (stacked가 false일 때만)
+  stacked?: boolean;
+  grouped?: boolean;
 
   // 값 표시
-  showValues?: boolean; // 바 위에 값 표시
+  showValues?: boolean;
   valuePosition?: 'top' | 'middle' | 'bottom' | 'outside';
-  valueFormat?: string; // d3-format 문자열
+  valueFormat?: string;
   valueFontSize?: number;
   valueColor?: string;
 
@@ -32,12 +32,19 @@ export interface BarChartConfig extends ChartConfig {
   xAxisTickFormat?: string;
   yAxisTickFormat?: string;
 
+  // 기준선 (새로 추가!)
+  showBaseline?: boolean;
+  baselineValue?: number; // 기본값 0
+  baselineColor?: string; // 기본값 '#333'
+  baselineWidth?: number; // 기본값 2
+  baselineStyle?: 'solid' | 'dashed'; // 기본값 'solid'
+
   // 그리드 라인
   gridLines?: boolean;
   gridLineStyle?: 'solid' | 'dashed';
   gridColor?: string;
-  horizontalGridLines?: boolean; // 가로선
-  verticalGridLines?: boolean; // 세로선
+  horizontalGridLines?: boolean;
+  verticalGridLines?: boolean;
 
   // 축 색상
   axisColor?: string;

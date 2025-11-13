@@ -10,6 +10,8 @@ export default function BasicExample() {
   const categories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
   const data = generateBarChartData(categories, 100, 30)
 
+  console.log('data: ', data)
+
   const code = `import { BarChart } from '@charts-library/react'
 
 const data = [
@@ -45,7 +47,8 @@ function MyChart() {
             config={{
               width: 800,
               height: 400,
-              margin: { top: 20, right: 20, bottom: 40, left: 60 }
+              margin: { top: 20, right: 20, bottom: 40, left: 60 },
+              xAxisLabelPosition: 'center'
             }}
           />
         </div>

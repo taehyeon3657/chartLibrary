@@ -48,10 +48,13 @@ function MyChart() {
             width: 800,
             height: 400,
             grouped: true,
-            showLegend: true,
-            legendPosition: 'top',
-            barPadding: 0.15,
-            barGroupPadding: 0.2
+            barPadding: 0.1,
+            barGroupPadding: 0.8,
+            showBaseline: true,
+            showValues: true,
+            baselineWidth: 1,
+            valuePosition: 'outside',
+            barBorderRadius: 3
           }}
         />
       </ChartContainer>
@@ -64,7 +67,6 @@ function MyChart() {
             height: 400,
             orientation: 'horizontal',
             grouped: true,
-            showLegend: true,
             legendPosition: 'top',
             showValues: true,
             valuePosition: 'outside',
