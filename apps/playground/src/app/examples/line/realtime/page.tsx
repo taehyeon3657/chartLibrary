@@ -1,11 +1,11 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { LineChart, LineChartRef } from '@charts-library/react'
+import { LineChart, LineChartRef } from '@beaubrain/react'
 import { ExampleLayout } from '@/components/ExampleLayout'
 import { ChartContainer } from '@/components/ChartContainer'
 import { CodeBlock } from '@/components/CodeBlock'
-import { ChartDataPoint } from '@charts-library/types'
+import { ChartDataPoint } from '@beaubrain/types'
 
 export default function RealtimeExample() {
   const [data, setData] = useState<ChartDataPoint[]>(() => {
@@ -50,7 +50,7 @@ export default function RealtimeExample() {
   }, [isRunning])
 
   const code = `import { useState, useEffect } from 'react'
-import { LineChart } from '@charts-library/react'
+import { LineChart } from '@beaubrain/react'
 
 function RealtimeChart() {
   const [data, setData] = useState(initialData)

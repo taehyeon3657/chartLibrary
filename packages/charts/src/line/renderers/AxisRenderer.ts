@@ -1,4 +1,4 @@
-import { LineChartConfig } from "@charts-library/types";
+import { LineChartConfig } from "@beaubrain/types";
 import { CoordinateCalculator } from "../CoordinateCalculator";
 import { LineChartState } from "../LineChartState";
 import { RenderContext } from "../LineChart";
@@ -86,7 +86,7 @@ export class AxisRenderer {
       .attr('transform', `translate(0, ${innerHeight})`)
       .call(xAxis.tickSize(-innerHeight).tickFormat(() => ''));
 
-    // Y 격자선  
+    // Y 격자선
     this.context.chartArea.append('g')
       .attr('class', 'grid y-grid')
       .call(yAxis.tickSize(-innerWidth).tickFormat(() => ''));

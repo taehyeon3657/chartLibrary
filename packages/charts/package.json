@@ -1,5 +1,5 @@
 {
-  "name": "@charts-library/charts",
+  "name": "@beaubrain/charts",
   "version": "1.1.0",
   "description": "Chart implementations for charts library",
   "main": "dist/index.js",
@@ -69,8 +69,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@charts-library/core": "^1.1.0",
-    "@charts-library/types": "^1.1.0"
+    "@beaubrain/core": "^1.1.0",
+    "@beaubrain/types": "^1.1.0"
   },
   "peerDependencies": {
     "d3": "^7.0.0"
@@ -79,5 +79,5 @@
     "@types/d3": "^7.4.3",
     "typescript": "^5.0.0"
   },
-  "gitHead": "e6a85cf539e5fc6461dd192461c531fd91b2b12c"
+  "gitHead": "528ac36b42331720695b5aa17d6ef7ebc7dca2e1"
 }

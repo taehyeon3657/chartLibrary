@@ -1,11 +1,11 @@
-import type { 
-  ProcessedDataPoint, 
-} from '@charts-library/types';
+import type {
+  ProcessedDataPoint,
+} from '@beaubrain/types';
 import type { ChartScales } from '../shared';
 
 /**
  * LineChart의 모든 상태를 관리하는 클래스
- * 
+ *
  * 책임:
  * - 데이터 상태 관리
  * - 그룹 표시/숨김 상태
@@ -46,7 +46,7 @@ export class LineChartState {
   private updateGroupData(): void {
     // 그룹별로 데이터 분류
     this.groupedData.clear();
-    
+
     this.data.forEach(item => {
       const group = item.group;
       if (!this.groupedData.has(group)) {
@@ -57,7 +57,7 @@ export class LineChartState {
 
     // 그룹 목록 업데이트
     this.groups = Array.from(this.groupedData.keys());
-    
+
     // 초기에는 모든 그룹 표시
     if (this.visibleGroups.size === 0) {
       this.visibleGroups = new Set(this.groups);
@@ -125,9 +125,9 @@ export class LineChartState {
     if (this.data.length === 0) return 'time';
 
     // 유효한 날짜가 있는지 확인
-    const hasValidDates = this.data.some(d => 
-      d.parsedDate && 
-      !isNaN(d.parsedDate.getTime()) && 
+    const hasValidDates = this.data.some(d =>
+      d.parsedDate &&
+      !isNaN(d.parsedDate.getTime()) &&
       d.parsedDate.getFullYear() > 1900
     );
 
@@ -180,7 +180,7 @@ export class LineChartState {
     }
 
     const visibleData = this.getVisibleData();
-    
+
     // Y 도메인
     const yValues = visibleData.map(d => d.y);
     const yDomain = [
@@ -190,7 +190,7 @@ export class LineChartState {
 
     // X 도메인 (타입에 따라 다름)
     let xDomain: [Date, Date] | [number, number];
-    
+
     switch (this.scaleType) {
       case 'time':
         const dates = visibleData
@@ -201,7 +201,7 @@ export class LineChartState {
           new Date(Math.max(...dates.map(d => d.getTime())))
         ];
         break;
-      
+
       case 'linear':
         const xNumbers = visibleData.map(d => d.x as number);
         xDomain = [
@@ -209,7 +209,7 @@ export class LineChartState {
           Math.max(...xNumbers)
         ];
         break;
-      
+
       case 'ordinal':
         // 서수형의 경우 인덱스 기반 도메인
         xDomain = [0, visibleData.length - 1];

@@ -1,5 +1,5 @@
 {
-  "name": "@charts-library/react",
+  "name": "@beaubrain/react",
   "version": "0.2.0",
   "description": "React components for charts library",
   "main": "./dist/index.js",
@@ -52,8 +52,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@charts-library/charts": "^1.1.0",
-    "@charts-library/types": "^1.1.0"
+    "@beaubrain/charts": "^1.1.0",
+    "@beaubrain/types": "^1.1.0"
   },
   "peerDependencies": {
     "react": "^18.0.0",
@@ -71,5 +71,5 @@
     "react-dom": "^18.2.0",
     "typescript": "^5.0.0"
   },
-  "gitHead": "e6a85cf539e5fc6461dd192461c531fd91b2b12c"
+  "gitHead": "528ac36b42331720695b5aa17d6ef7ebc7dca2e1"
 }

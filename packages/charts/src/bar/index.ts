@@ -16,4 +16,4 @@ export type {
   ChartDataPoint,
   ProcessedDataPoint,
   AllChartEvents as ChartEvents
-} from '@charts-library/types';
+} from '@beaubrain/types';

@@ -1,6 +1,6 @@
 'use client'
 
-import { BarChart } from '@charts-library/react'
+import { BarChart } from '@beaubrain/react'
 import { ExampleLayout } from '@/components/ExampleLayout'
 import { ChartContainer } from '@/components/ChartContainer'
 import { CodeBlock } from '@/components/CodeBlock'
@@ -11,7 +11,7 @@ export default function StackedExample() {
   const series = ['Desktop', 'Mobile', 'Tablet']
   const data = generateStackedBarData(categories, series)
 
-  const code = `import { BarChart } from '@charts-library/react'
+  const code = `import { BarChart } from '@beaubrain/react'
 
 <BarChart
   data={data}

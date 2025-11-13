@@ -5,11 +5,11 @@ export { LineChart } from './line';
 // export { AreaChart } from './area';   // 향후 구현
 
 // 공통 기능들
-export { 
-  DataProcessor, 
-  ScaleManager, 
-  EventManager, 
-  RenderingUtils 
+export {
+  DataProcessor,
+  ScaleManager,
+  EventManager,
+  RenderingUtils
 } from './shared';
 
 // 편의 기능 (팩토리 등)
@@ -19,19 +19,19 @@ export { ChartFactory } from './ChartFactory';
 export type {
   LineChartConfig,
   // BarChartConfig,
-  // PieChartConfig, 
+  // PieChartConfig,
   // AreaChartConfig,
   ChartDataPoint,
   ProcessedDataPoint,
   AllChartEvents as ChartEvents,
   ChartType
-} from '@charts-library/types';
+} from '@beaubrain/types';
 
 // 공통 타입들
-export type { 
-  ScaleConfig, 
-  ScaleOptions, 
+export type {
+  ScaleConfig,
+  ScaleOptions,
   ChartScales,
-  InteractionState, 
-  InteractionOptions 
+  InteractionState,
+  InteractionOptions
 } from './shared';

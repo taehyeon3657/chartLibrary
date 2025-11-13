@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { ProcessedDataPoint } from '@charts-library/types';
+import { ProcessedDataPoint } from '@beaubrain/types';
 import { Scales } from '../../types/base';
 
 export const renderTrendExtension = (
@@ -16,7 +16,7 @@ export const renderTrendExtension = (
   animationDuration: number
 ): void => {
   const { xScale, yScale } = scales;
-  
+
   // 마지막 N개 포인트로 트렌드 계산
   const recentPoints = groupData.slice(-analysisPoints);
   if (recentPoints.length < 2) return;
@@ -24,7 +24,7 @@ export const renderTrendExtension = (
   // 선형 회귀로 트렌드 계산
   const xValues = recentPoints.map(d => d.parsedDate.getTime());
   const yValues = recentPoints.map(d => d.y);
-  
+
   const n = recentPoints.length;
   const sumX = d3.sum(xValues);
   const sumY = d3.sum(yValues);

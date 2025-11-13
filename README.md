@@ -18,13 +18,13 @@ D3.js와 모듈러 아키텍처로 구축된 현대적이고 TypeScript 우선 �
 
 ```bash
 # npm 사용
-npm install @charts-library/charts
+npm install @beaubrain/charts
 
 # pnpm 사용
-pnpm add @charts-library/charts
+pnpm add @beaubrain/charts
 
 # yarn 사용
-yarn add @charts-library/charts
+yarn add @beaubrain/charts
 ```
 
 ### peer 종속성
@@ -37,7 +37,7 @@ npm install d3@^7.0.0
 
 ### 기본 선형 차트
 ```typescript
-import { LineChart, ChartFactory } from '@charts-library/charts';
+import { LineChart, ChartFactory } from '@beaubrain/charts';
 
 // 샘플 데이터
 const data = [
@@ -60,7 +60,7 @@ const chart = new LineChart(container, {
 
 ### Chart Factory 사용
 ```typescript
-import { ChartFactory } from '@charts-library/charts';
+import { ChartFactory } from '@beaubrain/charts';
 
 // 팩토리를 사용한 빠른 생성
 const chart = ChartFactory.createLineChart(

@@ -1,5 +1,5 @@
 {
-  "name": "@charts-library/types",
+  "name": "@beaubrain/types",
   "version": "1.1.0",
   "description": "TypeScript type definitions for charts library",
   "main": "dist/index.js",
@@ -43,5 +43,5 @@
   "devDependencies": {
     "typescript": "^5.0.0"
   },
-  "gitHead": "e6a85cf539e5fc6461dd192461c531fd91b2b12c"
+  "gitHead": "528ac36b42331720695b5aa17d6ef7ebc7dca2e1"
 }

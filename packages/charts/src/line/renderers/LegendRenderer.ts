@@ -1,4 +1,4 @@
-import { LineChartConfig } from "@charts-library/types";
+import { LineChartConfig } from "@beaubrain/types";
 import { CoordinateCalculator } from "../CoordinateCalculator";
 import { RenderContext } from "../LineChart";
 

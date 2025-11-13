@@ -1,6 +1,6 @@
 'use client'
 
-import { BarChart } from '@charts-library/react'
+import { BarChart } from '@beaubrain/react'
 import { ExampleLayout } from '@/components/ExampleLayout'
 import { ChartContainer } from '@/components/ChartContainer'
 import { CodeBlock } from '@/components/CodeBlock'
@@ -11,7 +11,7 @@ export default function ThemesExample() {
   const series = ['Q1', 'Q2', 'Q3']
   const data = generateMultiSeriesBarData(categories, series, 100, 20)
 
-  const code = `import { BarChart } from '@charts-library/react'
+  const code = `import { BarChart } from '@beaubrain/react'
 
 // Light theme
 <BarChart data={data} theme="light" />

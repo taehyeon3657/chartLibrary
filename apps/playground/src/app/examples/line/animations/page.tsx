@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { LineChart } from '@charts-library/react'
+import { LineChart } from '@beaubrain/react'
 import { ExampleLayout } from '@/components/ExampleLayout'
 import { ChartContainer } from '@/components/ChartContainer'
 import { CodeBlock } from '@/components/CodeBlock'
@@ -14,7 +14,7 @@ export default function AnimationsExample() {
     setData(generateTimeSeriesData(30, 100, 15))
   }
 
-  const code = `import { LineChart } from '@charts-library/react'
+  const code = `import { LineChart } from '@beaubrain/react'
 
 <LineChart
   data={data}

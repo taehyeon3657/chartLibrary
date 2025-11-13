@@ -1,14 +1,14 @@
 import * as d3 from 'd3';
 import { RenderingUtils } from '../shared';
-import type { LineChartConfig, ProcessedDataPoint } from '@charts-library/types';
+import type { LineChartConfig, ProcessedDataPoint } from '@beaubrain/types';
 import type { LineChartState } from './LineChartState';
 
 /**
  * LineChart의 모든 좌표 계산을 담당하는 클래스
- * 
+ *
  * 책임:
  * - 라인 경로 계산
- * - 영역 경로 계산  
+ * - 영역 경로 계산
  * - 점 위치 계산
  * - 히트 테스트 (마우스 위치에서 데이터 찾기)
  * - 축 설정 계산
@@ -53,8 +53,8 @@ export class CoordinateCalculator {
     const visibleGroups = this.state.getVisibleGroups();
     const groupedData = this.state.getGroupedData();
     const { yScale } = scales;
-    
-    const curveFactory = this.config.enableCurve 
+
+    const curveFactory = this.config.enableCurve
       ? RenderingUtils.getCurveFactory(this.config.curveType || 'monotoneX')
       : d3.curveLinear;
 
@@ -68,12 +68,12 @@ export class CoordinateCalculator {
 
     this.state.getGroups().forEach(group => {
       if (!visibleGroups.has(group)) return;
-      
+
       const groupData = groupedData.get(group) || [];
       if (groupData.length === 0) return;
 
       // 유효한 데이터만 필터링
-      const validData = groupData.filter(d => 
+      const validData = groupData.filter(d =>
         !isNaN(d.y) && isFinite(d.y) && this.isValidXCoordinate(d)
       );
 
@@ -102,8 +102,8 @@ export class CoordinateCalculator {
     const visibleGroups = this.state.getVisibleGroups();
     const groupedData = this.state.getGroupedData();
     const { yScale } = scales;
-    
-    const curveFactory = this.config.enableCurve 
+
+    const curveFactory = this.config.enableCurve
       ? RenderingUtils.getCurveFactory(this.config.curveType || 'monotoneX')
       : d3.curveLinear;
 
@@ -118,12 +118,12 @@ export class CoordinateCalculator {
 
     this.state.getGroups().forEach(group => {
       if (!visibleGroups.has(group)) return;
-      
+
       const groupData = groupedData.get(group) || [];
       if (groupData.length === 0) return;
 
       // 유효한 데이터만 필터링
-      const validData = groupData.filter(d => 
+      const validData = groupData.filter(d =>
         !isNaN(d.y) && isFinite(d.y) && this.isValidXCoordinate(d)
       );
 
@@ -156,9 +156,9 @@ export class CoordinateCalculator {
 
     this.state.getGroups().forEach(group => {
       if (!visibleGroups.has(group)) return;
-      
+
       const groupData = groupedData.get(group) || [];
-      
+
       const groupPositions = groupData
         .filter(d => !isNaN(d.y) && isFinite(d.y) && this.isValidXCoordinate(d))
         .map(d => ({
@@ -234,7 +234,7 @@ export class CoordinateCalculator {
     if (this.config.yAxisTickFormat) {
       yAxis.tickFormat(d3.format(this.config.yAxisTickFormat));
     }
-    
+
     // Y축 틱 개수 조정
     yAxis.ticks(Math.min(6, Math.floor(scales.innerHeight / 40)));
 
@@ -286,10 +286,10 @@ export class CoordinateCalculator {
 
       const dotX = this.getXCoordinate(d);
       const dotY = yScale(d.y);
-      
+
       // NaN 체크
       if (isNaN(dotX) || isNaN(dotY)) return;
-      
+
       const distance = Math.sqrt(
         Math.pow(x - dotX, 2) + Math.pow(y - dotY, 2)
       );
@@ -316,7 +316,7 @@ export class CoordinateCalculator {
     visibleData.forEach(d => {
       const x = this.getXCoordinate(d);
       if (isNaN(x)) return;
-      
+
       const distance = Math.abs(x - targetX);
 
       if (distance < minDistance) {
@@ -336,9 +336,9 @@ export class CoordinateCalculator {
    * 주어진 화면 좌표 범위 내의 데이터 찾기 (브러시/줌 기능용)
    */
   getDataInRange(
-    xStart: number, 
-    xEnd: number, 
-    yStart?: number, 
+    xStart: number,
+    xEnd: number,
+    yStart?: number,
     yEnd?: number
   ): ProcessedDataPoint[] {
     const scales = this.state.getScales();
@@ -354,12 +354,12 @@ export class CoordinateCalculator {
       if (isNaN(x) || isNaN(y)) return false;
 
       const inXRange = x >= Math.min(xStart, xEnd) && x <= Math.max(xStart, xEnd);
-      
+
       if (yStart !== undefined && yEnd !== undefined) {
         const inYRange = y >= Math.min(yStart, yEnd) && y <= Math.max(yStart, yEnd);
         return inXRange && inYRange;
       }
-      
+
       return inXRange;
     });
   }
@@ -382,7 +382,7 @@ export class CoordinateCalculator {
     const scaleType = this.state.getScaleType();
 
     let x: Date | number | string;
-    
+
     try {
       switch (scaleType) {
         case 'time':
@@ -397,7 +397,7 @@ export class CoordinateCalculator {
           const range = (xScale as any).range();
           let minDist = Infinity;
           let closestValue = domain[0];
-          
+
           domain.forEach((val: string, i: number) => {
             const dist = Math.abs(range[i] - screenX);
             if (dist < minDist) {
@@ -428,7 +428,7 @@ export class CoordinateCalculator {
     if (!scales || !this.isValidDataPoint(dataPoint)) return null;
 
     const { yScale } = scales;
-    
+
     try {
       const x = this.getXCoordinate(dataPoint);
       const y = yScale(dataPoint.y);
@@ -458,7 +458,7 @@ export class CoordinateCalculator {
   } {
     const scales = this.state.getScales();
     const margin = this.config.margin || { top: 20, right: 20, bottom: 40, left: 60 };
-    
+
     if (!scales) {
       return {
         width: this.config.width || 600,
@@ -540,10 +540,10 @@ export class CoordinateCalculator {
   private getXCoordinate = (d: ProcessedDataPoint): number => {
     const scales = this.state.getScales();
     if (!scales) return 0;
-    
+
     const { xScale } = scales;
     const scaleType = this.state.getScaleType();
-    
+
     try {
       switch (scaleType) {
         case 'time':
@@ -566,7 +566,7 @@ export class CoordinateCalculator {
    */
   private isValidXCoordinate(d: ProcessedDataPoint): boolean {
     const scaleType = this.state.getScaleType();
-    
+
     switch (scaleType) {
       case 'time':
         return d.parsedDate && !isNaN(d.parsedDate.getTime());
@@ -584,9 +584,9 @@ export class CoordinateCalculator {
    */
   private isValidDataPoint(d: ProcessedDataPoint): boolean {
     return (
-      d && 
-      !isNaN(d.y) && 
-      isFinite(d.y) && 
+      d &&
+      !isNaN(d.y) &&
+      isFinite(d.y) &&
       this.isValidXCoordinate(d) &&
       d.group !== undefined
     );

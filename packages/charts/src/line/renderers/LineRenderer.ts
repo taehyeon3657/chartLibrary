@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import { RenderingUtils } from '../../shared';
-import type { LineChartConfig } from '@charts-library/types';
+import type { LineChartConfig } from '@beaubrain/types';
 import type { LineChartState } from '../LineChartState';
 import type { CoordinateCalculator } from '../CoordinateCalculator';
 import type { RenderContext } from '../LineChart';
@@ -20,11 +20,11 @@ export class LineRenderer {
     if (this.state.isEmpty()) return;
 
     this.clearPreviousRender();
-    
+
     if (this.config.showAreaFill) {
       this.renderAreas();
     }
-    
+
     this.renderLines();
   }
 
@@ -45,23 +45,23 @@ export class LineRenderer {
 
       const areaPath = areaPaths.get(group)!;
       const color = colorScale(group);
-      
+
       const lineGroup = this.getOrCreateLineGroup(group);
-      
+
       let fillColor = color;
-      
+
       // 그라데이션 사용
       if (this.config.areaGradient) {
         const gradientId = RenderingUtils.createAreaGradient(
-          this.context.defs, 
-          color, 
-          group, 
+          this.context.defs,
+          color,
+          group,
           this.config.areaFillOpacity || 0.1
         );
         fillColor = `url(#${gradientId})`;
       } else {
         fillColor = RenderingUtils.adjustColorOpacity(
-          color, 
+          color,
           this.config.areaFillOpacity || 0.1
         );
       }
@@ -99,9 +99,9 @@ export class LineRenderer {
 
       const linePath = linePaths.get(group)!;
       const color = colorScale(group);
-      
+
       const lineGroup = this.getOrCreateLineGroup(group);
-      
+
       const line = lineGroup.append('path')
         .attr('class', `line line-${this.sanitizeClassName(group)}`)
         .attr('d', linePath)
@@ -119,12 +119,12 @@ export class LineRenderer {
   private getOrCreateLineGroup(group: string): d3.Selection<SVGGElement, unknown, null, undefined> {
     const className = `line-group-${this.sanitizeClassName(group)}`;
     let lineGroup = this.context.chartArea.select<SVGGElement>(`.${className}`);
-    
+
     if (lineGroup.empty()) {
       lineGroup = this.context.chartArea.append<SVGGElement>('g')
         .attr('class', `line-group ${className}`);
     }
-    
+
     return lineGroup;
   }
 

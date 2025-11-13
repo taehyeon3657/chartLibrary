@@ -21,10 +21,10 @@ importers:
 
   apps/playground:
     dependencies:
-      '@charts-library/react':
+      '@beaubrain/react':
         specifier: workspace:*
         version: link:../../packages/react
-      '@charts-library/types':
+      '@beaubrain/types':
         specifier: workspace:*
         version: link:../../packages/types
       lucide-react:
@@ -64,10 +64,10 @@ importers:
 
   packages/charts:
     dependencies:
-      '@charts-library/core':
+      '@beaubrain/core':
         specifier: ^1.1.0
         version: link:../core
-      '@charts-library/types':
+      '@beaubrain/types':
         specifier: ^1.1.0
         version: link:../types
       d3:
@@ -83,7 +83,7 @@ importers:
 
   packages/core:
     dependencies:
-      '@charts-library/types':
+      '@beaubrain/types':
         specifier: ^1.1.0
         version: link:../types
       d3:
@@ -99,10 +99,10 @@ importers:
 
   packages/react:
     dependencies:
-      '@charts-library/charts':
+      '@beaubrain/charts':
         specifier: ^1.1.0
         version: link:../charts
-      '@charts-library/types':
+      '@beaubrain/types':
         specifier: ^1.1.0
         version: link:../types
     devDependencies:

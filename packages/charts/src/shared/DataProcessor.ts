@@ -1,12 +1,12 @@
-import type { 
-  ChartDataPoint, 
-  ProcessedDataPoint, 
-  DataProcessingOptions 
-} from '@charts-library/types';
+import type {
+  ChartDataPoint,
+  ProcessedDataPoint,
+  DataProcessingOptions
+} from '@beaubrain/types';
 
 /**
  * 차트 데이터 처리를 담당하는 헤드리스 유틸리티 클래스
- * 
+ *
  * 주요 기능:
  * - 원본 데이터를 차트에서 사용할 수 있는 형태로 변환
  * - 날짜 파싱, 그룹핑, 정렬 등 공통 처리 로직
@@ -17,12 +17,12 @@ export class DataProcessor {
    * 원본 데이터를 처리된 데이터로 변환
    */
   static process(
-    data: ChartDataPoint[], 
+    data: ChartDataPoint[],
     options: DataProcessingOptions = {}
   ): ProcessedDataPoint[] {
     const {
       xAccessor = (d: ChartDataPoint) => (d.date ?? d.x ?? d.timestamp ?? 0),
-      yAccessor = (d: ChartDataPoint) => d.value ?? d.y ?? 0, 
+      yAccessor = (d: ChartDataPoint) => d.value ?? d.y ?? 0,
       groupAccessor = (d: ChartDataPoint) => d.group || d.series || d.category || 'default',
       parseDate = DataProcessor.defaultDateParser,
       filter,
@@ -142,7 +142,7 @@ export class DataProcessor {
    * 데이터 정렬
    */
   private static sortData(
-    data: ProcessedDataPoint[], 
+    data: ProcessedDataPoint[],
     sortBy: 'x' | 'y' | 'date' | ((a: ProcessedDataPoint, b: ProcessedDataPoint) => number)
   ): ProcessedDataPoint[] {
     if (typeof sortBy === 'function') {

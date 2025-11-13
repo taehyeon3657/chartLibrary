@@ -1,4 +1,4 @@
-import { ChartDataPoint } from '@charts-library/types'
+import { ChartDataPoint } from '@beaubrain/types'
 
 export function generateTimeSeriesData(
   days: number = 30,

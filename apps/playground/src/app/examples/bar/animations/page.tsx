@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { BarChart } from '@charts-library/react'
+import { BarChart } from '@beaubrain/react'
 import { ExampleLayout } from '@/components/ExampleLayout'
 import { ChartContainer } from '@/components/ChartContainer'
 import { CodeBlock } from '@/components/CodeBlock'
@@ -22,7 +22,7 @@ export default function AnimationsExample() {
     setStackedData(generateStackedBarData(categories.slice(0, 4), series))
   }
 
-  const code = `import { BarChart } from '@charts-library/react'
+  const code = `import { BarChart } from '@beaubrain/react'
 
 <BarChart
   data={data}

@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import type { BarChartConfig, ProcessedDataPoint } from '@charts-library/types';
+import type { BarChartConfig, ProcessedDataPoint } from '@beaubrain/types';
 import type { BarChartState } from './BarChartState';
 
 export interface BarPosition {

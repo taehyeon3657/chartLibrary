@@ -4,7 +4,7 @@ import type {
   BaseChartConfig,
   LineChartConfig,
   BarChartConfig
-} from '@charts-library/types';
+} from '@beaubrain/types';
 import { LineChart } from './line';
 import { BarChart } from './bar';
 

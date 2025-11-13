@@ -11,8 +11,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@charts-library/react": "workspace:*",
-    "@charts-library/types": "workspace:*",
+    "@beaubrain/react": "workspace:*",
+    "@beaubrain/types": "workspace:*",
     "lucide-react": "^0.548.0",
     "next": "14.2.30",
     "react": "^18",

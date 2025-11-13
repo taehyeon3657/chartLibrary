@@ -1,9 +1,9 @@
-import { ProcessedDataPoint } from '@charts-library/types';
+import { ProcessedDataPoint } from '@beaubrain/types';
 import * as d3 from 'd3';
 
 /**
  * 공통 렌더링 유틸리티 함수들
- * 
+ *
  * 주요 기능:
  * - D3 헬퍼 함수들
  * - 애니메이션 유틸리티
@@ -110,7 +110,7 @@ export class RenderingUtils {
     if (!pathElement) return;
 
     const totalLength = pathElement.getTotalLength();
-    
+
     path
       .attr('stroke-dasharray', `${totalLength} ${totalLength}`)
       .attr('stroke-dashoffset', totalLength)
@@ -138,7 +138,7 @@ export class RenderingUtils {
     this.createClipPath(defs, clipId, 0, height);
 
     const clipRect = defs.select(`#${clipId} rect`);
-    
+
     area.attr('clip-path', `url(#${clipId})`);
 
     clipRect
@@ -189,7 +189,7 @@ export class RenderingUtils {
   static adjustColorBrightness(color: string, factor: number): string {
     const d3Color = d3.color(color);
     if (d3Color && 'brighter' in d3Color) {
-      return factor > 0 
+      return factor > 0
         ? (d3Color as any).brighter(factor).toString()
         : (d3Color as any).darker(-factor).toString();
     }
@@ -206,7 +206,7 @@ export class RenderingUtils {
     text.each(function() {
       const textElement = d3.select(this);
       const textContent = textElement.text();
-      
+
       while (textElement.node()!.getComputedTextLength() > maxWidth && textContent.length > 0) {
         const shortened = textContent.substring(0, textContent.length - 1);
         textElement.text(shortened + '...');
@@ -221,7 +221,7 @@ export class RenderingUtils {
     const value = data.y || data.value || 0;
     const group = data.group || 'Data';
     const date = data.parsedDate ? data.parsedDate.toLocaleDateString() : '';
-    
+
     switch (type) {
       case 'line':
         return `${group} line chart point: ${value}${date ? ` on ${date}` : ''}`;
@@ -250,7 +250,7 @@ export class RenderingUtils {
     if (x + tooltipWidth > window.innerWidth) {
       x = event.clientX - tooltipWidth - 10;
     }
-    
+
     if (y - tooltipHeight < 0) {
       y = event.clientY + 20;
     }
@@ -282,12 +282,12 @@ export class RenderingUtils {
 
     canvas.width = rect.width * dpr;
     canvas.height = rect.height * dpr;
-    
+
     canvas.style.width = rect.width + 'px';
     canvas.style.height = rect.height + 'px';
-    
+
     ctx.scale(dpr, dpr);
-    
+
     return ctx;
   }
 
@@ -299,7 +299,7 @@ export class RenderingUtils {
 
   static queueAnimation(callback: () => void): void {
     this.animationQueue.push(callback);
-    
+
     if (!this.isProcessing) {
       this.processAnimationQueue();
     }
@@ -307,10 +307,10 @@ export class RenderingUtils {
 
   private static processAnimationQueue(): void {
     this.isProcessing = true;
-    
+
     const processNext = () => {
       const callback = this.animationQueue.shift();
-      
+
       if (callback) {
         callback();
         requestAnimationFrame(processNext);
@@ -318,7 +318,7 @@ export class RenderingUtils {
         this.isProcessing = false;
       }
     };
-    
+
     requestAnimationFrame(processNext);
   }
 }

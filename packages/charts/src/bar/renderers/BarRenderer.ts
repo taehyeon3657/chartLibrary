@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import { RenderingUtils } from '../../shared';
-import type { BarChartConfig } from '@charts-library/types';
+import type { BarChartConfig } from '@beaubrain/types';
 import type { BarChartState } from '../BarChartState';
 import type { CoordinateCalculator } from '../CoordinateCalculator';
 import { RenderContext } from '../BarChart';

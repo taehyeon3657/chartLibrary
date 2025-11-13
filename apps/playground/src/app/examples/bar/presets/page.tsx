@@ -1,6 +1,6 @@
 'use client'
 
-import { BarChart } from '@charts-library/react'
+import { BarChart } from '@beaubrain/react'
 import { ExampleLayout } from '@/components/ExampleLayout'
 import { ChartContainer } from '@/components/ChartContainer'
 import { CodeBlock } from '@/components/CodeBlock'
@@ -10,7 +10,7 @@ export default function PresetsExample() {
   const categories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
   const data = generateBarChartData(categories, 100, 20)
 
-  const code = `import { BarChart } from '@charts-library/react'
+  const code = `import { BarChart } from '@beaubrain/react'
 
 // Minimal preset - Clean and simple
 <BarChart data={data} preset="minimal" />

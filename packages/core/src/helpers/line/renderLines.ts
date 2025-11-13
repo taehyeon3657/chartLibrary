@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { LineChartConfig, ProcessedDataPoint } from '@charts-library/types';
+import { LineChartConfig, ProcessedDataPoint } from '@beaubrain/types';
 import { Scales } from '../../types/base';
 import { CHART_CONFIG } from '../../constants';
 import { getCurveFunction } from './getLineFunction';

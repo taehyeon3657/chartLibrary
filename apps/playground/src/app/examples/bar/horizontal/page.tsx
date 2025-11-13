@@ -1,6 +1,6 @@
 'use client'
 
-import { BarChart } from '@charts-library/react'
+import { BarChart } from '@beaubrain/react'
 import { ExampleLayout } from '@/components/ExampleLayout'
 import { ChartContainer } from '@/components/ChartContainer'
 import { CodeBlock } from '@/components/CodeBlock'
@@ -10,7 +10,7 @@ export default function HorizontalExample() {
   const categories = ['Product A', 'Product B', 'Product C', 'Product D', 'Product E']
   const data = generateBarChartData(categories, 100, 25)
 
-  const code = `import { BarChart } from '@charts-library/react'
+  const code = `import { BarChart } from '@beaubrain/react'
 
 <BarChart
   data={data}

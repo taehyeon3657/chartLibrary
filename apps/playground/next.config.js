@@ -5,10 +5,10 @@ const nextConfig = {
 
   // Transpile workspace packages
   transpilePackages: [
-    '@charts-library/react',
-    '@charts-library/charts',
-    '@charts-library/core',
-    '@charts-library/types'
+    '@beaubrain/react',
+    '@beaubrain/charts',
+    '@beaubrain/core',
+    '@beaubrain/types'
   ],
 
   // Webpack configuration
@@ -16,10 +16,10 @@ const nextConfig = {
     // TypeScript 소스 직접 사용하도록 alias 설정
     config.resolve.alias = {
       ...config.resolve.alias,
-      '@charts-library/react': path.resolve(__dirname, '../../packages/react/src/index.tsx'),
-      '@charts-library/types': path.resolve(__dirname, '../../packages/types/src/index.ts'),
-      '@charts-library/charts': path.resolve(__dirname, '../../packages/charts/src/index.ts'),
-      '@charts-library/core': path.resolve(__dirname, '../../packages/core/src/index.ts'),
+      '@beaubrain/react': path.resolve(__dirname, '../../packages/react/src/index.tsx'),
+      '@beaubrain/types': path.resolve(__dirname, '../../packages/types/src/index.ts'),
+      '@beaubrain/charts': path.resolve(__dirname, '../../packages/charts/src/index.ts'),
+      '@beaubrain/core': path.resolve(__dirname, '../../packages/core/src/index.ts'),
     };
 
     // Handle D3 and other large libraries

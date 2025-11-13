@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { BarChart } from '@charts-library/react'
+import { BarChart } from '@beaubrain/react'
 import { ExampleLayout } from '@/components/ExampleLayout'
 import { ChartContainer } from '@/components/ChartContainer'
 import { CodeBlock } from '@/components/CodeBlock'
@@ -18,7 +18,7 @@ export default function InteractiveExample() {
     setEvents(prev => [eventLog, ...prev.slice(0, 9)])
   }
 
-  const code = `import { BarChart } from '@charts-library/react'
+  const code = `import { BarChart } from '@beaubrain/react'
 
 <BarChart
   data={data}

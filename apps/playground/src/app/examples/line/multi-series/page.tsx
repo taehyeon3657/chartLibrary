@@ -1,6 +1,6 @@
 'use client'
 
-import { LineChart } from '@charts-library/react'
+import { LineChart } from '@beaubrain/react'
 import { ExampleLayout } from '@/components/ExampleLayout'
 import { ChartContainer } from '@/components/ChartContainer'
 import { CodeBlock } from '@/components/CodeBlock'
@@ -9,7 +9,7 @@ import { generateMultiSeriesData } from '@/utils/generateData'
 export default function MultiSeriesExample() {
   const data = generateMultiSeriesData(30, ['Revenue', 'Profit', 'Expenses'])
 
-  const code = `import { LineChart } from '@charts-library/react'
+  const code = `import { LineChart } from '@beaubrain/react'
 
 const data = [
   { date: new Date('2024-01-01'), value: 100, group: 'Revenue' },

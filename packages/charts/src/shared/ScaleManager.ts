@@ -1,9 +1,9 @@
 import * as d3 from 'd3';
-import type { ProcessedDataPoint } from '@charts-library/types';
+import type { ProcessedDataPoint } from '@beaubrain/types';
 
 /**
  * 차트 스케일 생성 및 관리를 담당하는 헤드리스 클래스
- * 
+ *
  * 주요 기능:
  * - 다양한 스케일 타입 지원 (시간, 선형, 서수 등)
  * - 도메인 자동 계산 및 커스텀 지원
@@ -27,12 +27,12 @@ export interface ScaleOptions {
   xDomain?: [Date, Date] | [number, number];
   xPadding?: number;
   xScaleType?: 'time' | 'linear' | 'ordinal';
-  
-  // Y축 스케일 옵션  
+
+  // Y축 스케일 옵션
   yDomain?: [number, number];
   yPadding?: number;
   yNice?: boolean;
-  
+
   // 색상 스케일 옵션
   colorScheme?: string[];
   colorDomain?: string[];
@@ -95,7 +95,7 @@ export class ScaleManager {
     const innerHeight = this.config.height - this.config.margin.top - this.config.margin.bottom;
 
     const { xDomain, xPadding = 0 } = options;
-    
+
     // 시간 도메인 계산
     const domain = xDomain ? xDomain as [Date, Date] : this.calculateTimeDomain();
 
@@ -119,7 +119,7 @@ export class ScaleManager {
     const innerHeight = this.config.height - this.config.margin.top - this.config.margin.bottom;
 
     const { xDomain, xPadding = 0 } = options;
-    
+
     // 선형 도메인 계산
     const domain = xDomain ? xDomain as [number, number] : this.calculateLinearDomain();
 
@@ -162,7 +162,7 @@ export class ScaleManager {
    */
   createScales(options: ScaleOptions = {}): ChartScales {
     const scaleType = options.xScaleType || this.detectScaleType();
-    
+
     switch (scaleType) {
       case 'time':
         return this.createTimeScales(options);
@@ -182,9 +182,9 @@ export class ScaleManager {
     if (this.data.length === 0) return 'time';
 
     // 유효한 날짜가 있는지 확인
-    const hasValidDates = this.data.some(d => 
-      d.parsedDate && 
-      !isNaN(d.parsedDate.getTime()) && 
+    const hasValidDates = this.data.some(d =>
+      d.parsedDate &&
+      !isNaN(d.parsedDate.getTime()) &&
       d.parsedDate.getFullYear() > 1900
     );
 
@@ -213,7 +213,7 @@ export class ScaleManager {
     if (dates.length === 0) {
       return [new Date(), new Date()];
     }
-    
+
     return d3.extent(dates) as [Date, Date];
   }
 
@@ -298,7 +298,7 @@ export class ScaleManager {
       const dates = this.data
         .map(d => d.parsedDate)
         .filter(d => d && !isNaN(d.getTime())) as Date[];
-      
+
       return d3.extent(dates) as [Date, Date];
     }
 
@@ -328,7 +328,7 @@ export class ScaleManager {
 
     // 약간의 패딩 추가 (5%)
     const padding = (domainMax - domainMin) * 0.05;
-    
+
     return [domainMin - padding, domainMax + padding];
   }
 
@@ -351,7 +351,7 @@ export class ScaleManager {
    * 유틸리티: 픽셀 값을 데이터 값으로 역변환
    */
   static invertScale<T>(
-    scale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>, 
+    scale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>,
     pixelValue: number
   ): T {
     return scale.invert(pixelValue) as T;
@@ -366,7 +366,7 @@ export class ScaleManager {
     selection: [number, number]
   ): T[] {
     const [start, end] = selection.map(pixel => ScaleManager.invertScale(xScale, pixel));
-    
+
     return data.filter(d => {
       const xValue = d.parsedDate.getTime();
       return xValue >= (start as number) && xValue <= (end as number);

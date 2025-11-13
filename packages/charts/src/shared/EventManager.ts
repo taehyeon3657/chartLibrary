@@ -1,9 +1,9 @@
-import { EventEmitter } from '@charts-library/core';
-import type { AllChartEvents, ProcessedDataPoint } from '@charts-library/types';
+import { EventEmitter } from '@beaubrain/core';
+import type { AllChartEvents, ProcessedDataPoint } from '@beaubrain/types';
 
 /**
  * 차트 상호작용 및 이벤트를 관리하는 헤드리스 클래스
- * 
+ *
  * 주요 기능:
  * - 마우스/터치 이벤트 추상화
  * - 호버, 클릭, 선택 상태 관리
@@ -38,7 +38,7 @@ export class EventManager extends EventEmitter<AllChartEvents> {
 
   constructor(options: InteractionOptions = {}) {
     super();
-    
+
     this.options = {
       enableHover: true,
       enableClick: true,
@@ -115,7 +115,7 @@ export class EventManager extends EventEmitter<AllChartEvents> {
    */
   private processHover(event: MouseEvent): void {
     const hoveredData = this.findDataAtPosition(event);
-    
+
     // 상태 변경이 있는 경우만 이벤트 발생
     if (hoveredData !== this.state.hoveredData) {
       const previousData = this.state.hoveredData;
@@ -174,7 +174,7 @@ export class EventManager extends EventEmitter<AllChartEvents> {
         group: this.state.hoveredData.group,
         originalEvent: event
       });
-      
+
       this.state.hoveredData = null;
     }
   }
@@ -186,7 +186,7 @@ export class EventManager extends EventEmitter<AllChartEvents> {
     if (!this.options.enableClick) return;
 
     const clickedData = this.findDataAtPosition(event);
-    
+
     if (clickedData) {
       // 선택 상태 관리
       if (this.options.enableSelection) {
@@ -241,7 +241,7 @@ export class EventManager extends EventEmitter<AllChartEvents> {
    */
   private handleTouchStart(event: TouchEvent): void {
     this.state.isInteracting = true;
-    
+
     if (event.touches.length === 1) {
       const touch = event.touches[0];
       const mouseEvent = new MouseEvent('mousemove', {
@@ -319,7 +319,7 @@ export class EventManager extends EventEmitter<AllChartEvents> {
   private navigateData(direction: number): void {
     if (this.data.length === 0) return;
 
-    let currentIndex = this.state.hoveredData 
+    let currentIndex = this.state.hoveredData
       ? this.data.indexOf(this.state.hoveredData)
       : -1;
 
@@ -329,7 +329,7 @@ export class EventManager extends EventEmitter<AllChartEvents> {
     const newData = this.data[currentIndex];
     if (newData && newData !== this.state.hoveredData) {
       this.state.hoveredData = newData;
-      
+
       this.emit('chartHover', {
         data: newData.originalData || newData,
         index: currentIndex,
@@ -360,7 +360,7 @@ export class EventManager extends EventEmitter<AllChartEvents> {
    */
   toggleGroup(group: string): void {
     const isSelected = this.state.selectedGroups.has(group);
-    
+
     if (isSelected) {
       this.state.selectedGroups.delete(group);
       this.state.selectedData = this.state.selectedData.filter(d => d.group !== group);

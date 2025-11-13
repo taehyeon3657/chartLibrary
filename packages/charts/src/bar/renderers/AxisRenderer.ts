@@ -1,4 +1,4 @@
-import type { BarChartConfig } from "@charts-library/types";
+import type { BarChartConfig } from "@beaubrain/types";
 import type { CoordinateCalculator } from "../CoordinateCalculator";
 import type { BarChartState } from "../BarChartState";
 import { RenderContext } from "../BarChart";
