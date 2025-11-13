@@ -1,6 +1,6 @@
 {
   "name": "@charts-library/react",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "React components for charts library",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -52,8 +52,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@charts-library/charts": "^1.0.0",
-    "@charts-library/types": "^1.0.0"
+    "@charts-library/charts": "^1.1.0",
+    "@charts-library/types": "^1.1.0"
   },
   "peerDependencies": {
     "react": "^18.0.0",

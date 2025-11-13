@@ -1,6 +1,6 @@
 {
   "name": "@charts-library/charts",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Chart implementations for charts library",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -69,8 +69,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@charts-library/core": "^1.0.0",
-    "@charts-library/types": "^1.0.0"
+    "@charts-library/core": "^1.1.0",
+    "@charts-library/types": "^1.1.0"
   },
   "peerDependencies": {
     "d3": "^7.0.0"
