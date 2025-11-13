@@ -1,0 +1,47 @@
+{
+  "name": "@charts-library/types",
+  "version": "1.1.0",
+  "description": "TypeScript type definitions for charts library",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
+    "./src/*": "./src/*"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "rm -rf dist tsconfig.tsbuildinfo",
+    "prepublishOnly": "pnpm run build"
+  },
+  "keywords": [
+    "chart",
+    "typescript",
+    "types",
+    "d3",
+    "visualization"
+  ],
+  "author": "TaeHyeon",
+  "license": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/taehyeon3657/chartLibrary.git",
+    "directory": "packages/types"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "gitHead": "e6a85cf539e5fc6461dd192461c531fd91b2b12c"
+}
