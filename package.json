@@ -3,7 +3,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A modern chart library built with D3.js and React",
   "scripts": {
     "build": "pnpm -r --filter='./packages/*' run build",
