@@ -1,9 +1,9 @@
 {
   "name": "charts-library",
-   "publishConfig": {
+  "publishConfig": {
     "access": "public"
   },
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A modern chart library built with D3.js and React",
   "scripts": {
     "build": "pnpm -r --filter='./packages/*' run build",
