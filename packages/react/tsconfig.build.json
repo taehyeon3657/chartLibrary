@@ -7,6 +7,6 @@
     "emitDeclarationOnly": false, // JS와 DTS 같이 생성
     "outDir": "./dist"
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx"]
 }
