@@ -1,6 +1,6 @@
 'use client'
 
-import { LineChart } from '@beaubrain/react'
+import { LineChart } from '@beaubrain/chart-lib-react'
 import { ExampleLayout } from '@/components/ExampleLayout'
 import { ChartContainer } from '@/components/ChartContainer'
 import { CodeBlock } from '@/components/CodeBlock'
@@ -18,7 +18,7 @@ export default function CurvesExample() {
     { type: 'stepAfter', label: 'Step After' },
   ]
 
-  const code = `import { LineChart } from '@beaubrain/react'
+  const code = `import { LineChart } from '@beaubrain/chart-lib-react'
 
 // Different curve types
 <LineChart

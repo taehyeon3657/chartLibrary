@@ -1,6 +1,6 @@
 'use client'
 
-import { LineChart } from '@beaubrain/react'
+import { LineChart } from '@beaubrain/chart-lib-react'
 import { ExampleLayout } from '@/components/ExampleLayout'
 import { ChartContainer } from '@/components/ChartContainer'
 import { CodeBlock } from '@/components/CodeBlock'
@@ -9,7 +9,7 @@ import { generateMultiSeriesData } from '@/utils/generateData'
 export default function AreaFillExample() {
   const data = generateMultiSeriesData(30, ['Revenue', 'Costs'])
 
-  const code = `import { LineChart } from '@beaubrain/react'
+  const code = `import { LineChart } from '@beaubrain/chart-lib-react'
 
 <LineChart
   data={data}

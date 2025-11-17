@@ -2,7 +2,7 @@ import type {
   ChartDataPoint,
   ProcessedDataPoint,
   DataProcessingOptions
-} from '@beaubrain/types';
+} from '@beaubrain/chart-lib-types';
 
 /**
  * 차트 데이터 처리를 담당하는 헤드리스 유틸리티 클래스

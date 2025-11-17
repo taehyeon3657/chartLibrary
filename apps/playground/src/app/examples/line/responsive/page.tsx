@@ -1,6 +1,6 @@
 'use client'
 
-import { LineChart } from '@beaubrain/react'
+import { LineChart } from '@beaubrain/chart-lib-react'
 import { ExampleLayout } from '@/components/ExampleLayout'
 import { ChartContainer } from '@/components/ChartContainer'
 import { CodeBlock } from '@/components/CodeBlock'
@@ -9,7 +9,7 @@ import { generateTimeSeriesData } from '@/utils/generateData'
 export default function ResponsiveExample() {
   const data = generateTimeSeriesData(30)
 
-  const code = `import { LineChart } from '@beaubrain/react'
+  const code = `import { LineChart } from '@beaubrain/chart-lib-react'
 
 // Chart will automatically resize with container
 <LineChart

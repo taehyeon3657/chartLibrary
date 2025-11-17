@@ -1,10 +1,10 @@
-import { BaseChart } from '@beaubrain/core';
+import { BaseChart } from '@beaubrain/chart-lib-core';
 import { DataProcessor, ScaleManager, EventManager } from '../shared';
 import type {
   LineChartConfig,
   ChartDataPoint,
   ProcessedDataPoint
-} from '@beaubrain/types';
+} from '@beaubrain/chart-lib-types';
 import { LineChartState } from './LineChartState';
 import { CoordinateCalculator } from './CoordinateCalculator';
 import { LineChartRenderer } from './renderers/LineChartRenderer';

@@ -1,4 +1,4 @@
-import { ProcessedDataPoint } from '@beaubrain/types';
+import { ProcessedDataPoint } from '@beaubrain/chart-lib-types';
 import * as d3 from 'd3';
 
 /**

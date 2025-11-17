@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useImperativeHandle, forwardRef } from 'react';
-import { ChartFactory } from '@beaubrain/charts';
-import type { LineChartConfig, ChartDataPoint } from '@beaubrain/types';
+import { ChartFactory } from '@beaubrain/chart-lib-charts';
+import type { LineChartConfig, ChartDataPoint } from '@beaubrain/chart-lib-types';
 
 export interface LineChartProps {
   data: ChartDataPoint[];

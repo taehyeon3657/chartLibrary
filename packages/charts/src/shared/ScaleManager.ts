@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import type { ProcessedDataPoint } from '@beaubrain/types';
+import type { ProcessedDataPoint } from '@beaubrain/chart-lib-types';
 
 /**
  * 차트 스케일 생성 및 관리를 담당하는 헤드리스 클래스

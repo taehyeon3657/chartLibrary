@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import type { BarChartConfig } from '@beaubrain/types';
+import type { BarChartConfig } from '@beaubrain/chart-lib-types';
 import type { BarChartState } from '../BarChartState';
 import type { CoordinateCalculator } from '../CoordinateCalculator';
 

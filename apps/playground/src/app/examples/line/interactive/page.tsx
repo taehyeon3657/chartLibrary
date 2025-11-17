@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { LineChart } from '@beaubrain/react'
+import { LineChart } from '@beaubrain/chart-lib-react'
 import { ExampleLayout } from '@/components/ExampleLayout'
 import { ChartContainer } from '@/components/ChartContainer'
 import { CodeBlock } from '@/components/CodeBlock'
@@ -16,7 +16,7 @@ export default function InteractiveExample() {
     setEvents(prev => [eventLog, ...prev.slice(0, 9)])
   }
 
-  const code = `import { LineChart } from '@beaubrain/react'
+  const code = `import { LineChart } from '@beaubrain/chart-lib-react'
 
 <LineChart
   data={data}

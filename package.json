@@ -7,8 +7,8 @@
   "description": "A modern chart library built with D3.js and React",
   "scripts": {
     "build": "pnpm -r --filter='./packages/*' run build",
-    "build:vercel": "pnpm --filter=@beaubrain/types --filter=@beaubrain/core --filter=@beaubrain/charts --filter=@beaubrain/react run build && cd apps/playground && pnpm run build",
-    "build:deps": "pnpm --filter=@beaubrain/types --filter=@beaubrain/core --filter=@beaubrain/charts --filter=@beaubrain/react run build",
+    "build:vercel": "pnpm --filter=@beaubrain/chart-lib-types --filter=@beaubrain/chart-lib-core --filter=@beaubrain/chart-lib-charts --filter=@beaubrain/chart-lib-react run build && cd apps/playground && pnpm run build",
+    "build:deps": "pnpm --filter=@beaubrain/chart-lib-types --filter=@beaubrain/chart-lib-core --filter=@beaubrain/chart-lib-charts --filter=@beaubrain/chart-lib-react run build",
     "dev": "pnpm -r --parallel run dev",
     "dev:playground": "cd apps/playground && pnpm run dev",
     "test": "pnpm -r run test",

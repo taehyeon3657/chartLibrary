@@ -1,5 +1,5 @@
-import { EventEmitter } from '@beaubrain/core';
-import type { AllChartEvents, ProcessedDataPoint } from '@beaubrain/types';
+import { EventEmitter } from '@beaubrain/chart-lib-core';
+import type { AllChartEvents, ProcessedDataPoint } from '@beaubrain/chart-lib-types';
 
 /**
  * 차트 상호작용 및 이벤트를 관리하는 헤드리스 클래스

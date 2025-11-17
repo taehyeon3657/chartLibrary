@@ -5,7 +5,7 @@ export type { LineChartProps, LineChartRef } from './LineChart';
 export { BarChart } from './BarChart';
 export type { BarChartProps, BarChartRef } from './BarChart';
 
-// Re-export types from @beaubrain/types
+// Re-export types from @beaubrain/chart-lib-types
 export type {
   ChartDataPoint,
   LineChartConfig,
@@ -13,4 +13,4 @@ export type {
   ProcessedDataPoint,
   BaseChartConfig,
   ChartType
-} from '@beaubrain/types';
+} from '@beaubrain/chart-lib-types';

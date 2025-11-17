@@ -25,7 +25,7 @@ export type {
   ProcessedDataPoint,
   AllChartEvents as ChartEvents,
   ChartType
-} from '@beaubrain/types';
+} from '@beaubrain/chart-lib-types';
 
 // 공통 타입들
 export type {

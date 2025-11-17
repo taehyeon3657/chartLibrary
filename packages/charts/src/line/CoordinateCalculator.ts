@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import { RenderingUtils } from '../shared';
-import type { LineChartConfig, ProcessedDataPoint } from '@beaubrain/types';
+import type { LineChartConfig, ProcessedDataPoint } from '@beaubrain/chart-lib-types';
 import type { LineChartState } from './LineChartState';
 
 /**

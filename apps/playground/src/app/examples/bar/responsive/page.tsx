@@ -1,6 +1,6 @@
 'use client'
 
-import { BarChart } from '@beaubrain/react'
+import { BarChart } from '@beaubrain/chart-lib-react'
 import { ExampleLayout } from '@/components/ExampleLayout'
 import { ChartContainer } from '@/components/ChartContainer'
 import { CodeBlock } from '@/components/CodeBlock'
@@ -10,7 +10,7 @@ export default function ResponsiveExample() {
   const categories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
   const data = generateBarChartData(categories, 100, 25)
 
-  const code = `import { BarChart } from '@beaubrain/react'
+  const code = `import { BarChart } from '@beaubrain/chart-lib-react'
 
 // Chart will automatically resize with container
 <BarChart

@@ -1,4 +1,4 @@
-import type { ProcessedDataPoint } from '@beaubrain/types';
+import type { ProcessedDataPoint } from '@beaubrain/chart-lib-types';
 import type { ChartScales } from '../shared';
 
 /**

@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import { EventEmitter } from '../utils/EventEmitter';
-import type { AllChartEvents, BaseChartConfig, ChartDataPoint } from '@beaubrain/types';
+import type { AllChartEvents, BaseChartConfig, ChartDataPoint } from '@beaubrain/chart-lib-types';
 
 export abstract class BaseChart extends EventEmitter<AllChartEvents> {
     protected container: HTMLElement;

@@ -1,6 +1,6 @@
 'use client'
 
-import { BarChart } from '@beaubrain/react'
+import { BarChart } from '@beaubrain/chart-lib-react'
 import { ExampleLayout } from '@/components/ExampleLayout'
 import { ChartContainer } from '@/components/ChartContainer'
 import { CodeBlock } from '@/components/CodeBlock'
@@ -12,7 +12,7 @@ export default function BasicExample() {
 
   console.log('data: ', data)
 
-  const code = `import { BarChart } from '@beaubrain/react'
+  const code = `import { BarChart } from '@beaubrain/chart-lib-react'
 
 const data = [
   { x: 'Jan', value: 100, date: new Date() },

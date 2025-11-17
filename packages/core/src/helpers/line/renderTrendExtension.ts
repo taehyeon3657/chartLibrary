@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { ProcessedDataPoint } from '@beaubrain/types';
+import { ProcessedDataPoint } from '@beaubrain/chart-lib-types';
 import { Scales } from '../../types/base';
 
 export const renderTrendExtension = (

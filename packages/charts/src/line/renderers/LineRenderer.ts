@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import { RenderingUtils } from '../../shared';
-import type { LineChartConfig } from '@beaubrain/types';
+import type { LineChartConfig } from '@beaubrain/chart-lib-types';
 import type { LineChartState } from '../LineChartState';
 import type { CoordinateCalculator } from '../CoordinateCalculator';
 import type { RenderContext } from '../LineChart';

@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { ProcessedDataPoint } from '@beaubrain/types';
+import { ProcessedDataPoint } from '@beaubrain/chart-lib-types';
 import { createAreaGradient } from '../gradient';
 export const renderAreaFill = (
   g: d3.Selection<SVGGElement, unknown, null, undefined>,

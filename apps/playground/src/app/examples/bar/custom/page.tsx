@@ -1,6 +1,6 @@
 'use client'
 
-import { BarChart } from '@beaubrain/react'
+import { BarChart } from '@beaubrain/chart-lib-react'
 import { ExampleLayout } from '@/components/ExampleLayout'
 import { ChartContainer } from '@/components/ChartContainer'
 import { CodeBlock } from '@/components/CodeBlock'
@@ -11,7 +11,7 @@ export default function CustomExample() {
   const series = ['Sales', 'Target']
   const data = generateMultiSeriesBarData(categories, series, 100, 20)
 
-  const code = `import { BarChart } from '@beaubrain/react'
+  const code = `import { BarChart } from '@beaubrain/chart-lib-react'
 
 <BarChart
   data={data}

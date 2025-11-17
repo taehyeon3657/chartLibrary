@@ -1,6 +1,6 @@
 import type {
   ProcessedDataPoint,
-} from '@beaubrain/types';
+} from '@beaubrain/chart-lib-types';
 import type { ChartScales } from '../shared';
 
 /**
