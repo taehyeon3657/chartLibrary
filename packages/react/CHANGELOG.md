@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.1](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-react@0.4.0...@beaubrain/chart-lib-react@0.4.1) (2025-11-17)
+
+
+### Bug Fixes
+
+* react package.json 경로 수정 ([37e447c](https://github.com/taehyeon3657/chartLibrary/commit/37e447c150cf18ad3e0d86fb9a7a68099f4fc09c))
+
+
+
+
+
 # 0.4.0 (2025-11-17)
 
 
