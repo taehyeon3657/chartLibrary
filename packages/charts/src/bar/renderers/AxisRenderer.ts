@@ -1,8 +1,8 @@
-import type { BarChartConfig } from "@beaubrain/chart-lib-types";
-import type { CoordinateCalculator } from "../CoordinateCalculator";
-import type { BarChartState } from "../BarChartState";
-import { RenderContext } from "../BarChart";
-import * as d3 from 'd3';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import type { BarChartConfig } from '@beaubrain/chart-lib-types';
+import type { CoordinateCalculator } from '../CoordinateCalculator';
+import type { BarChartState } from '../BarChartState';
+import { RenderContext } from '../BarChart';
 
 export class AxisRenderer {
   constructor(

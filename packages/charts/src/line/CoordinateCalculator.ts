@@ -1,3 +1,5 @@
+/* eslint-disable no-case-declarations */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as d3 from 'd3';
 import { RenderingUtils } from '../shared';
 import type { LineChartConfig, ProcessedDataPoint } from '@beaubrain/chart-lib-types';
@@ -23,7 +25,7 @@ export interface DotPosition {
 }
 
 export interface CalculatedAxes {
-  xAxis: d3.Axis<any>;
+  xAxis: d3.Axis<unknown>;
   yAxis: d3.Axis<d3.NumberValue>;
 }
 
@@ -190,43 +192,45 @@ export class CoordinateCalculator {
     const { xScale, yScale } = scales;
     const scaleType = this.state.getScaleType();
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let xAxis: d3.Axis<any>;
 
     // 스케일 타입에 따른 X축 설정
     switch (scaleType) {
-      case 'time':
-        xAxis = d3.axisBottom(xScale as any);
-        if (this.config.xAxisTickFormat) {
-          xAxis.tickFormat(d3.timeFormat(this.config.xAxisTickFormat));
-        }
-        // 자동 틱 개수 조정
-        if (scales.innerWidth < 400) {
-          xAxis.ticks(4);
-        } else if (scales.innerWidth < 600) {
-          xAxis.ticks(6);
-        }
-        break;
+    case 'time':
+      xAxis = d3.axisBottom(xScale as d3.AxisScale<d3.AxisDomain>);
+      if (this.config.xAxisTickFormat) {
+        xAxis.tickFormat(d3.timeFormat(this.config.xAxisTickFormat));
+      }
+      // 자동 틱 개수 조정
+      if (scales.innerWidth < 400) {
+        xAxis.ticks(4);
+      } else if (scales.innerWidth < 600) {
+        xAxis.ticks(6);
+      }
+      break;
 
-      case 'linear':
-        xAxis = d3.axisBottom(xScale as any);
-        if (this.config.xAxisTickFormat) {
-          xAxis.tickFormat(d3.format(this.config.xAxisTickFormat));
-        }
-        // 자동 틱 개수 조정
-        xAxis.ticks(Math.min(8, Math.floor(scales.innerWidth / 80)));
-        break;
+    case 'linear':
+      xAxis = d3.axisBottom(xScale as any);
+      if (this.config.xAxisTickFormat) {
+        xAxis.tickFormat(d3.format(this.config.xAxisTickFormat));
+      }
+      // 자동 틱 개수 조정
+      xAxis.ticks(Math.min(8, Math.floor(scales.innerWidth / 80)));
+      break;
 
-      case 'ordinal':
-        xAxis = d3.axisBottom(xScale as any);
-        // 서수형의 경우 모든 값 표시하되, 너무 많으면 간격 조정
-        const domain = (xScale as any).domain();
-        if (domain.length > 10) {
-          xAxis.tickValues(domain.filter((_: any, i: number) => i % Math.ceil(domain.length / 10) === 0));
-        }
-        break;
+    case 'ordinal': {
+      xAxis = d3.axisBottom(xScale as any);
+      // 서수형의 경우 모든 값 표시하되, 너무 많으면 간격 조정
+      const domain = (xScale as any).domain();
+      if (domain.length > 10) {
+        xAxis.tickValues(domain.filter((_: any, i: number) => i % Math.ceil(domain.length / 10) === 0));
+      }
+      break;
+    }
 
-      default:
-        xAxis = d3.axisBottom(xScale as any);
+    default:
+      xAxis = d3.axisBottom(xScale as any);
     }
 
     // Y축 설정
@@ -385,30 +389,30 @@ export class CoordinateCalculator {
 
     try {
       switch (scaleType) {
-        case 'time':
-          x = (xScale as any).invert(screenX);
-          break;
-        case 'linear':
-          x = (xScale as any).invert(screenX);
-          break;
-        case 'ordinal':
-          // 서수 스케일의 경우 가장 가까운 값 찾기
-          const domain = (xScale as any).domain();
-          const range = (xScale as any).range();
-          let minDist = Infinity;
-          let closestValue = domain[0];
+      case 'time':
+        x = (xScale as any).invert(screenX);
+        break;
+      case 'linear':
+        x = (xScale as any).invert(screenX);
+        break;
+      case 'ordinal':
+        // 서수 스케일의 경우 가장 가까운 값 찾기
+        const domain = (xScale as any).domain();
+        const range = (xScale as any).range();
+        let minDist = Infinity;
+        let closestValue = domain[0];
 
-          domain.forEach((val: string, i: number) => {
-            const dist = Math.abs(range[i] - screenX);
-            if (dist < minDist) {
-              minDist = dist;
-              closestValue = val;
-            }
-          });
-          x = closestValue;
-          break;
-        default:
-          x = 0;
+        domain.forEach((val: string, i: number) => {
+          const dist = Math.abs(range[i] - screenX);
+          if (dist < minDist) {
+            minDist = dist;
+            closestValue = val;
+          }
+        });
+        x = closestValue;
+        break;
+      default:
+        x = 0;
       }
 
       const y = yScale.invert(screenY);
@@ -455,7 +459,7 @@ export class CoordinateCalculator {
     innerWidth: number;
     innerHeight: number;
     margin: { top: number; right: number; bottom: number; left: number };
-  } {
+    } {
     const scales = this.state.getScales();
     const margin = this.config.margin || { top: 20, right: 20, bottom: 40, left: 60 };
 
@@ -486,7 +490,7 @@ export class CoordinateCalculator {
     groupCounts: Map<string, number>;
     xRange: [Date | number, Date | number] | null;
     yRange: [number, number] | null;
-  } {
+    } {
     const visibleData = this.state.getVisibleData().filter(d => this.isValidDataPoint(d));
     const groupCounts = new Map<string, number>();
 
@@ -546,17 +550,17 @@ export class CoordinateCalculator {
 
     try {
       switch (scaleType) {
-        case 'time':
-          return (xScale as any)(d.parsedDate);
-        case 'linear':
-          return (xScale as any)(d.x as number);
-        case 'ordinal':
-          return (xScale as any)(String(d.x));
-        default:
-          return 0;
+      case 'time':
+        return (xScale as any)(d.parsedDate);
+      case 'linear':
+        return (xScale as any)(d.x as number);
+      case 'ordinal':
+        return (xScale as any)(String(d.x));
+      default:
+        return 0;
       }
     } catch (error) {
-      console.warn(`Failed to calculate X coordinate for data point:`, d, error);
+      console.warn('Failed to calculate X coordinate for data point:', d, error);
       return 0;
     }
   };
@@ -568,14 +572,14 @@ export class CoordinateCalculator {
     const scaleType = this.state.getScaleType();
 
     switch (scaleType) {
-      case 'time':
-        return d.parsedDate && !isNaN(d.parsedDate.getTime());
-      case 'linear':
-        return typeof d.x === 'number' && !isNaN(d.x) && isFinite(d.x);
-      case 'ordinal':
-        return d.x !== undefined && d.x !== null;
-      default:
-        return false;
+    case 'time':
+      return d.parsedDate && !isNaN(d.parsedDate.getTime());
+    case 'linear':
+      return typeof d.x === 'number' && !isNaN(d.x) && isFinite(d.x);
+    case 'ordinal':
+      return d.x !== undefined && d.x !== null;
+    default:
+      return false;
     }
   }
 

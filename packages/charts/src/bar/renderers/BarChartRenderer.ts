@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as d3 from 'd3';
 import type { BarChartConfig } from '@beaubrain/chart-lib-types';
 import type { BarChartState } from '../BarChartState';
@@ -131,25 +132,25 @@ export class BarChartRenderer {
     const width = this.config.width || 600;
 
     switch (position) {
-      case 'LEFT':
-        return margin.left;
-      case 'RIGHT':
-        return width - margin.right;
-      case 'CENTER':
-      default:
-        return width / 2;
+    case 'LEFT':
+      return margin.left;
+    case 'RIGHT':
+      return width - margin.right;
+    case 'CENTER':
+    default:
+      return width / 2;
     }
   }
 
   private calculateTitleAnchor(position?: string): string {
     switch (position) {
-      case 'LEFT':
-        return 'start';
-      case 'RIGHT':
-        return 'end';
-      case 'CENTER':
-      default:
-        return 'middle';
+    case 'LEFT':
+      return 'start';
+    case 'RIGHT':
+      return 'end';
+    case 'CENTER':
+    default:
+      return 'middle';
     }
   }
 

@@ -34,7 +34,7 @@ export const createAreaGradient = (
   return gradientId;
 };
 
-const renderAreaFill = (
+export const renderAreaFill = (
   g: d3.Selection<SVGGElement, unknown, null, undefined>,
   defs: d3.Selection<SVGDefsElement, unknown, null, undefined>,
   groupData: ProcessedDataPoint[],

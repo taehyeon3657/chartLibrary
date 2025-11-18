@@ -57,35 +57,35 @@ export class LineChartRenderer {
   /**
    * SVG 렌더링 컨텍스트 초기화
    */
-private initializeRenderContext(): RenderContext {
+  private initializeRenderContext(): RenderContext {
 
-  // 기존 SVG 제거
-  d3.select(this.container).selectAll('svg').remove();
+    // 기존 SVG 제거
+    d3.select(this.container).selectAll('svg').remove();
 
-  // 새 SVG 생성 - select 대신 직접 container를 사용
-  const svg = d3.select(this.container)
-    .append('svg')
-    .attr('width', this.config.width || 600)
-    .attr('height', this.config.height || 400);
-
-
-  const defs = svg.append('defs');
+    // 새 SVG 생성 - select 대신 직접 container를 사용
+    const svg = d3.select(this.container)
+      .append('svg')
+      .attr('width', this.config.width || 600)
+      .attr('height', this.config.height || 400);
 
 
-  const margin = this.config.margin || { top: 20, right: 20, bottom: 40, left: 60 };
-  const chartArea = svg.append('g')
-    .attr('class', 'chart-area')
-    .attr('transform', `translate(${margin.left}, ${margin.top})`);
+    const defs = svg.append('defs');
+
+
+    const margin = this.config.margin || { top: 20, right: 20, bottom: 40, left: 60 };
+    const chartArea = svg.append('g')
+      .attr('class', 'chart-area')
+      .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
 
 
-  return {
-    container: this.container,
-    svg,
-    chartArea,
-    defs
-  };
-}
+    return {
+      container: this.container,
+      svg,
+      chartArea,
+      defs
+    };
+  }
 
   /**
    * 개별 렌더러들 초기화
@@ -139,25 +139,25 @@ private initializeRenderContext(): RenderContext {
     const width = this.config.width || 600;
 
     switch (position) {
-      case 'LEFT':
-        return margin.left;
-      case 'RIGHT':
-        return width - margin.right;
-      case 'CENTER':
-      default:
-        return width / 2;
+    case 'LEFT':
+      return margin.left;
+    case 'RIGHT':
+      return width - margin.right;
+    case 'CENTER':
+    default:
+      return width / 2;
     }
   }
 
   private calculateTitleAnchor(position?: string): string {
     switch (position) {
-      case 'LEFT':
-        return 'start';
-      case 'RIGHT':
-        return 'end';
-      case 'CENTER':
-      default:
-        return 'middle';
+    case 'LEFT':
+      return 'start';
+    case 'RIGHT':
+      return 'end';
+    case 'CENTER':
+    default:
+      return 'middle';
     }
   }
 

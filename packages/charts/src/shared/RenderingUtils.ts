@@ -190,8 +190,8 @@ export class RenderingUtils {
     const d3Color = d3.color(color);
     if (d3Color && 'brighter' in d3Color) {
       return factor > 0
-        ? (d3Color as any).brighter(factor).toString()
-        : (d3Color as any).darker(-factor).toString();
+        ? (d3Color as d3.RGBColor | d3.HSLColor).brighter(factor).toString()
+        : (d3Color as d3.RGBColor | d3.HSLColor).darker(-factor).toString();
     }
     return color;
   }
@@ -217,20 +217,20 @@ export class RenderingUtils {
   /**
    * 접근성: ARIA 라벨 생성
    */
-  static createAriaLabel(data: any, type: string): string {
+  static createAriaLabel(data: ProcessedDataPoint, type: string): string {
     const value = data.y || data.value || 0;
     const group = data.group || 'Data';
     const date = data.parsedDate ? data.parsedDate.toLocaleDateString() : '';
 
     switch (type) {
-      case 'line':
-        return `${group} line chart point: ${value}${date ? ` on ${date}` : ''}`;
-      case 'bar':
-        return `${group} bar: ${value}${date ? ` for ${date}` : ''}`;
-      case 'pie':
-        return `${group} pie slice: ${value}`;
-      default:
-        return `${group}: ${value}`;
+    case 'line':
+      return `${group} line chart point: ${value}${date ? ` on ${date}` : ''}`;
+    case 'bar':
+      return `${group} bar: ${value}${date ? ` for ${date}` : ''}`;
+    case 'pie':
+      return `${group} pie slice: ${value}`;
+    default:
+      return `${group}: ${value}`;
     }
   }
 
@@ -241,7 +241,6 @@ export class RenderingUtils {
     event: MouseEvent,
     tooltipWidth: number,
     tooltipHeight: number,
-    containerBounds: DOMRect
   ): { x: number; y: number } {
     let x = event.clientX + 10;
     let y = event.clientY - 10;

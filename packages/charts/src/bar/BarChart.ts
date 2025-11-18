@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { BaseChart } from '@beaubrain/chart-lib-core';
 import { DataProcessor, ScaleManager, EventManager } from '../shared';
 import type {
@@ -338,7 +340,7 @@ export class BarChart extends BaseChart {
     if (!this.renderContext) return;
 
     this.renderContext.svg.selectAll('.legend-item')
-      .on('click', (event, d: any) => {
+      .on('click', (event: any) => {
         const group = event.currentTarget.getAttribute('data-group');
         if (group) {
           this.toggleGroup(group);

@@ -27,11 +27,11 @@ export class ChartFactory {
     config: BaseChartConfig
   ) {
     switch (type) {
-      case 'line':
-        return new LineChart(container, config as LineChartConfig);
+    case 'line':
+      return new LineChart(container, config as LineChartConfig);
 
-      case 'bar':
-        return new BarChart(container, config as BarChartConfig);
+    case 'bar':
+      return new BarChart(container, config as BarChartConfig);
 
       // case 'pie':
       //   return new PieChart(container, config as PieChartConfig);
@@ -39,8 +39,8 @@ export class ChartFactory {
       // case 'area':
       //   return new AreaChart(container, config as AreaChartConfig);
 
-      default:
-        throw new Error(`Unsupported chart type: ${type}`);
+    default:
+      throw new Error(`Unsupported chart type: ${type}`);
     }
   }
 
@@ -171,7 +171,7 @@ export class ChartFactory {
       .render();
 
     const updateInterval = config.updateInterval || 1000;
-    let data = [...initialData];
+    const data = [...initialData];
 
     // 실시간 업데이트 인터벌 설정
     const intervalId = setInterval(() => {
@@ -216,7 +216,7 @@ export class ChartFactory {
     }>,
     layout: 'grid' | 'horizontal' | 'vertical' = 'grid'
   ) {
-    const chartInstances: any[] = [];
+    const chartInstances: unknown[] = [];
 
     charts.forEach((chartConfig, index) => {
       const chartContainer = document.createElement('div');
@@ -224,34 +224,35 @@ export class ChartFactory {
 
       // 레이아웃 스타일 적용
       switch (layout) {
-        case 'grid':
-          const cols = Math.ceil(Math.sqrt(charts.length));
-          chartContainer.style.cssText = `
+      case 'grid': {
+        const cols = Math.ceil(Math.sqrt(charts.length));
+        chartContainer.style.cssText = `
             display: inline-block;
             width: ${100 / cols}%;
             height: 300px;
             padding: 10px;
             box-sizing: border-box;
           `;
-          break;
-        case 'horizontal':
-          chartContainer.style.cssText = `
+        break;
+      }
+      case 'horizontal':
+        chartContainer.style.cssText = `
             display: inline-block;
             width: ${100 / charts.length}%;
             height: 400px;
             padding: 10px;
             box-sizing: border-box;
           `;
-          break;
-        case 'vertical':
-          chartContainer.style.cssText = `
+        break;
+      case 'vertical':
+        chartContainer.style.cssText = `
             width: 100%;
             height: 300px;
             margin-bottom: 20px;
             padding: 10px;
             box-sizing: border-box;
           `;
-          break;
+        break;
       }
 
       // 제목 추가
@@ -282,7 +283,7 @@ export class ChartFactory {
 
     return {
       charts: chartInstances,
-      destroy: () => chartInstances.forEach(chart => chart.destroy())
+      destroy: () => chartInstances.forEach(chart => (chart as { destroy: () => void }).destroy())
     };
   }
 
@@ -344,7 +345,7 @@ export class ChartFactory {
    * 차트 내보내기 기능
    */
   static exportChart(
-    chart: any,
+    chart: unknown & { container?: HTMLElement },
     format: 'png' | 'svg' | 'pdf' = 'png',
     filename?: string
   ): void {
@@ -357,15 +358,15 @@ export class ChartFactory {
     const name = filename || `chart-${Date.now()}`;
 
     switch (format) {
-      case 'svg':
-        this.downloadSVG(svg, `${name}.svg`);
-        break;
-      case 'png':
-        this.downloadPNG(svg, `${name}.png`);
-        break;
-      case 'pdf':
-        console.warn('PDF export not implemented yet');
-        break;
+    case 'svg':
+      this.downloadSVG(svg, `${name}.svg`);
+      break;
+    case 'png':
+      this.downloadPNG(svg, `${name}.png`);
+      break;
+    case 'pdf':
+      console.warn('PDF export not implemented yet');
+      break;
     }
   }
 

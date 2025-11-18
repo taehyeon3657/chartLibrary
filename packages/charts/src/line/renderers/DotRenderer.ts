@@ -1,8 +1,8 @@
-import { LineChartConfig } from "@beaubrain/chart-lib-types";
-import { CoordinateCalculator } from "../CoordinateCalculator";
-import { LineChartState } from "../LineChartState";
-import { RenderContext } from "../LineChart";
-import { RenderingUtils } from "../../shared";
+import { LineChartConfig } from '@beaubrain/chart-lib-types';
+import { CoordinateCalculator } from '../CoordinateCalculator';
+import { LineChartState } from '../LineChartState';
+import { RenderContext } from '../LineChart';
+import { RenderingUtils } from '../../shared';
 import * as d3 from 'd3';
 
 /**
@@ -43,8 +43,8 @@ export class DotRenderer {
       const dotColor = this.config.dotColors?.[groupIndex] || color;
 
       const darkerStroke = d3.color(dotColor)
-  ? d3.hsl(dotColor).darker(0.7).toString()
-  : dotColor;
+        ? d3.hsl(dotColor).darker(0.7).toString()
+        : dotColor;
 
       const dotsGroup = this.context.chartArea.append('g')
         .attr('class', `dots-group dots-group-${this.sanitizeClassName(group)}`);

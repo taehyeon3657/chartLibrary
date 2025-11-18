@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { ChartConfig } from '../base/config';
 
 export interface BarChartConfig extends ChartConfig {

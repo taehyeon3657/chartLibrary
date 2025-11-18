@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import type {
   ProcessedDataPoint,
 } from '@beaubrain/chart-lib-types';
@@ -171,7 +172,7 @@ export class LineChartState {
   getDataExtent(): {
     xDomain: [Date, Date] | [number, number];
     yDomain: [number, number];
-  } {
+    } {
     if (this.data.length === 0) {
       return {
         xDomain: [new Date(), new Date()],
@@ -192,28 +193,28 @@ export class LineChartState {
     let xDomain: [Date, Date] | [number, number];
 
     switch (this.scaleType) {
-      case 'time':
-        const dates = visibleData
-          .map(d => d.parsedDate)
-          .filter(d => d && !isNaN(d.getTime())) as Date[];
-        xDomain = [
-          new Date(Math.min(...dates.map(d => d.getTime()))),
-          new Date(Math.max(...dates.map(d => d.getTime())))
-        ];
-        break;
+    case 'time':
+      const dates = visibleData
+        .map(d => d.parsedDate)
+        .filter(d => d && !isNaN(d.getTime())) as Date[];
+      xDomain = [
+        new Date(Math.min(...dates.map(d => d.getTime()))),
+        new Date(Math.max(...dates.map(d => d.getTime())))
+      ];
+      break;
 
-      case 'linear':
-        const xNumbers = visibleData.map(d => d.x as number);
-        xDomain = [
-          Math.min(...xNumbers),
-          Math.max(...xNumbers)
-        ];
-        break;
+    case 'linear':
+      const xNumbers = visibleData.map(d => d.x as number);
+      xDomain = [
+        Math.min(...xNumbers),
+        Math.max(...xNumbers)
+      ];
+      break;
 
-      case 'ordinal':
-        // 서수형의 경우 인덱스 기반 도메인
-        xDomain = [0, visibleData.length - 1];
-        break;
+    case 'ordinal':
+      // 서수형의 경우 인덱스 기반 도메인
+      xDomain = [0, visibleData.length - 1];
+      break;
     }
 
     return { xDomain, yDomain };
@@ -241,7 +242,7 @@ export class LineChartState {
     visibleGroups: string[];
     scaleType: string;
     isRendered: boolean;
-  } {
+    } {
     return {
       dataCount: this.data.length,
       groups: [...this.groups],

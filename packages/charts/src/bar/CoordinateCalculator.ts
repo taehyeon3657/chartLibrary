@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as d3 from 'd3';
 import type { BarChartConfig, ProcessedDataPoint } from '@beaubrain/chart-lib-types';
 import type { BarChartState } from './BarChartState';
@@ -103,7 +105,7 @@ export class CoordinateCalculator {
     return positions;
   }
 
-private calculateGroupedBarPositions(): Map<string, BarPosition[]> {
+  private calculateGroupedBarPositions(): Map<string, BarPosition[]> {
     const scales = this.state.getScales();
     if (!scales) return new Map();
 
@@ -178,7 +180,7 @@ private calculateGroupedBarPositions(): Map<string, BarPosition[]> {
     return positions;
   }
 
-private calculateStackedBarPositions(): Map<string, BarPosition[]> {
+  private calculateStackedBarPositions(): Map<string, BarPosition[]> {
     const scales = this.state.getScales();
     if (!scales) return new Map();
 
@@ -336,7 +338,7 @@ private calculateStackedBarPositions(): Map<string, BarPosition[]> {
     innerWidth: number;
     innerHeight: number;
     margin: { top: number; right: number; bottom: number; left: number };
-  } {
+    } {
     const scales = this.state.getScales();
     const margin = this.config.margin || { top: 20, right: 20, bottom: 40, left: 60 };
 

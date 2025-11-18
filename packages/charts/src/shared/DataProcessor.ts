@@ -20,6 +20,7 @@ export class DataProcessor {
     data: ChartDataPoint[],
     options: DataProcessingOptions = {}
   ): ProcessedDataPoint[] {
+
     const {
       xAccessor = (d: ChartDataPoint) => (d.date ?? d.x ?? d.timestamp ?? 0),
       yAccessor = (d: ChartDataPoint) => d.value ?? d.y ?? 0,
@@ -31,7 +32,7 @@ export class DataProcessor {
     } = options;
 
     // 1. 기본 변환
-    let processed = data.map((d, index): ProcessedDataPoint => {
+    let processed = data.map((d): ProcessedDataPoint => {
       const xValue = xAccessor(d);
       const yValue = yAccessor(d);
       const groupValue = groupAccessor(d);
@@ -120,7 +121,7 @@ export class DataProcessor {
   /**
    * 기본 날짜 파서
    */
-  private static defaultDateParser = (value: any): Date => {
+  private static defaultDateParser = (value: unknown): Date => {
     if (value instanceof Date) return value;
     if (typeof value === 'string') return new Date(value);
     if (typeof value === 'number') return new Date(value);
@@ -130,7 +131,7 @@ export class DataProcessor {
   /**
    * 다양한 값을 Date로 변환
    */
-  private static parseToDate(value: any, parser: (value: any) => Date): Date {
+  private static parseToDate(value: unknown, parser: (value: unknown) => Date): Date {
     try {
       return parser(value);
     } catch {
@@ -151,13 +152,13 @@ export class DataProcessor {
 
     return [...data].sort((a, b) => {
       switch (sortBy) {
-        case 'x':
-        case 'date':
-          return a.parsedDate.getTime() - b.parsedDate.getTime();
-        case 'y':
-          return a.y - b.y;
-        default:
-          return 0;
+      case 'x':
+      case 'date':
+        return a.parsedDate.getTime() - b.parsedDate.getTime();
+      case 'y':
+        return a.y - b.y;
+      default:
+        return 0;
       }
     });
   }

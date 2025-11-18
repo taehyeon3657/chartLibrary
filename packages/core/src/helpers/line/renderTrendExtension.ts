@@ -15,8 +15,6 @@ export const renderTrendExtension = (
   enableAnimation: boolean,
   animationDuration: number
 ): void => {
-  const { xScale, yScale } = scales;
-
   // 마지막 N개 포인트로 트렌드 계산
   const recentPoints = groupData.slice(-analysisPoints);
   if (recentPoints.length < 2) return;

@@ -209,30 +209,30 @@ export class EventManager extends EventEmitter<AllChartEvents> {
     if (!this.options.enableKeyboard) return;
 
     switch (event.code) {
-      case 'Enter':
-      case 'Space':
-        if (this.state.hoveredData) {
-          // 키보드로 클릭 시뮬레이션
-          this.emit('chartClick', {
-            data: this.state.hoveredData.originalData || this.state.hoveredData,
-            index: this.data.indexOf(this.state.hoveredData),
-            group: this.state.hoveredData.group,
-            originalEvent: event as any
-          });
-        }
-        event.preventDefault();
-        break;
+    case 'Enter':
+    case 'Space':
+      if (this.state.hoveredData) {
+        // 키보드로 클릭 시뮬레이션
+        this.emit('chartClick', {
+          data: this.state.hoveredData.originalData || this.state.hoveredData,
+          index: this.data.indexOf(this.state.hoveredData),
+          group: this.state.hoveredData.group,
+          originalEvent: event as unknown as MouseEvent
+        });
+      }
+      event.preventDefault();
+      break;
 
-      case 'Escape':
-        this.clearSelection();
-        event.preventDefault();
-        break;
+    case 'Escape':
+      this.clearSelection();
+      event.preventDefault();
+      break;
 
-      case 'ArrowLeft':
-      case 'ArrowRight':
-        this.navigateData(event.code === 'ArrowRight' ? 1 : -1);
-        event.preventDefault();
-        break;
+    case 'ArrowLeft':
+    case 'ArrowRight':
+      this.navigateData(event.code === 'ArrowRight' ? 1 : -1);
+      event.preventDefault();
+      break;
     }
   }
 
@@ -267,7 +267,7 @@ export class EventManager extends EventEmitter<AllChartEvents> {
           data: clickedData.originalData || clickedData,
           index: this.data.indexOf(clickedData),
           group: clickedData.group,
-          originalEvent: event as any
+          originalEvent: event as unknown as MouseEvent
         });
       }
     }
@@ -277,8 +277,10 @@ export class EventManager extends EventEmitter<AllChartEvents> {
    * 마우스/터치 위치에서 데이터 찾기 (오버라이드 필요)
    * 각 차트 타입별로 구체적인 히트 테스트 로직 구현
    */
-  protected findDataAtPosition(event: { clientX: number; clientY: number }): ProcessedDataPoint | null {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  protected findDataAtPosition(_event: { clientX: number; clientY: number }): ProcessedDataPoint | null {
     // 기본 구현 - 실제로는 각 차트에서 오버라이드
+
     return null;
   }
 
@@ -334,7 +336,7 @@ export class EventManager extends EventEmitter<AllChartEvents> {
         data: newData.originalData || newData,
         index: currentIndex,
         group: newData.group,
-        originalEvent: new KeyboardEvent('keydown') as any
+        originalEvent: new KeyboardEvent('keydown') as unknown as MouseEvent
       });
     }
   }

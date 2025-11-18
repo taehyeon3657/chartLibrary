@@ -195,7 +195,7 @@ export class BarChartState {
   getDataExtent(): {
     xDomain: string[];
     yDomain: [number, number];
-  } {
+    } {
     if (this.data.length === 0) {
       return {
         xDomain: [],
@@ -295,7 +295,7 @@ export class BarChartState {
     visibleGroups: string[];
     scaleType: string;
     isRendered: boolean;
-  } {
+    } {
     return {
       dataCount: this.data.length,
       groups: [...this.groups],

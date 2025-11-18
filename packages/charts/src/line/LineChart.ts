@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { BaseChart } from '@beaubrain/chart-lib-core';
 import { DataProcessor, ScaleManager, EventManager } from '../shared';
 import type {
@@ -61,7 +63,7 @@ export class LineChart extends BaseChart {
       legendPosition: 'top'
     };
 
-     // Title과 Legend가 모두 top일 때 margin.top 자동 증가
+    // Title과 Legend가 모두 top일 때 margin.top 자동 증가
     const mergedConfig = { ...defaultConfig, ...config };
     if (mergedConfig.title &&
         (mergedConfig.legendPosition === 'top' || !mergedConfig.legendPosition) &&
@@ -147,16 +149,16 @@ export class LineChart extends BaseChart {
       return this;
     }
 
-      console.log('🚀 Calling renderer.render()...');
+    console.log('🚀 Calling renderer.render()...');
 
 
     // 렌더링 실행
-  try {
-    this.renderContext = this.renderer.render();
-  } catch (error) {
-    console.error('❌ Renderer.render() failed:', error);
-    throw error;
-  }
+    try {
+      this.renderContext = this.renderer.render();
+    } catch (error) {
+      console.error('❌ Renderer.render() failed:', error);
+      throw error;
+    }
 
     // 상호작용 설정
     this.setupInteractions();
@@ -260,12 +262,12 @@ export class LineChart extends BaseChart {
     };
 
     switch (scaleType) {
-      case 'time':
-        return this.scaleManager.createTimeScales(options);
-      case 'linear':
-        return this.scaleManager.createLinearScales(options);
-      case 'ordinal':
-        return this.scaleManager.createOrdinalScales(options);
+    case 'time':
+      return this.scaleManager.createTimeScales(options);
+    case 'linear':
+      return this.scaleManager.createLinearScales(options);
+    case 'ordinal':
+      return this.scaleManager.createOrdinalScales(options);
     }
   }
 
@@ -343,7 +345,7 @@ export class LineChart extends BaseChart {
     if (!this.renderContext) return;
 
     this.renderContext.svg.selectAll('.legend-item')
-      .on('click', (event, d: any) => {
+      .on('click', (event: any) => {
         const group = event.currentTarget.getAttribute('data-group');
         if (group) {
           this.toggleGroup(group);

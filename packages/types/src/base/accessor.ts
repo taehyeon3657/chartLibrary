@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DataPoint } from './data';
 
 // 데이터 접근자 함수들의 타입 정의

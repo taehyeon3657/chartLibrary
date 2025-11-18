@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as d3 from 'd3';
 import { RenderingUtils } from '../../shared';
 import type { BarChartConfig } from '@beaubrain/chart-lib-types';
@@ -75,7 +76,7 @@ export class BarRenderer {
 
       // 값 표시
       if (this.config.showValues) {
-        this.renderValues(barGroup, positions, barColor);
+        this.renderValues(barGroup, positions);
       }
     });
   }
@@ -119,7 +120,6 @@ export class BarRenderer {
   private renderValues(
     barGroup: d3.Selection<SVGGElement, unknown, null, undefined>,
     positions: any[],
-    color: string
   ): void {
     const orientation = this.config.orientation || 'vertical';
     const valuePosition = this.config.valuePosition || 'top';
@@ -144,15 +144,15 @@ export class BarRenderer {
         .attr('x', d => d.x + d.width / 2)
         .attr('y', d => {
           switch (valuePosition) {
-            case 'top':
-            case 'outside':
-              return d.y - 5;
-            case 'middle':
-              return d.y + d.height / 2;
-            case 'bottom':
-              return d.y + d.height - 5;
-            default:
-              return d.y - 5;
+          case 'top':
+          case 'outside':
+            return d.y - 5;
+          case 'middle':
+            return d.y + d.height / 2;
+          case 'bottom':
+            return d.y + d.height - 5;
+          default:
+            return d.y - 5;
           }
         })
         .attr('dy', valuePosition === 'middle' ? '0.35em' : '0');
@@ -161,15 +161,15 @@ export class BarRenderer {
       values
         .attr('x', d => {
           switch (valuePosition) {
-            case 'top':
-            case 'outside':
-              return d.x + d.width + 5;
-            case 'middle':
-              return d.x + d.width / 2;
-            case 'bottom':
-              return d.x + 5;
-            default:
-              return d.x + d.width + 5;
+          case 'top':
+          case 'outside':
+            return d.x + d.width + 5;
+          case 'middle':
+            return d.x + d.width / 2;
+          case 'bottom':
+            return d.x + 5;
+          default:
+            return d.x + d.width + 5;
           }
         })
         .attr('y', d => d.y + d.height / 2)

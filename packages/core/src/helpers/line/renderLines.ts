@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as d3 from 'd3';
 import { LineChartConfig, ProcessedDataPoint } from '@beaubrain/chart-lib-types';
 import { Scales } from '../../types/base';
@@ -116,6 +118,7 @@ export const renderLines = (
   });
 };
 
+
 function renderAreaFill(g: d3.Selection<SVGGElement, unknown, null, undefined>, defs: any, groupData: ProcessedDataPoint[], group: string, color: any, area: any, areaFillOpacity: number, enableAnimation: any, animationDuration: any, arg9: number) {
-    throw new Error('Function not implemented.');
+  throw new Error('Function not implemented.');
 }

@@ -1,7 +1,7 @@
-import { LineChartConfig } from "@beaubrain/chart-lib-types";
-import { CoordinateCalculator } from "../CoordinateCalculator";
-import { LineChartState } from "../LineChartState";
-import { RenderContext } from "../LineChart";
+import { LineChartConfig } from '@beaubrain/chart-lib-types';
+import { CoordinateCalculator } from '../CoordinateCalculator';
+import { LineChartState } from '../LineChartState';
+import { RenderContext } from '../LineChart';
 
 /**
  * 축 렌더링만 담당하는 클래스

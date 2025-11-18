@@ -87,7 +87,7 @@ export class ScaleManager {
     return this;
   }
 
- /**
+  /**
    * 시간 스케일 생성 (Line Chart 기본)
    */
   createTimeScales(options: ScaleOptions = {}): TimeChartScales {
@@ -164,18 +164,18 @@ export class ScaleManager {
     const scaleType = options.xScaleType || this.detectScaleType();
 
     switch (scaleType) {
-      case 'time':
-        return this.createTimeScales(options);
-      case 'linear':
-        return this.createLinearScales(options);
-      case 'ordinal':
-        return this.createOrdinalScales(options);
-      default:
-        return this.createTimeScales(options);
+    case 'time':
+      return this.createTimeScales(options);
+    case 'linear':
+      return this.createLinearScales(options);
+    case 'ordinal':
+      return this.createOrdinalScales(options);
+    default:
+      return this.createTimeScales(options);
     }
   }
 
-    /**
+  /**
    * 데이터 기반 스케일 타입 자동 감지
    */
   private detectScaleType(): 'time' | 'linear' | 'ordinal' {
@@ -198,7 +198,7 @@ export class ScaleManager {
     return 'ordinal';
   }
 
-   /**
+  /**
    * 시간 도메인 계산
    */
   private calculateTimeDomain(): [Date, Date] {
