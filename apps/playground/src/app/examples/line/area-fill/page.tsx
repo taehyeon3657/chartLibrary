@@ -1,13 +1,14 @@
-'use client'
+'use client';
 
-import { LineChart } from '@beaubrain/chart-lib-react'
-import { ExampleLayout } from '@/components/ExampleLayout'
-import { ChartContainer } from '@/components/ChartContainer'
-import { CodeBlock } from '@/components/CodeBlock'
-import { generateMultiSeriesData } from '@/utils/generateData'
+import React from 'react';
+import { LineChart } from '@beaubrain/chart-lib-react';
+import { ExampleLayout } from '@/components/ExampleLayout';
+import { ChartContainer } from '@/components/ChartContainer';
+import { CodeBlock } from '@/components/CodeBlock';
+import { generateMultiSeriesData } from '@/utils/generateData';
 
 export default function AreaFillExample() {
-  const data = generateMultiSeriesData(30, ['Revenue', 'Costs'])
+  const data = generateMultiSeriesData(30, ['Revenue', 'Costs']);
 
   const code = `import { LineChart } from '@beaubrain/chart-lib-react'
 
@@ -22,7 +23,7 @@ export default function AreaFillExample() {
     showLegend: true,
     lineWidth: 2
   }}
-/>`
+/>`;
 
   return (
     <ExampleLayout
@@ -64,5 +65,5 @@ export default function AreaFillExample() {
         <CodeBlock code={code} />
       </div>
     </ExampleLayout>
-  )
+  );
 }

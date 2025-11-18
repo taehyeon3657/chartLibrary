@@ -1,26 +1,27 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { BarChart } from '@beaubrain/chart-lib-react'
-import { ExampleLayout } from '@/components/ExampleLayout'
-import { ChartContainer } from '@/components/ChartContainer'
-import { CodeBlock } from '@/components/CodeBlock'
-import { generateBarChartData, generateStackedBarData } from '@/utils/generateData'
+import React from 'react';
+import { useState } from 'react';
+import { BarChart } from '@beaubrain/chart-lib-react';
+import { ExampleLayout } from '@/components/ExampleLayout';
+import { ChartContainer } from '@/components/ChartContainer';
+import { CodeBlock } from '@/components/CodeBlock';
+import { generateBarChartData, generateStackedBarData } from '@/utils/generateData';
 
 export default function AnimationsExample() {
-  const categories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
-  const [data, setData] = useState(generateBarChartData(categories, 100, 25))
+  const categories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+  const [data, setData] = useState(generateBarChartData(categories, 100, 25));
 
-  const series = ['Series A', 'Series B', 'Series C']
-  const [stackedData, setStackedData] = useState(generateStackedBarData(categories.slice(0, 4), series))
+  const series = ['Series A', 'Series B', 'Series C'];
+  const [stackedData, setStackedData] = useState(generateStackedBarData(categories.slice(0, 4), series));
 
   const regenerateData = () => {
-    setData(generateBarChartData(categories, 100, 30))
-  }
+    setData(generateBarChartData(categories, 100, 30));
+  };
 
   const regenerateStackedData = () => {
-    setStackedData(generateStackedBarData(categories.slice(0, 4), series))
-  }
+    setStackedData(generateStackedBarData(categories.slice(0, 4), series));
+  };
 
   const code = `import { BarChart } from '@beaubrain/chart-lib-react'
 
@@ -33,7 +34,7 @@ export default function AnimationsExample() {
     animationDuration: 800,
     showValues: true
   }}
-/>`
+/>`;
 
   return (
     <ExampleLayout
@@ -120,5 +121,5 @@ export default function AnimationsExample() {
         <CodeBlock code={code} />
       </div>
     </ExampleLayout>
-  )
+  );
 }

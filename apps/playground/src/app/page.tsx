@@ -1,5 +1,6 @@
-import Link from 'next/link'
-import { BarChart3, LineChart as LineChartIcon, TrendingUp } from 'lucide-react'
+import React from 'react';
+import Link from 'next/link';
+import { BarChart3, LineChart as LineChartIcon, TrendingUp } from 'lucide-react';
 
 export default function Home() {
   const chartTypes = [
@@ -19,7 +20,7 @@ export default function Home() {
       gradient: 'from-purple-500 to-pink-500',
       examples: 10
     }
-  ]
+  ];
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
@@ -52,7 +53,7 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-8 pb-24">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {chartTypes.map((chartType) => {
-            const Icon = chartType.icon
+            const Icon = chartType.icon;
             return (
               <Link
                 key={chartType.href}
@@ -60,9 +61,9 @@ export default function Home() {
                 className="group relative"
               >
                 <div className={`absolute inset-0 bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl -z-10 ${chartType.gradient}`}
-                     style={{
-                       backgroundImage: `linear-gradient(to right, var(--tw-gradient-stops))`,
-                     }} />
+                  style={{
+                    backgroundImage: 'linear-gradient(to right, var(--tw-gradient-stops))',
+                  }} />
 
                 <div className="relative bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-slate-200
                               group-hover:shadow-2xl group-hover:scale-[1.02] transition-all duration-300">
@@ -94,7 +95,7 @@ export default function Home() {
                   </div>
                 </div>
               </Link>
-            )
+            );
           })}
         </div>
       </div>
@@ -120,5 +121,5 @@ export default function Home() {
         </div>
       </div>
     </main>
-  )
+  );
 }

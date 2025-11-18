@@ -1,15 +1,16 @@
-'use client'
+'use client';
 
-import { BarChart } from '@beaubrain/chart-lib-react'
-import { ExampleLayout } from '@/components/ExampleLayout'
-import { ChartContainer } from '@/components/ChartContainer'
-import { CodeBlock } from '@/components/CodeBlock'
-import { generateStackedBarData } from '@/utils/generateData'
+import React from 'react';
+import { BarChart } from '@beaubrain/chart-lib-react';
+import { ExampleLayout } from '@/components/ExampleLayout';
+import { ChartContainer } from '@/components/ChartContainer';
+import { CodeBlock } from '@/components/CodeBlock';
+import { generateStackedBarData } from '@/utils/generateData';
 
 export default function StackedExample() {
-  const categories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
-  const series = ['Desktop', 'Mobile', 'Tablet']
-  const data = generateStackedBarData(categories, series)
+  const categories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+  const series = ['Desktop', 'Mobile', 'Tablet'];
+  const data = generateStackedBarData(categories, series);
 
   const code = `import { BarChart } from '@beaubrain/chart-lib-react'
 
@@ -23,7 +24,7 @@ export default function StackedExample() {
     legendPosition: 'top',
     showValues: false
   }}
-/>`
+/>`;
 
   return (
     <ExampleLayout
@@ -83,5 +84,5 @@ export default function StackedExample() {
         <CodeBlock code={code} />
       </div>
     </ExampleLayout>
-  )
+  );
 }

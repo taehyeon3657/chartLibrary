@@ -1,5 +1,6 @@
-import Link from 'next/link'
-import { ArrowLeft, BarChart3, Sparkles, TrendingUp, Palette, Zap, Eye, Layers, Grid3x3, Sliders, Activity, Play } from 'lucide-react'
+import React from 'react';
+import Link from 'next/link';
+import { ArrowLeft, BarChart3, Sparkles,  Palette, Zap, Eye, Layers, Grid3x3, Sliders, Activity } from 'lucide-react';
 
 export default function BarChartsPage() {
   const examples = [
@@ -73,7 +74,7 @@ export default function BarChartsPage() {
       icon: Palette,
       color: 'rose'
     },
-  ]
+  ];
 
   const colorMap: Record<string, string> = {
     blue: 'from-blue-500 to-cyan-500',
@@ -88,7 +89,7 @@ export default function BarChartsPage() {
     rose: 'from-rose-500 to-pink-500',
     orange: 'from-orange-500 to-red-500',
     red: 'from-red-500 to-pink-500'
-  }
+  };
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
@@ -116,8 +117,8 @@ export default function BarChartsPage() {
       <div className="max-w-7xl mx-auto px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {examples.map((example) => {
-            const Icon = example.icon
-            const gradient = colorMap[example.color]
+            const Icon = example.icon;
+            const gradient = colorMap[example.color];
 
             return (
               <Link
@@ -151,10 +152,10 @@ export default function BarChartsPage() {
                   </div>
                 </div>
               </Link>
-            )
+            );
           })}
         </div>
       </div>
     </main>
-  )
+  );
 }

@@ -1,13 +1,14 @@
-'use client'
+'use client';
 
-import { LineChart } from '@beaubrain/chart-lib-react'
-import { ExampleLayout } from '@/components/ExampleLayout'
-import { ChartContainer } from '@/components/ChartContainer'
-import { CodeBlock } from '@/components/CodeBlock'
-import { generateMultiSeriesData } from '@/utils/generateData'
+import React from 'react';
+import { LineChart } from '@beaubrain/chart-lib-react';
+import { ExampleLayout } from '@/components/ExampleLayout';
+import { ChartContainer } from '@/components/ChartContainer';
+import { CodeBlock } from '@/components/CodeBlock';
+import { generateMultiSeriesData } from '@/utils/generateData';
 
 export default function PresetsExample() {
-  const data = generateMultiSeriesData(30, ['Data'])
+  const data = generateMultiSeriesData(30, ['Data']);
 
   const code = `import { LineChart } from '@beaubrain/chart-lib-react'
 
@@ -21,7 +22,7 @@ export default function PresetsExample() {
 <LineChart data={data} preset="presentation" />
 
 // Dashboard preset - Optimized for dashboards
-<LineChart data={data} preset="dashboard" />`
+<LineChart data={data} preset="dashboard" />`;
 
   return (
     <ExampleLayout
@@ -66,5 +67,5 @@ export default function PresetsExample() {
         <CodeBlock code={code} />
       </div>
     </ExampleLayout>
-  )
+  );
 }

@@ -1,53 +1,54 @@
-'use client'
+'use client';
 
-import { useState, useEffect, useRef } from 'react'
-import { LineChart, LineChartRef } from '@beaubrain/chart-lib-react'
-import { ExampleLayout } from '@/components/ExampleLayout'
-import { ChartContainer } from '@/components/ChartContainer'
-import { CodeBlock } from '@/components/CodeBlock'
-import { ChartDataPoint } from '@beaubrain/chart-lib-types'
+import React from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { LineChart, LineChartRef } from '@beaubrain/chart-lib-react';
+import { ExampleLayout } from '@/components/ExampleLayout';
+import { ChartContainer } from '@/components/ChartContainer';
+import { CodeBlock } from '@/components/CodeBlock';
+import { ChartDataPoint } from '@beaubrain/chart-lib-types';
 
 export default function RealtimeExample() {
   const [data, setData] = useState<ChartDataPoint[]>(() => {
-    const initial: ChartDataPoint[] = []
-    const now = Date.now()
+    const initial: ChartDataPoint[] = [];
+    const now = Date.now();
     for (let i = 0; i < 30; i++) {
       initial.push({
         date: new Date(now - (30 - i) * 1000),
         value: 50 + Math.random() * 50
-      })
+      });
     }
-    return initial
-  })
+    return initial;
+  });
 
-  const [isRunning, setIsRunning] = useState(false)
-  const chartRef = useRef<LineChartRef>(null)
+  const [isRunning, setIsRunning] = useState(false);
+  const chartRef = useRef<LineChartRef>(null);
 
   useEffect(() => {
-    if (!isRunning) return
+    if (!isRunning) return;
 
     const interval = setInterval(() => {
       setData(prevData => {
-        const newData = [...prevData]
-        const lastValue = newData[newData.length - 1].value || 50
+        const newData = [...prevData];
+        const lastValue = newData[newData.length - 1].value || 50;
 
         // Add new data point
         newData.push({
           date: new Date(),
           value: Math.max(0, lastValue + (Math.random() - 0.5) * 20)
-        })
+        });
 
         // Keep only last 30 points
         if (newData.length > 30) {
-          newData.shift()
+          newData.shift();
         }
 
-        return newData
-      })
-    }, 1000)
+        return newData;
+      });
+    }, 1000);
 
-    return () => clearInterval(interval)
-  }, [isRunning])
+    return () => clearInterval(interval);
+  }, [isRunning]);
 
   const code = `import { useState, useEffect } from 'react'
 import { LineChart } from '@beaubrain/chart-lib-react'
@@ -87,7 +88,7 @@ function RealtimeChart() {
       }}
     />
   )
-}`
+}`;
 
   return (
     <ExampleLayout
@@ -110,17 +111,17 @@ function RealtimeChart() {
 
           <button
             onClick={() => {
-              setData(prevData => {
-                const initial: ChartDataPoint[] = []
-                const now = Date.now()
+              setData(() => {
+                const initial: ChartDataPoint[] = [];
+                const now = Date.now();
                 for (let i = 0; i < 30; i++) {
                   initial.push({
                     date: new Date(now - (30 - i) * 1000),
                     value: 50 + Math.random() * 50
-                  })
+                  });
                 }
-                return initial
-              })
+                return initial;
+              });
             }}
             className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded font-medium"
           >
@@ -158,5 +159,5 @@ function RealtimeChart() {
         <CodeBlock code={code} />
       </div>
     </ExampleLayout>
-  )
+  );
 }

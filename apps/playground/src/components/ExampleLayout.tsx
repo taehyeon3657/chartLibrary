@@ -1,7 +1,8 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { ReactNode } from 'react'
+import React from 'react';
+import Link from 'next/link';
+import { ReactNode } from 'react';
 
 interface ExampleLayoutProps {
   type: 'line' | 'bar' | 'pie' | 'scatter' | 'area'
@@ -30,5 +31,5 @@ export function ExampleLayout({ type, title, description, children }: ExampleLay
         {children}
       </main>
     </div>
-  )
+  );
 }

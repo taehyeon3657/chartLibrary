@@ -1,6 +1,7 @@
-'use client'
+'use client';
 
-import { ReactNode } from 'react'
+import React from 'react';
+import { ReactNode } from 'react';
 
 interface ChartContainerProps {
   title?: string
@@ -13,5 +14,5 @@ export function ChartContainer({ title, children }: ChartContainerProps) {
       {title && <h3 className="text-lg font-semibold mb-4">{title}</h3>}
       {children}
     </div>
-  )
+  );
 }

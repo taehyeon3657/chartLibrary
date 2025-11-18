@@ -1,13 +1,14 @@
-'use client'
+'use client';
 
-import { LineChart } from '@beaubrain/chart-lib-react'
-import { ExampleLayout } from '@/components/ExampleLayout'
-import { ChartContainer } from '@/components/ChartContainer'
-import { CodeBlock } from '@/components/CodeBlock'
-import { generateTimeSeriesData } from '@/utils/generateData'
+import React from 'react';
+import { LineChart } from '@beaubrain/chart-lib-react';
+import { ExampleLayout } from '@/components/ExampleLayout';
+import { ChartContainer } from '@/components/ChartContainer';
+import { CodeBlock } from '@/components/CodeBlock';
+import { generateTimeSeriesData } from '@/utils/generateData';
 
 export default function BasicExample() {
-  const data = generateTimeSeriesData(30, 100, 5)
+  const data = generateTimeSeriesData(30, 100, 5);
 
   const code = `import { LineChart } from '@beaubrain/chart-lib-react'
 
@@ -29,7 +30,7 @@ function MyChart() {
       }}
     />
   )
-}`
+}`;
 
   return (
     <ExampleLayout
@@ -39,15 +40,15 @@ function MyChart() {
     >
       <ChartContainer title="Chart">
         <div className='flex justify-center items-center h-full'>
-        <LineChart
-          data={data}
-          config={{
-            width: 800,
-            height: 400,
-            margin: { top: 20, right: 20, bottom: 40, left: 60 }
-          }}
-        />
-          </div>
+          <LineChart
+            data={data}
+            config={{
+              width: 800,
+              height: 400,
+              margin: { top: 20, right: 20, bottom: 40, left: 60 }
+            }}
+          />
+        </div>
       </ChartContainer>
 
       <div className="mt-8">
@@ -55,5 +56,5 @@ function MyChart() {
         <CodeBlock code={code} />
       </div>
     </ExampleLayout>
-  )
+  );
 }

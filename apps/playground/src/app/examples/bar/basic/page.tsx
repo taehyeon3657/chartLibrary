@@ -1,16 +1,17 @@
-'use client'
+'use client';
 
-import { BarChart } from '@beaubrain/chart-lib-react'
-import { ExampleLayout } from '@/components/ExampleLayout'
-import { ChartContainer } from '@/components/ChartContainer'
-import { CodeBlock } from '@/components/CodeBlock'
-import { generateBarChartData } from '@/utils/generateData'
+import React from 'react';
+import { BarChart } from '@beaubrain/chart-lib-react';
+import { ExampleLayout } from '@/components/ExampleLayout';
+import { ChartContainer } from '@/components/ChartContainer';
+import { CodeBlock } from '@/components/CodeBlock';
+import { generateBarChartData } from '@/utils/generateData';
 
 export default function BasicExample() {
-  const categories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
-  const data = generateBarChartData(categories, 100, 30)
+  const categories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+  const data = generateBarChartData(categories, 100, 30);
 
-  console.log('data: ', data)
+  console.log('data: ', data);
 
   const code = `import { BarChart } from '@beaubrain/chart-lib-react'
 
@@ -32,7 +33,7 @@ function MyChart() {
       }}
     />
   )
-}`
+}`;
 
   return (
     <ExampleLayout
@@ -59,5 +60,5 @@ function MyChart() {
         <CodeBlock code={code} />
       </div>
     </ExampleLayout>
-  )
+  );
 }

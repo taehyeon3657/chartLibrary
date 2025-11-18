@@ -1,15 +1,16 @@
-'use client'
+'use client';
 
-import { BarChart } from '@beaubrain/chart-lib-react'
-import { ExampleLayout } from '@/components/ExampleLayout'
-import { ChartContainer } from '@/components/ChartContainer'
-import { CodeBlock } from '@/components/CodeBlock'
-import { generateMultiSeriesBarData } from '@/utils/generateData'
+import React from 'react';
+import { BarChart } from '@beaubrain/chart-lib-react';
+import { ExampleLayout } from '@/components/ExampleLayout';
+import { ChartContainer } from '@/components/ChartContainer';
+import { CodeBlock } from '@/components/CodeBlock';
+import { generateMultiSeriesBarData } from '@/utils/generateData';
 
 export default function CustomExample() {
-  const categories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
-  const series = ['Sales', 'Target']
-  const data = generateMultiSeriesBarData(categories, series, 100, 20)
+  const categories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+  const series = ['Sales', 'Target'];
+  const data = generateMultiSeriesBarData(categories, series, 100, 20);
 
   const code = `import { BarChart } from '@beaubrain/chart-lib-react'
 
@@ -58,7 +59,7 @@ export default function CustomExample() {
     enableAnimation: true,
     animationDuration: 1000
   }}
-/>`
+/>`;
 
   return (
     <ExampleLayout
@@ -99,5 +100,5 @@ export default function CustomExample() {
         <CodeBlock code={code} />
       </div>
     </ExampleLayout>
-  )
+  );
 }

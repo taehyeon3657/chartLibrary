@@ -1,20 +1,22 @@
-'use client'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+'use client';
 
-import { useState } from 'react'
-import { LineChart } from '@beaubrain/chart-lib-react'
-import { ExampleLayout } from '@/components/ExampleLayout'
-import { ChartContainer } from '@/components/ChartContainer'
-import { CodeBlock } from '@/components/CodeBlock'
-import { generateMultiSeriesData } from '@/utils/generateData'
+import React from 'react';
+import { useState } from 'react';
+import { LineChart } from '@beaubrain/chart-lib-react';
+import { ExampleLayout } from '@/components/ExampleLayout';
+import { ChartContainer } from '@/components/ChartContainer';
+import { CodeBlock } from '@/components/CodeBlock';
+import { generateMultiSeriesData } from '@/utils/generateData';
 
 export default function InteractiveExample() {
-  const data = generateMultiSeriesData(30, ['Product A', 'Product B', 'Product C'])
-  const [events, setEvents] = useState<string[]>([])
+  const data = generateMultiSeriesData(30, ['Product A', 'Product B', 'Product C']);
+  const [events, setEvents] = useState<string[]>([]);
 
   const addEvent = (eventName: string, data: any) => {
-    const eventLog = `${eventName}: ${data.group || 'N/A'} - Value: ${data.value?.toFixed(2) || 'N/A'}`
-    setEvents(prev => [eventLog, ...prev.slice(0, 9)])
-  }
+    const eventLog = `${eventName}: ${data.group || 'N/A'} - Value: ${data.value?.toFixed(2) || 'N/A'}`;
+    setEvents(prev => [eventLog, ...prev.slice(0, 9)]);
+  };
 
   const code = `import { LineChart } from '@beaubrain/chart-lib-react'
 
@@ -31,7 +33,7 @@ export default function InteractiveExample() {
   onChartMouseenter={(e) => console.log('Mouse enter:', e)}
   onChartMouseleave={(e) => console.log('Mouse leave:', e)}
   onLegendToggle={(e) => console.log('Legend toggle:', e)}
-/>`
+/>`;
 
   return (
     <ExampleLayout
@@ -74,5 +76,5 @@ export default function InteractiveExample() {
         <CodeBlock code={code} />
       </div>
     </ExampleLayout>
-  )
+  );
 }

@@ -1,14 +1,15 @@
-'use client'
+'use client';
 
-import { BarChart } from '@beaubrain/chart-lib-react'
-import { ExampleLayout } from '@/components/ExampleLayout'
-import { ChartContainer } from '@/components/ChartContainer'
-import { CodeBlock } from '@/components/CodeBlock'
-import { generateBarChartData } from '@/utils/generateData'
+import React from 'react';
+import { BarChart } from '@beaubrain/chart-lib-react';
+import { ExampleLayout } from '@/components/ExampleLayout';
+import { ChartContainer } from '@/components/ChartContainer';
+import { CodeBlock } from '@/components/CodeBlock';
+import { generateBarChartData } from '@/utils/generateData';
 
 export default function PresetsExample() {
-  const categories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
-  const data = generateBarChartData(categories, 100, 20)
+  const categories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+  const data = generateBarChartData(categories, 100, 20);
 
   const code = `import { BarChart } from '@beaubrain/chart-lib-react'
 
@@ -22,7 +23,7 @@ export default function PresetsExample() {
 <BarChart data={data} preset="presentation" />
 
 // Dashboard preset - Optimized for dashboards
-<BarChart data={data} preset="dashboard" />`
+<BarChart data={data} preset="dashboard" />`;
 
   return (
     <ExampleLayout
@@ -67,5 +68,5 @@ export default function PresetsExample() {
         <CodeBlock code={code} />
       </div>
     </ExampleLayout>
-  )
+  );
 }

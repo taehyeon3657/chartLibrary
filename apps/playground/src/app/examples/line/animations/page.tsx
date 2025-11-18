@@ -1,18 +1,19 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { LineChart } from '@beaubrain/chart-lib-react'
-import { ExampleLayout } from '@/components/ExampleLayout'
-import { ChartContainer } from '@/components/ChartContainer'
-import { CodeBlock } from '@/components/CodeBlock'
-import { generateTimeSeriesData } from '@/utils/generateData'
+import React from 'react';
+import { useState } from 'react';
+import { LineChart } from '@beaubrain/chart-lib-react';
+import { ExampleLayout } from '@/components/ExampleLayout';
+import { ChartContainer } from '@/components/ChartContainer';
+import { CodeBlock } from '@/components/CodeBlock';
+import { generateTimeSeriesData } from '@/utils/generateData';
 
 export default function AnimationsExample() {
-  const [data, setData] = useState(generateTimeSeriesData(30))
+  const [data, setData] = useState(generateTimeSeriesData(30));
 
   const regenerateData = () => {
-    setData(generateTimeSeriesData(30, 100, 15))
-  }
+    setData(generateTimeSeriesData(30, 100, 15));
+  };
 
   const code = `import { LineChart } from '@beaubrain/chart-lib-react'
 
@@ -26,7 +27,7 @@ export default function AnimationsExample() {
     showDots: true,
     dotRadius: 4
   }}
-/>`
+/>`;
 
   return (
     <ExampleLayout
@@ -62,5 +63,5 @@ export default function AnimationsExample() {
         <CodeBlock code={code} />
       </div>
     </ExampleLayout>
-  )
+  );
 }

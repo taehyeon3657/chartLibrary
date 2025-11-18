@@ -1,14 +1,15 @@
-'use client'
+'use client';
 
-import { BarChart } from '@beaubrain/chart-lib-react'
-import { ExampleLayout } from '@/components/ExampleLayout'
-import { ChartContainer } from '@/components/ChartContainer'
-import { CodeBlock } from '@/components/CodeBlock'
-import { generateBarChartData } from '@/utils/generateData'
+import React from 'react';
+import { BarChart } from '@beaubrain/chart-lib-react';
+import { ExampleLayout } from '@/components/ExampleLayout';
+import { ChartContainer } from '@/components/ChartContainer';
+import { CodeBlock } from '@/components/CodeBlock';
+import { generateBarChartData } from '@/utils/generateData';
 
 export default function HorizontalExample() {
-  const categories = ['Product A', 'Product B', 'Product C', 'Product D', 'Product E']
-  const data = generateBarChartData(categories, 100, 25)
+  const categories = ['Product A', 'Product B', 'Product C', 'Product D', 'Product E'];
+  const data = generateBarChartData(categories, 100, 25);
 
   const code = `import { BarChart } from '@beaubrain/chart-lib-react'
 
@@ -22,7 +23,7 @@ export default function HorizontalExample() {
     showValues: true,
     valuePosition: 'outside'
   }}
-/>`
+/>`;
 
   return (
     <ExampleLayout
@@ -65,5 +66,5 @@ export default function HorizontalExample() {
         <CodeBlock code={code} />
       </div>
     </ExampleLayout>
-  )
+  );
 }

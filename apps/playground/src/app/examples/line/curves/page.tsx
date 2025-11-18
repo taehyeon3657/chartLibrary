@@ -1,13 +1,15 @@
-'use client'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+'use client';
 
-import { LineChart } from '@beaubrain/chart-lib-react'
-import { ExampleLayout } from '@/components/ExampleLayout'
-import { ChartContainer } from '@/components/ChartContainer'
-import { CodeBlock } from '@/components/CodeBlock'
-import { generateTimeSeriesData } from '@/utils/generateData'
+import React from 'react';
+import { LineChart } from '@beaubrain/chart-lib-react';
+import { ExampleLayout } from '@/components/ExampleLayout';
+import { ChartContainer } from '@/components/ChartContainer';
+import { CodeBlock } from '@/components/CodeBlock';
+import { generateTimeSeriesData } from '@/utils/generateData';
 
 export default function CurvesExample() {
-  const data = generateTimeSeriesData(15, 100, 15)
+  const data = generateTimeSeriesData(15, 100, 15);
 
   const curveTypes = [
     { type: 'linear', label: 'Linear' },
@@ -16,7 +18,7 @@ export default function CurvesExample() {
     { type: 'step', label: 'Step' },
     { type: 'stepBefore', label: 'Step Before' },
     { type: 'stepAfter', label: 'Step After' },
-  ]
+  ];
 
   const code = `import { LineChart } from '@beaubrain/chart-lib-react'
 
@@ -27,7 +29,7 @@ export default function CurvesExample() {
     enableCurve: true,
     curveType: 'monotoneX' // 'linear' | 'monotoneX' | 'natural' | 'step'
   }}
-/>`
+/>`;
 
   return (
     <ExampleLayout
@@ -59,5 +61,5 @@ export default function CurvesExample() {
         <CodeBlock code={code} />
       </div>
     </ExampleLayout>
-  )
+  );
 }

@@ -1,15 +1,16 @@
-'use client'
+'use client';
 
-import { BarChart } from '@beaubrain/chart-lib-react'
-import { ExampleLayout } from '@/components/ExampleLayout'
-import { ChartContainer } from '@/components/ChartContainer'
-import { CodeBlock } from '@/components/CodeBlock'
-import { generateMultiSeriesBarData } from '@/utils/generateData'
+import React from 'react';
+import { BarChart } from '@beaubrain/chart-lib-react';
+import { ExampleLayout } from '@/components/ExampleLayout';
+import { ChartContainer } from '@/components/ChartContainer';
+import { CodeBlock } from '@/components/CodeBlock';
+import { generateMultiSeriesBarData } from '@/utils/generateData';
 
 export default function ThemesExample() {
-  const categories = ['Product A', 'Product B', 'Product C', 'Product D']
-  const series = ['Q1', 'Q2', 'Q3']
-  const data = generateMultiSeriesBarData(categories, series, 100, 20)
+  const categories = ['Product A', 'Product B', 'Product C', 'Product D'];
+  const series = ['Q1', 'Q2', 'Q3'];
+  const data = generateMultiSeriesBarData(categories, series, 100, 20);
 
   const code = `import { BarChart } from '@beaubrain/chart-lib-react'
 
@@ -20,7 +21,7 @@ export default function ThemesExample() {
 <BarChart data={data} theme="dark" />
 
 // Colorful theme
-<BarChart data={data} theme="colorful" />`
+<BarChart data={data} theme="colorful" />`;
 
   return (
     <ExampleLayout
@@ -74,5 +75,5 @@ export default function ThemesExample() {
         <CodeBlock code={code} />
       </div>
     </ExampleLayout>
-  )
+  );
 }

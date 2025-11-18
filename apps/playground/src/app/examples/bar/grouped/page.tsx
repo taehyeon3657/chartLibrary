@@ -1,15 +1,16 @@
-'use client'
+'use client';
 
-import { BarChart } from '@beaubrain/chart-lib-react'
-import { ExampleLayout } from '@/components/ExampleLayout'
-import { ChartContainer } from '@/components/ChartContainer'
-import { CodeBlock } from '@/components/CodeBlock'
-import { generateMultiSeriesBarData } from '@/utils/generateData'
+import React from 'react';
+import { BarChart } from '@beaubrain/chart-lib-react';
+import { ExampleLayout } from '@/components/ExampleLayout';
+import { ChartContainer } from '@/components/ChartContainer';
+import { CodeBlock } from '@/components/CodeBlock';
+import { generateMultiSeriesBarData } from '@/utils/generateData';
 
 export default function GroupedExample() {
-  const categories = ['Q1', 'Q2', 'Q3', 'Q4']
-  const series = ['Sales', 'Revenue', 'Profit']
-  const data = generateMultiSeriesBarData(categories, series, 100, 25)
+  const categories = ['Q1', 'Q2', 'Q3', 'Q4'];
+  const series = ['Sales', 'Revenue', 'Profit'];
+  const data = generateMultiSeriesBarData(categories, series, 100, 25);
 
   const code = `import { BarChart } from '@beaubrain/chart-lib-react'
 
@@ -33,7 +34,7 @@ function MyChart() {
       }}
     />
   )
-}`
+}`;
 
   return (
     <ExampleLayout
@@ -80,5 +81,5 @@ function MyChart() {
         <CodeBlock code={code} />
       </div>
     </ExampleLayout>
-  )
+  );
 }

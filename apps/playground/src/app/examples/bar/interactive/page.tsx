@@ -1,22 +1,23 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { BarChart } from '@beaubrain/chart-lib-react'
-import { ExampleLayout } from '@/components/ExampleLayout'
-import { ChartContainer } from '@/components/ChartContainer'
-import { CodeBlock } from '@/components/CodeBlock'
-import { generateMultiSeriesBarData } from '@/utils/generateData'
+import React from 'react';
+import { useState } from 'react';
+import { BarChart } from '@beaubrain/chart-lib-react';
+import { ExampleLayout } from '@/components/ExampleLayout';
+import { ChartContainer } from '@/components/ChartContainer';
+import { CodeBlock } from '@/components/CodeBlock';
+import { generateMultiSeriesBarData } from '@/utils/generateData';
 
 export default function InteractiveExample() {
-  const categories = ['Q1', 'Q2', 'Q3', 'Q4']
-  const series = ['Product A', 'Product B', 'Product C']
-  const data = generateMultiSeriesBarData(categories, series, 100, 20)
-  const [events, setEvents] = useState<string[]>([])
+  const categories = ['Q1', 'Q2', 'Q3', 'Q4'];
+  const series = ['Product A', 'Product B', 'Product C'];
+  const data = generateMultiSeriesBarData(categories, series, 100, 20);
+  const [events, setEvents] = useState<string[]>([]);
 
-  const addEvent = (eventName: string, data: any) => {
-    const eventLog = `${eventName}: ${data.group || 'N/A'} - Value: ${data.value?.toFixed(2) || 'N/A'}`
-    setEvents(prev => [eventLog, ...prev.slice(0, 9)])
-  }
+  const addEvent = (eventName: string, data: { group?: string; value?: number; visible?: boolean }) => {
+    const eventLog = `${eventName}: ${data.group || 'N/A'} - Value: ${data.value?.toFixed(2) || 'N/A'}`;
+    setEvents(prev => [eventLog, ...prev.slice(0, 9)]);
+  };
 
   const code = `import { BarChart } from '@beaubrain/chart-lib-react'
 
@@ -33,7 +34,7 @@ export default function InteractiveExample() {
   onChartMouseenter={(e) => console.log('Mouse enter:', e)}
   onChartMouseleave={(e) => console.log('Mouse leave:', e)}
   onLegendToggle={(e) => console.log('Legend toggle:', e)}
-/>`
+/>`;
 
   return (
     <ExampleLayout
@@ -76,5 +77,5 @@ export default function InteractiveExample() {
         <CodeBlock code={code} />
       </div>
     </ExampleLayout>
-  )
+  );
 }
