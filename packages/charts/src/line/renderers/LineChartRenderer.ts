@@ -1,12 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as d3 from 'd3';
 import type { LineChartConfig } from '@beaubrain/chart-lib-types';
 import type { LineChartState } from '../LineChartState';
 import type { CoordinateCalculator } from '../CoordinateCalculator';
-import type { RenderContext } from '../LineChart';
+
 import { LineRenderer } from './LineRenderer';
-import { DotRenderer } from './DotRenderer';
 import { AxisRenderer } from './AxisRenderer';
 import { LegendRenderer } from './LegendRenderer';
+import { RenderContext } from '../LineChart';
 
 /**
  * 모든 렌더링을 총괄하는 메인 렌더러
@@ -20,7 +21,6 @@ import { LegendRenderer } from './LegendRenderer';
 export class LineChartRenderer {
   private axisRenderer: AxisRenderer | undefined;
   private lineRenderer: LineRenderer | undefined;
-  private dotRenderer: DotRenderer | undefined;
   private legendRenderer: LegendRenderer | undefined;
 
   constructor(
@@ -28,9 +28,7 @@ export class LineChartRenderer {
     private state: LineChartState,
     private calculator: CoordinateCalculator,
     private config: LineChartConfig
-  ) {
-    // 렌더 컨텍스트는 처음 렌더링 시에 생성
-  }
+  ) {}
 
   /**
    * 메인 렌더링 메서드
@@ -39,14 +37,17 @@ export class LineChartRenderer {
     // 1. 렌더링 컨텍스트 초기화
     const context = this.initializeRenderContext();
 
-    // 2. 개별 렌더러들 초기화 (컨텍스트 생성 후)
+    // 2. 개별 렌더러들 초기화
     this.initializeRenderers(context);
 
     // 3. 렌더링 실행 (순서 중요)
     this.axisRenderer?.render();
     this.lineRenderer?.render();
-    this.dotRenderer?.render();
-    this.legendRenderer?.render();
+
+    // showLegend config 확인 후 렌더링
+    if (this.config.showLegend !== false) {
+      this.legendRenderer?.render();
+    }
 
     // 4. 스타일 적용
     this.applyStyles(context);
@@ -58,26 +59,32 @@ export class LineChartRenderer {
    * SVG 렌더링 컨텍스트 초기화
    */
   private initializeRenderContext(): RenderContext {
-
     // 기존 SVG 제거
     d3.select(this.container).selectAll('svg').remove();
 
-    // 새 SVG 생성 - select 대신 직접 container를 사용
+    // 🔧 FIX: 부모 컨테이너의 실제 폰트 가져오기
+    const computedStyle = window.getComputedStyle(this.container);
+    const inheritedFont = computedStyle.fontFamily || 'inherit';
+
+    // 새 SVG 생성
     const svg = d3.select(this.container)
       .append('svg')
       .attr('width', this.config.width || 600)
       .attr('height', this.config.height || 400);
 
+    // 🔧 FIX: 실제 계산된 폰트를 SVG style에 직접 주입
+    svg.append('style').text(`
+      text {
+        font-family: ${inheritedFont} !important;
+      }
+    `);
 
     const defs = svg.append('defs');
-
 
     const margin = this.config.margin || { top: 20, right: 20, bottom: 40, left: 60 };
     const chartArea = svg.append('g')
       .attr('class', 'chart-area')
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
-
-
 
     return {
       container: this.container,
@@ -93,8 +100,7 @@ export class LineChartRenderer {
   private initializeRenderers(context: RenderContext): void {
     this.axisRenderer = new AxisRenderer(this.state, this.calculator, this.config, context);
     this.lineRenderer = new LineRenderer(this.state, this.calculator, this.config, context);
-    this.dotRenderer = new DotRenderer(this.state, this.calculator, this.config, context);
-    this.legendRenderer = new LegendRenderer(this.calculator, this.config, context);
+    this.legendRenderer = new LegendRenderer(this.calculator as any, this.config as any, context);
   }
 
   /**
@@ -103,20 +109,39 @@ export class LineChartRenderer {
   private applyStyles(context: RenderContext): void {
     const { svg } = context;
 
+    const computedStyle = window.getComputedStyle(this.container);
+    const inheritedFont = computedStyle.fontFamily || 'monospace';
+
+    console.log('LineChart Container font-family:', inheritedFont); // 디버깅용
+
     // 격자선 스타일
     svg.selectAll('.grid line')
       .attr('stroke', this.config.gridColor || '#f0f0f0')
-      .attr('stroke-width', 1)
-      .attr('stroke-dasharray', '2,2');
+      .attr('stroke-width', 1);
 
     // 축 스타일
     svg.selectAll('.axis .domain')
       .attr('stroke', this.config.axisColor || '#111');
 
-    // 텍스트 스타일
-    svg.selectAll('text')
-      .style('font-family', 'Inter, system-ui, sans-serif')
-      .attr('fill', '#666');
+    svg.selectAll('.axis .tick line')
+      .attr('stroke', this.config.axisColor || '#111');
+
+    // 모든 텍스트에 강제로 폰트 적용
+    svg.selectAll('text').each(function() {
+      if (this && (this as HTMLElement).style) {
+        (this as HTMLElement).style.fontFamily = inheritedFont;
+        (this as HTMLElement).style.setProperty('font-family', inheritedFont, 'important');
+      }
+    });
+
+    // 🔧 FIX: 축 텍스트에 특별히 한번 더 적용
+    svg.selectAll('.axis text').each(function() {
+      if (this && (this as HTMLElement).style) {
+        (this as HTMLElement).style.fontFamily = inheritedFont;
+        (this as HTMLElement).style.setProperty('font-family', inheritedFont, 'important');
+        (this as SVGTextElement).setAttribute('style', `font-family: ${inheritedFont} !important`);
+      }
+    });
 
     // 제목 렌더링
     if (this.config.title) {
@@ -125,15 +150,19 @@ export class LineChartRenderer {
       svg.append('text')
         .attr('class', 'chart-title')
         .attr('x', this.calculateTitleX(this.config.titlePosition))
-        .attr('y', margin.top - 5) // margin.top 바로 위에 배치
+        .attr('y', margin.top - 5)
         .attr('text-anchor', this.calculateTitleAnchor(this.config.titlePosition))
         .style('font-size', this.config.titleStyle?.fontSize || '16px')
         .style('font-weight', this.config.titleStyle?.fontWeight || 'bold')
+        .style('font-family', inheritedFont)  // 제목도 폰트 상속
         .style('fill', this.config.titleStyle?.color || '#333')
         .text(this.config.title);
     }
   }
 
+  /**
+   * 제목 X 위치 계산
+   */
   private calculateTitleX(position?: string): number {
     const margin = this.config.margin || { top: 20, right: 20, bottom: 40, left: 60 };
     const width = this.config.width || 600;
@@ -149,6 +178,9 @@ export class LineChartRenderer {
     }
   }
 
+  /**
+   * 제목 텍스트 앵커 계산
+   */
   private calculateTitleAnchor(position?: string): string {
     switch (position) {
     case 'LEFT':
@@ -163,6 +195,7 @@ export class LineChartRenderer {
 
   /**
    * 부분 업데이트 (성능 최적화)
+   * 라인만 다시 렌더링
    */
   updateLines(context: RenderContext): void {
     this.lineRenderer = new LineRenderer(this.state, this.calculator, this.config, context);
@@ -170,12 +203,18 @@ export class LineChartRenderer {
   }
 
   updateDots(context: RenderContext): void {
-    this.dotRenderer = new DotRenderer(this.state, this.calculator, this.config, context);
-    this.dotRenderer.render();
+    this.lineRenderer = new LineRenderer(this.state, this.calculator, this.config, context);
+    this.lineRenderer.render();
   }
 
+  /**
+   * Legend만 다시 렌더링
+   */
   updateLegend(context: RenderContext): void {
-    this.legendRenderer = new LegendRenderer( this.calculator, this.config, context);
-    this.legendRenderer.render();
+    // showLegend가 false가 아닐 때만 업데이트
+    if (this.config.showLegend !== false) {
+      this.legendRenderer = new LegendRenderer(this.calculator as any, this.config as any, context);
+      this.legendRenderer.render();
+    }
   }
 }

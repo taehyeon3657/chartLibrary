@@ -16,13 +16,13 @@ export class AxisRenderer {
     this.clearPreviousRender();
     this.renderAxes();
     this.renderGridLines();
-    this.renderBaseline(); // 기준선 렌더링 추가
+    this.renderBaseline();
   }
 
   private clearPreviousRender(): void {
     this.context.chartArea.selectAll('.axis').remove();
     this.context.chartArea.selectAll('.grid').remove();
-    this.context.chartArea.selectAll('.baseline').remove(); // 기준선 제거 추가
+    this.context.chartArea.selectAll('.baseline').remove();
   }
 
   private renderAxes(): void {
@@ -34,12 +34,28 @@ export class AxisRenderer {
     const { innerHeight, innerWidth } = scales;
     const orientation = this.config.orientation || 'vertical';
 
+    // 부모 컨테이너의 실제 폰트 가져오기
+    const computedStyle = window.getComputedStyle(this.context.container);
+    const inheritedFont = computedStyle.fontFamily || 'inherit';
+
     // X축 렌더링
     if (this.config.showXAxis) {
       const xAxisGroup = this.context.chartArea.append('g')
         .attr('class', 'axis x-axis')
         .attr('transform', `translate(0, ${innerHeight})`)
         .call(xAxis);
+
+      // .call() 직후 즉시 폰트 강제 적용
+      xAxisGroup.selectAll('text')
+        .attr('style', `font-family: ${inheritedFont} !important`)
+        .attr('fill', '#666');
+
+      // 축 domain과 tick line 스타일
+      xAxisGroup.select('.domain')
+        .attr('stroke', this.config.axisColor || '#111');
+
+      xAxisGroup.selectAll('.tick line')
+        .attr('stroke', this.config.axisColor || '#111');
 
       // scaleBand를 사용하는 경우, tick을 바의 중앙에 위치시킴
       if (orientation === 'vertical' && (scales.xScale as any).bandwidth) {
@@ -48,15 +64,13 @@ export class AxisRenderer {
           .attr('transform', `translate(${bandwidth / 2}, 0)`);
       }
 
-      // X축 라벨 - 수정됨!
+      // X축 라벨
       if (this.config.xAxisLabel) {
-        // labelPosition이 undefined면 'center'가 기본값
         const labelPosition = this.config.xAxisLabelPosition || 'center';
 
         let xPosition: number;
         let textAnchor: 'start' | 'middle' | 'end';
 
-        // 문제 해결: switch 문 외부에서 default 처리
         if (labelPosition === 'left') {
           xPosition = 0;
           textAnchor = 'start';
@@ -64,7 +78,6 @@ export class AxisRenderer {
           xPosition = innerWidth;
           textAnchor = 'end';
         } else {
-          // 'center' 또는 기타 값
           xPosition = innerWidth / 2;
           textAnchor = 'middle';
         }
@@ -75,8 +88,7 @@ export class AxisRenderer {
           .attr('y', 35)
           .attr('text-anchor', textAnchor)
           .attr('fill', this.config.axisColor || '#666')
-          .style('font-size', '12px')
-          .style('font-weight', '500')
+          .attr('style', `font-family: ${inheritedFont} !important; font-size: 12px; font-weight: 500;`)
           .text(this.config.xAxisLabel);
       }
     }
@@ -87,6 +99,18 @@ export class AxisRenderer {
         .attr('class', 'axis y-axis')
         .call(yAxis);
 
+      // .call() 직후 즉시 폰트 강제 적용
+      yAxisGroup.selectAll('text')
+        .attr('style', `font-family: ${inheritedFont} !important`)
+        .attr('fill', '#666');
+
+      // 축 domain과 tick line 스타일
+      yAxisGroup.select('.domain')
+        .attr('stroke', this.config.axisColor || '#111');
+
+      yAxisGroup.selectAll('.tick line')
+        .attr('stroke', this.config.axisColor || '#111');
+
       // horizontal orientation이고 scaleBand인 경우
       if (orientation === 'horizontal' && (scales.xScale as any).bandwidth) {
         const bandwidth = (scales.xScale as any).bandwidth();
@@ -94,7 +118,7 @@ export class AxisRenderer {
           .attr('transform', `translate(0, ${bandwidth / 2})`);
       }
 
-      // Y축 라벨 - 수정됨!
+      // Y축 라벨
       if (this.config.yAxisLabel) {
         const labelPosition = this.config.yAxisLabelPosition || 'center';
 
@@ -108,7 +132,6 @@ export class AxisRenderer {
           yPosition = innerHeight;
           textAnchor = 'end';
         } else {
-          // 'center' 또는 기타 값
           yPosition = innerHeight / 2;
           textAnchor = 'middle';
         }
@@ -120,8 +143,7 @@ export class AxisRenderer {
           .attr('y', -40)
           .attr('text-anchor', textAnchor)
           .attr('fill', this.config.axisColor || '#666')
-          .style('font-size', '12px')
-          .style('font-weight', '500')
+          .attr('style', `font-family: ${inheritedFont} !important; font-size: 12px; font-weight: 500;`)
           .text(this.config.yAxisLabel);
       }
     }
@@ -187,7 +209,6 @@ export class AxisRenderer {
     const { yScale, innerWidth, innerHeight } = scales;
     const orientation = this.config.orientation || 'vertical';
 
-    // 기준선 설정
     const baselineValue = this.config.baselineValue ?? 0;
     const baselineColor = this.config.baselineColor || '#333';
     const baselineWidth = this.config.baselineWidth || 2;
@@ -195,7 +216,6 @@ export class AxisRenderer {
     const dashArray = baselineStyle === 'dashed' ? '4,4' : '0';
 
     if (orientation === 'vertical') {
-      // 세로 바 차트: y = 0 (또는 baselineValue) 위치에 가로선
       const yPosition = yScale(baselineValue);
 
       this.context.chartArea.append('line')
@@ -207,11 +227,10 @@ export class AxisRenderer {
         .attr('stroke', baselineColor)
         .attr('stroke-width', baselineWidth)
         .attr('stroke-dasharray', dashArray)
-        .style('pointer-events', 'none') // 마우스 이벤트 무시
-        .lower(); // 바 뒤로 보내기
+        .style('pointer-events', 'none')
+        .lower();
 
     } else {
-      // 가로 바 차트: x = 0 (또는 baselineValue) 위치에 세로선
       const xPosition = yScale(baselineValue);
 
       this.context.chartArea.append('line')

@@ -33,12 +33,20 @@ export class AxisRenderer {
     const { xAxis, yAxis } = axesData;
     const { innerHeight } = scales;
 
+    // 부모 컨테이너의 실제 폰트 가져오기
+    const computedStyle = window.getComputedStyle(this.context.container);
+    const inheritedFont = computedStyle.fontFamily || 'inherit';
+
     // X축 렌더링
     if (this.config.showXAxis) {
       const xAxisGroup = this.context.chartArea.append('g')
         .attr('class', 'axis x-axis')
         .attr('transform', `translate(0, ${innerHeight})`)
         .call(xAxis);
+
+      xAxisGroup.selectAll('text')
+        .attr('style', `font-family: ${inheritedFont} !important`)
+        .attr('fill', '#666');
 
       // X축 라벨
       if (this.config.xAxisLabel) {
@@ -56,6 +64,11 @@ export class AxisRenderer {
       const yAxisGroup = this.context.chartArea.append('g')
         .attr('class', 'axis y-axis')
         .call(yAxis);
+
+      // .call() 직후 즉시 폰트 강제 적용
+      yAxisGroup.selectAll('text')
+        .attr('style', `font-family: ${inheritedFont} !important`)
+        .attr('fill', '#666');
 
       // Y축 라벨
       if (this.config.yAxisLabel) {

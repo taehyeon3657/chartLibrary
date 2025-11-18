@@ -5,13 +5,18 @@ import { BarChart } from '@beaubrain/chart-lib-react';
 import { ExampleLayout } from '@/components/ExampleLayout';
 import { ChartContainer } from '@/components/ChartContainer';
 import { CodeBlock } from '@/components/CodeBlock';
-import { generateBarChartData } from '@/utils/generateData';
+// import { generateBarChartData } from '@/utils/generateData';
 
 export default function BasicExample() {
-  const categories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-  const data = generateBarChartData(categories, 100, 30);
+  // const categories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+  // const data = generateBarChartData(categories, 100, 30);
 
-  console.log('data: ', data);
+  const data = [
+    { x: 'Jan', value: 100 },
+    { x: 'Feb', value: 80},
+    { x: 'Mar', value: -40},
+  // ...
+  ];
 
   const code = `import { BarChart } from '@beaubrain/chart-lib-react'
 
@@ -42,7 +47,7 @@ function MyChart() {
       description="A simple bar chart with default settings"
     >
       <ChartContainer title="Chart">
-        <div className='flex justify-center items-center h-full'>
+        <div className='flex justify-center items-center h-full' style={{ fontFamily: 'monospace' }}>
           <BarChart
             data={data}
             config={{

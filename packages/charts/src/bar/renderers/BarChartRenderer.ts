@@ -43,7 +43,11 @@ export class BarChartRenderer {
     // 3. 렌더링 실행 (순서 중요)
     this.axisRenderer?.render();
     this.barRenderer?.render();
-    this.legendRenderer?.render();
+
+    // showLegend config 확인 후 렌더링
+    if (this.config.showLegend !== false) {
+      this.legendRenderer?.render();
+    }
 
     // 4. 스타일 적용
     this.applyStyles(context);
@@ -58,11 +62,21 @@ export class BarChartRenderer {
     // 기존 SVG 제거
     d3.select(this.container).selectAll('svg').remove();
 
+
+    const computedStyle = window.getComputedStyle(this.container);
+    const inheritedFont = computedStyle.fontFamily || 'inherit';
+
     // 새 SVG 생성
     const svg = d3.select(this.container)
       .append('svg')
       .attr('width', this.config.width || 600)
       .attr('height', this.config.height || 400);
+
+    svg.append('style').text(`
+      text {
+        font-family: ${inheritedFont} !important;
+      }
+    `);
 
     const defs = svg.append('defs');
 
@@ -94,6 +108,11 @@ export class BarChartRenderer {
   private applyStyles(context: RenderContext): void {
     const { svg } = context;
 
+    const computedStyle = window.getComputedStyle(this.container);
+    const inheritedFont = computedStyle.fontFamily || 'monospace';
+
+    console.log('Container font-family:', inheritedFont); // 디버깅용
+
     // 격자선 스타일
     svg.selectAll('.grid line')
       .attr('stroke', this.config.gridColor || '#f0f0f0')
@@ -106,10 +125,20 @@ export class BarChartRenderer {
     svg.selectAll('.axis .tick line')
       .attr('stroke', this.config.axisColor || '#111');
 
-    // 텍스트 스타일
-    svg.selectAll('text')
-      .style('font-family', 'Inter, system-ui, sans-serif')
-      .attr('fill', '#666');
+    // 모든 텍스트에 강제로 폰트 적용
+    svg.selectAll('text').each(function() {
+      (this as SVGTextElement).style.fontFamily = inheritedFont;
+      (this as SVGTextElement).style.setProperty('font-family', inheritedFont, 'important');
+    });
+
+    // 축 텍스트에 특별히 한번 더 적용
+    svg.selectAll('.axis text').each(function() {
+      if (this && (this as SVGTextElement).style) {
+        (this as SVGTextElement).style.fontFamily = inheritedFont;
+        (this as SVGTextElement).style.setProperty('font-family', inheritedFont, 'important');
+        (this as SVGTextElement).setAttribute('style', `font-family: ${inheritedFont} !important`);
+      }
+    });
 
     // 제목 렌더링
     if (this.config.title) {
@@ -122,11 +151,15 @@ export class BarChartRenderer {
         .attr('text-anchor', this.calculateTitleAnchor(this.config.titlePosition))
         .style('font-size', this.config.titleStyle?.fontSize || '16px')
         .style('font-weight', this.config.titleStyle?.fontWeight || 'bold')
+        .style('font-family', 'inherit')  // 제목도 폰트 상속
         .style('fill', this.config.titleStyle?.color || '#333')
         .text(this.config.title);
     }
   }
 
+  /**
+   * 제목 X 위치 계산
+   */
   private calculateTitleX(position?: string): number {
     const margin = this.config.margin || { top: 20, right: 20, bottom: 40, left: 60 };
     const width = this.config.width || 600;
@@ -142,6 +175,9 @@ export class BarChartRenderer {
     }
   }
 
+  /**
+   * 제목 텍스트 앵커 계산
+   */
   private calculateTitleAnchor(position?: string): string {
     switch (position) {
     case 'LEFT':
@@ -156,14 +192,21 @@ export class BarChartRenderer {
 
   /**
    * 부분 업데이트 (성능 최적화)
+   * 바만 다시 렌더링
    */
   updateBars(context: RenderContext): void {
     this.barRenderer = new BarRenderer(this.state, this.calculator, this.config, context);
     this.barRenderer.render();
   }
 
+  /**
+   * Legend만 다시 렌더링
+   */
   updateLegend(context: RenderContext): void {
-    this.legendRenderer = new LegendRenderer(this.calculator as any, this.config as any, context);
-    this.legendRenderer.render();
+    // showLegend가 false가 아닐 때만 업데이트
+    if (this.config.showLegend !== false) {
+      this.legendRenderer = new LegendRenderer(this.calculator as any, this.config as any, context);
+      this.legendRenderer.render();
+    }
   }
 }

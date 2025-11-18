@@ -66,8 +66,11 @@ export class BarChart extends BaseChart {
       legendPosition: 'top'
     };
 
-    // Title과 Legend가 모두 top일 때 margin.top 자동 증가
+    // config 병합
     const mergedConfig = { ...defaultConfig, ...config };
+
+    // Title과 Legend가 모두 top일 때 margin.top 자동 증가
+    // showLegend가 명시적으로 false로 설정되지 않은 경우에만 margin 조정
     if (mergedConfig.title &&
         (mergedConfig.legendPosition === 'top' || !mergedConfig.legendPosition) &&
         mergedConfig.showLegend !== false) {
@@ -187,7 +190,11 @@ export class BarChart extends BaseChart {
     // 부분 업데이트
     if (this.renderContext) {
       this.renderer.updateBars(this.renderContext);
-      this.renderer.updateLegend(this.renderContext);
+
+      // showLegend가 false가 아닐 때만 legend 업데이트
+      if ((this.config as BarChartConfig).showLegend !== false) {
+        this.renderer.updateLegend(this.renderContext);
+      }
     }
 
     this.emit('legendToggle', {
@@ -279,8 +286,8 @@ export class BarChart extends BaseChart {
       this.setupTooltipEvents();
     }
 
-    // 3. 범례 클릭 이벤트 설정
-    if ((this.config as BarChartConfig).showLegend) {
+    // 3. 범례 클릭 이벤트 설정 - showLegend 확인
+    if ((this.config as BarChartConfig).showLegend !== false) {
       this.setupLegendEvents();
     }
   }

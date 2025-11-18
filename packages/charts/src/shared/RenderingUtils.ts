@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ProcessedDataPoint } from '@beaubrain/chart-lib-types';
 import * as d3 from 'd3';
 
@@ -9,6 +10,7 @@ import * as d3 from 'd3';
  * - 애니메이션 유틸리티
  * - 그라데이션, 패턴 생성
  * - 접근성 관련 유틸리티
+ * - 폰트 상속 관련 유틸리티
  */
 
 export class RenderingUtils {
@@ -289,6 +291,129 @@ export class RenderingUtils {
 
     return ctx;
   }
+
+  // ============================================
+  // 폰트 상속 관련 유틸리티
+  // ============================================
+
+  /**
+   * 부모 컨테이너의 폰트 설정 가져오기
+   *
+   * @param element - 폰트를 가져올 HTML 요소
+   * @returns 컴퓨팅된 font-family 값
+   *
+   * @example
+   * const font = RenderingUtils.getInheritedFont(container);
+   * // 반환값: "Roboto, sans-serif" 또는 "inherit"
+   */
+  static getInheritedFont(element: HTMLElement): string {
+    try {
+      const computedStyle = window.getComputedStyle(element);
+      const fontFamily = computedStyle.fontFamily;
+
+      // 유효한 폰트가 있으면 반환, 없으면 'inherit'
+      return fontFamily && fontFamily !== '' ? fontFamily : 'inherit';
+    } catch (error) {
+      console.warn('Failed to get inherited font:', error);
+      return 'inherit';
+    }
+  }
+
+  /**
+   * SVG 요소에 폰트 상속 설정 적용
+   *
+   * @param svg - 폰트를 적용할 SVG selection
+   * @param container - 폰트를 가져올 컨테이너 요소
+   *
+   * @example
+   * RenderingUtils.applyInheritedFont(svg, container);
+   */
+  static applyInheritedFont(
+    svg: d3.Selection<SVGSVGElement, unknown, null, undefined>,
+    container: HTMLElement
+  ): void {
+    const fontFamily = this.getInheritedFont(container);
+
+    // SVG 내의 모든 텍스트 요소에 폰트 적용
+    svg.selectAll('text')
+      .style('font-family', fontFamily);
+  }
+
+  /**
+   * 특정 D3 selection에 폰트 상속 적용
+   *
+   * @param selection - 폰트를 적용할 D3 selection
+   * @param fontFamily - 적용할 font-family (기본값: 'inherit')
+   *
+   * @example
+   * RenderingUtils.applyFontToSelection(chartArea, 'Roboto, sans-serif');
+   */
+  static applyFontToSelection(
+    selection: d3.Selection<any, any, any, any>,
+    fontFamily: string = 'inherit'
+  ): void {
+    selection.selectAll('text')
+      .style('font-family', fontFamily);
+  }
+
+  /**
+   * 컨테이너로부터 전체 폰트 스타일 가져오기
+   * font-family, font-size, font-weight 등을 포함
+   *
+   * @param element - 스타일을 가져올 HTML 요소
+   * @returns 폰트 관련 스타일 객체
+   */
+  static getInheritedFontStyles(element: HTMLElement): {
+    fontFamily: string;
+    fontSize: string;
+    fontWeight: string;
+    fontStyle: string;
+    lineHeight: string;
+  } {
+    try {
+      const computedStyle = window.getComputedStyle(element);
+
+      return {
+        fontFamily: computedStyle.fontFamily || 'inherit',
+        fontSize: computedStyle.fontSize || '12px',
+        fontWeight: computedStyle.fontWeight || 'normal',
+        fontStyle: computedStyle.fontStyle || 'normal',
+        lineHeight: computedStyle.lineHeight || 'normal'
+      };
+    } catch (error) {
+      console.warn('Failed to get inherited font styles:', error);
+      return {
+        fontFamily: 'inherit',
+        fontSize: '12px',
+        fontWeight: 'normal',
+        fontStyle: 'normal',
+        lineHeight: 'normal'
+      };
+    }
+  }
+
+  /**
+   * SVG에 전체 폰트 스타일 적용
+   *
+   * @param svg - 스타일을 적용할 SVG selection
+   * @param container - 스타일을 가져올 컨테이너
+   */
+  static applyInheritedFontStyles(
+    svg: d3.Selection<SVGSVGElement, unknown, null, undefined>,
+    container: HTMLElement
+  ): void {
+    const styles = this.getInheritedFontStyles(container);
+
+    svg.selectAll('text')
+      .style('font-family', styles.fontFamily)
+      .style('font-size', styles.fontSize)
+      .style('font-weight', styles.fontWeight)
+      .style('font-style', styles.fontStyle);
+  }
+
+  // ============================================
+  // 성능 최적화
+  // ============================================
 
   /**
    * 성능 최적화: RAF를 이용한 애니메이션 큐

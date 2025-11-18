@@ -68,14 +68,27 @@ export class CoordinateCalculator {
         const category = String(d.x);
 
         if (orientation === 'vertical') {
-          // 바를 중앙에 배치 (bandwidth의 중앙에서 barWidth의 절반만큼 좌측으로)
           const centerX = (this.getXPosition(category) + bandwidth / 2) - barWidth;
-          const x = centerX  ;
-          const y = yScale(d.y);
-          const height = yScale(0) - y;
+
+
+          const yZero = yScale(0);
+          const yValue = yScale(d.y);  // 데이터 값의 y 좌표
+
+          let y: number;
+          let height: number;
+
+          if (d.y >= 0) {
+            // 양수: 0에서 시작해서 위로
+            y = yValue;
+            height = yZero - yValue;
+          } else {
+            // 음수: 0에서 시작해서 아래로
+            y = yZero;
+            height = yValue - yZero;
+          }
 
           groupPositions.push({
-            x,
+            x: centerX,
             y,
             width: barWidth,
             height: Math.abs(height),
@@ -83,13 +96,23 @@ export class CoordinateCalculator {
           });
         } else {
           const centerY = this.getXPosition(category) + bandwidth / 2;
-          const x = yScale(0);
-          const y = centerY - barWidth / 2;
-          const width = yScale(d.y) - x;
+          const xZero = yScale(0);
+          const xValue = yScale(d.y);
+
+          let x: number;
+          let width: number;
+
+          if (d.y >= 0) {
+            x = xZero;
+            width = xValue - xZero;
+          } else {
+            x = xValue;
+            width = xZero - xValue;
+          }
 
           groupPositions.push({
             x,
-            y,
+            y: centerY - barWidth / 2,
             width: Math.abs(width),
             height: barWidth,
             data: d
@@ -120,19 +143,13 @@ export class CoordinateCalculator {
     const barWidth = this.calculateBarWidth(bandwidth, groupCount);
     const barGroupPadding = this.config.barGroupPadding || 0.1;
 
-    // 바 사이의 간격 계산
     const gapWidth = barWidth * barGroupPadding;
     const totalGapsWidth = gapWidth * (groupCount - 1);
-
-    // 그룹 전체 너비 계산 (바들의 너비 + 간격들)
     const totalGroupWidth = (barWidth * groupCount) + totalGapsWidth;
-
-    // 중앙 정렬을 위한 시작 오프셋
     const groupStartOffset = (bandwidth - totalGroupWidth) / 2;
 
     visibleGroups.forEach((group, groupIndex) => {
       const groupPositions: BarPosition[] = [];
-      // 각 바의 위치 = 시작 오프셋 + (바 너비 + 간격) * 인덱스
       const offset = groupStartOffset + (groupIndex * (barWidth + gapWidth));
 
       this.state.getCategories().forEach(category => {
@@ -142,29 +159,48 @@ export class CoordinateCalculator {
         if (!item) return;
 
         if (orientation === 'vertical') {
-          // const x = this.getXPosition(category) + offset;
+          const centerX = this.getXPosition(category) + offset;
 
+          // 🔧 FIX: 음수/양수 값 처리
+          const yZero = yScale(0);
+          const yValue = yScale(item.y);
 
-          const centerX = (this.getXPosition(category) + offset) - totalGroupWidth/ 2;
-          const x = centerX  ;
-          const y = yScale(item.y);
-          const height = yScale(0) - y;
+          let y: number;
+          let height: number;
+
+          if (item.y >= 0) {
+            y = yValue;
+            height = yZero - yValue;
+          } else {
+            y = yZero;
+            height = yValue - yZero;
+          }
 
           groupPositions.push({
-            x,
+            x: centerX,
             y,
             width: barWidth,
             height: Math.abs(height),
             data: item
           });
         } else {
-          const x = yScale(0);
-          const y = this.getXPosition(category) + offset;
-          const width = yScale(item.y) - x;
+          const xZero = yScale(0);
+          const xValue = yScale(item.y);
+
+          let x: number;
+          let width: number;
+
+          if (item.y >= 0) {
+            x = xZero;
+            width = xValue - xZero;
+          } else {
+            x = xValue;
+            width = xZero - xValue;
+          }
 
           groupPositions.push({
             x,
-            y,
+            y: this.getXPosition(category) + offset,
             width: Math.abs(width),
             height: barWidth,
             data: item
@@ -191,8 +227,6 @@ export class CoordinateCalculator {
 
     const bandwidth = (xScale as any).bandwidth ? (xScale as any).bandwidth() : 50;
     const barWidth = this.calculateBarWidth(bandwidth, 1);
-
-    // 중앙 정렬을 위한 오프셋 계산
     const centerOffset = (bandwidth - barWidth) / 2;
 
     stackedData.forEach((data, group) => {
@@ -200,7 +234,6 @@ export class CoordinateCalculator {
 
       data.forEach(d => {
         if (orientation === 'vertical') {
-          // 바를 중앙에 배치
           const x = this.getXPosition(d.category) + centerOffset;
           const y = yScale(d.y1);
           const height = yScale(d.y0) - y;
@@ -306,7 +339,6 @@ export class CoordinateCalculator {
     const { xScale } = scales;
 
     if ((xScale as any).bandwidth) {
-      // scaleBand - 카테고리의 시작 위치 반환
       return (xScale as any)(category) || 0;
     } else {
       return (xScale as any)(category) || 0;

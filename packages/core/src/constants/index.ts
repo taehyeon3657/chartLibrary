@@ -10,7 +10,7 @@ export const CHART_CONFIG = {
     animationDuration: 300,
   },
   STYLES: {
-    font: '"Inter", -apple-system, BlinkMacSystemFont, sans-serif',
+    font: 'inherit',
     textColor: '#374151',
     titleColor: '#111827',
     axisColor: '#d1d5db',

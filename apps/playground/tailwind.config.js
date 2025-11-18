@@ -57,4 +57,4 @@ module.exports = {
   ],
   // Dark mode configuration
   darkMode: 'class', // or 'media'
-}
+};
