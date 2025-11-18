@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.1](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-core@1.3.0...@beaubrain/chart-lib-core@1.3.1) (2025-11-18)
+
+
+### Bug Fixes
+
+* core/chart ([f95ae71](https://github.com/taehyeon3657/chartLibrary/commit/f95ae711dea3349e0f755de70b6cb452a63e942f))
+* d3에 의존하는 package dual packaging되도록 수정 ([9edf322](https://github.com/taehyeon3657/chartLibrary/commit/9edf3225a9ff5c76ffd791ab2b7e3fb8404161b4))
+
+
+
+
+
 # 1.3.0 (2025-11-17)
 
 

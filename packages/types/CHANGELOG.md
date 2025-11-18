@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.1](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-types@1.3.0...@beaubrain/chart-lib-types@1.3.1) (2025-11-18)
+
+
+### Bug Fixes
+
+* d3에 의존하는 package dual packaging되도록 수정 ([9edf322](https://github.com/taehyeon3657/chartLibrary/commit/9edf3225a9ff5c76ffd791ab2b7e3fb8404161b4))
+
+
+
+
+
 # 1.3.0 (2025-11-17)
 
 
