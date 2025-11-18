@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.2](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-types@1.3.1...@beaubrain/chart-lib-types@1.3.2) (2025-11-18)
+
+
+### Bug Fixes
+
+* eslint 버그 수정 ([c627428](https://github.com/taehyeon3657/chartLibrary/commit/c6274283cd9e6e2e0d10ec2a50ca362b6ce16fb4))
+
+
+
+
+
 ## [1.3.1](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-types@1.3.0...@beaubrain/chart-lib-types@1.3.1) (2025-11-18)
 
 
