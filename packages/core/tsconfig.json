@@ -1,17 +1,23 @@
 {
-  "extends": "../../tsconfig.base.json", 
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "declaration": true,
-    "module": "NodeNext",
     "rootDir": "./src",
-    "composite": true // 이미 설정되어 있음
+    "declaration": true,
+    "declarationMap": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "target": "ES2020",
+    "composite": true,
+    "incremental": true,
+    "tsBuildInfoFile": "./tsconfig.tsbuildinfo",
+    "skipLibCheck": true
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist"],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts"],
   "references": [
     {
-      "path": "../types" // types 패키지 참조 추가
+      "path": "../types"
     }
   ]
 }

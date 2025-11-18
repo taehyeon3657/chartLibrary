@@ -18,11 +18,12 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "pnpm run clean && tsup",
-    "clean": "rm -rf dist",
-    "dev": "tsup --watch",
-    "prepublishOnly": "pnpm run build"
-  },
+    "build": "pnpm run clean && tsup && pnpm run build:dts",
+    "build:dts": "tsc --project tsconfig.build.json --emitDeclarationOnly --declarationDir dist --rootDir src",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "dev": "tsup --watch"
+  }
+  ,
   "keywords": [
     "chart",
     "d3",
