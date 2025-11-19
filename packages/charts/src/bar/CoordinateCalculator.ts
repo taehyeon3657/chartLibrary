@@ -159,9 +159,8 @@ export class CoordinateCalculator {
         if (!item) return;
 
         if (orientation === 'vertical') {
-          const centerX = this.getXPosition(category) + offset;
+          const centerX =  (this.getXPosition(category) - bandwidth / 2) + offset;
 
-          // 🔧 FIX: 음수/양수 값 처리
           const yZero = yScale(0);
           const yValue = yScale(item.y);
 
