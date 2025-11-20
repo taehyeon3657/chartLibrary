@@ -46,8 +46,6 @@ function MyChart() {
         <BarChart
           data={data}
           config={{
-            width: 800,
-            height: 400,
             grouped: true,
             barPadding: 0.1,
             barGroupPadding: 0.8,
@@ -64,8 +62,6 @@ function MyChart() {
         <BarChart
           data={data}
           config={{
-            width: 800,
-            height: 400,
             orientation: 'horizontal',
             grouped: true,
             legendPosition: 'top',

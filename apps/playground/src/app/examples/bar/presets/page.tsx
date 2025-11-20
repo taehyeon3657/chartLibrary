@@ -35,7 +35,6 @@ export default function PresetsExample() {
         <BarChart
           data={data}
           preset="minimal"
-          config={{ width: 800, height: 250 }}
         />
       </ChartContainer>
 
@@ -43,7 +42,6 @@ export default function PresetsExample() {
         <BarChart
           data={data}
           preset="detailed"
-          config={{ width: 800, height: 250 }}
         />
       </ChartContainer>
 
@@ -51,7 +49,6 @@ export default function PresetsExample() {
         <BarChart
           data={data}
           preset="presentation"
-          config={{ width: 800, height: 250 }}
         />
       </ChartContainer>
 
@@ -59,7 +56,6 @@ export default function PresetsExample() {
         <BarChart
           data={data}
           preset="dashboard"
-          config={{ width: 800, height: 250 }}
         />
       </ChartContainer>
 

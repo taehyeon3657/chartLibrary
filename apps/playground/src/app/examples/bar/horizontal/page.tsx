@@ -38,8 +38,6 @@ export default function HorizontalExample() {
           data={data}
           config={{
             margin: { top: 20, right: 30, bottom: 40, left: 90 },
-            width: 700,
-            height: 500,
             orientation: 'horizontal',
             barColors: ['#8b5cf6'],
             showValues: true,
@@ -54,8 +52,6 @@ export default function HorizontalExample() {
           data={data}
           config={{
             margin: { top: 20, right: 30, bottom: 40, left: 90 },
-            width: 800,
-            height: 400,
             orientation: 'horizontal',
             barColors: ['#06b6d4'],
             showValues: true,

@@ -46,8 +46,6 @@ export default function InteractiveExample() {
         <BarChart
           data={data}
           config={{
-            width: 800,
-            height: 400,
             grouped: true,
             showLegend: true,
             showTooltip: true

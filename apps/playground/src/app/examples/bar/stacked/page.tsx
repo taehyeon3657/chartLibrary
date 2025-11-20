@@ -36,8 +36,7 @@ export default function StackedExample() {
         <BarChart
           data={data}
           config={{
-            width: 800,
-            height: 400,
+
             stacked: true,
             showLegend: true,
             legendPosition: 'top',
@@ -50,8 +49,7 @@ export default function StackedExample() {
         <BarChart
           data={data}
           config={{
-            width: 800,
-            height: 400,
+
             orientation: 'horizontal',
             stacked: true,
             showLegend: true,
@@ -66,8 +64,7 @@ export default function StackedExample() {
         <BarChart
           data={data}
           config={{
-            width: 800,
-            height: 400,
+
             stacked: true,
             showLegend: true,
             legendPosition: 'top',

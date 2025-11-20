@@ -34,8 +34,7 @@ export default function ThemesExample() {
           data={data}
           theme="light"
           config={{
-            width: 800,
-            height: 300,
+
             grouped: true,
             showLegend: true
           }}
@@ -48,8 +47,7 @@ export default function ThemesExample() {
             data={data}
             theme="dark"
             config={{
-              width: 800,
-              height: 300,
+
               grouped: true,
               showLegend: true
             }}
@@ -62,8 +60,7 @@ export default function ThemesExample() {
           data={data}
           theme="colorful"
           config={{
-            width: 800,
-            height: 300,
+
             grouped: true,
             showLegend: true
           }}
