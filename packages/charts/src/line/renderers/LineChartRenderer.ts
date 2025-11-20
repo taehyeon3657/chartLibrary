@@ -63,7 +63,7 @@ export class LineChartRenderer {
     // 기존 SVG 제거
     d3.select(this.container).selectAll('svg').remove();
 
-    // 🔧 FIX: 부모 컨테이너의 실제 폰트 가져오기
+    //  FIX: 부모 컨테이너의 실제 폰트 가져오기
     const computedStyle = window.getComputedStyle(this.container);
     const inheritedFont = computedStyle.fontFamily || 'inherit';
 
@@ -73,7 +73,7 @@ export class LineChartRenderer {
       .attr('width', this.config.width || 600)
       .attr('height', this.config.height || 400);
 
-    // 🔧 FIX: 실제 계산된 폰트를 SVG style에 직접 주입
+    //  FIX: 실제 계산된 폰트를 SVG style에 직접 주입
     svg.append('style').text(`
       text {
         font-family: ${inheritedFont} !important;
@@ -146,17 +146,11 @@ export class LineChartRenderer {
     if (this.config.title) {
       const margin = this.config.margin || { top: 20, right: 20, bottom: 40, left: 60 };
 
-      // 🔧 FontSizeHelper로 제목 폰트 사이즈 가져오기
+      //  FontSizeHelper로 제목 폰트 사이즈 가져오기
       const titleFontSize = FontSizeHelper.getTitleFontSize(
         this.config.fonts,
         { fontSize: this.config.fonts?.titleFontSize }
       );
-
-      console.log('🎨 LineChartRenderer titleFontSize:', {
-        titleFontSize,
-        fonts: this.config.fonts,
-        titleStyle: this.config.fonts?.titleFontSize
-      });
 
       svg.append('text')
         .attr('class', 'chart-title')

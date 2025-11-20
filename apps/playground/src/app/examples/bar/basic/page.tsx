@@ -14,16 +14,22 @@ export default function BasicExample() {
   const data = [
     { x: 'Jan', value: 100 },
     { x: 'Feb', value: 80},
-    { x: 'Mar', value: -40},
+    { x: 'Mar', value: -12},
+    { x: 'Apr', value: 120},
+    { x: 'May', value: 60},
+    { x: 'Jun', value: 90},
   // ...
   ];
 
   const code = `import { BarChart } from '@beaubrain/chart-lib-react'
 
 const data = [
-  { x: 'Jan', value: 100, date: new Date() },
-  { x: 'Feb', value: 120, date: new Date() },
-  { x: 'Mar', value: 115, date: new Date() },
+    { x: 'Jan', value: 100 },
+    { x: 'Feb', value: 80},
+    { x: 'Mar', value: 12},
+    { x: 'Apr', value: 120},
+    { x: 'May', value: 60},
+    { x: 'Jun', value: 90},
   // ...
 ]
 
@@ -31,11 +37,26 @@ function MyChart() {
   return (
     <BarChart
       data={data}
-      config={{
-        width: 800,
-        height: 400,
-        margin: { top: 20, right: 20, bottom: 40, left: 60 }
-      }}
+     config={{
+              width: 800,
+              height: 400,
+              margin: { top: 20, right: 20, bottom: 40, left: 60 },
+              xAxisLabelPosition: 'center',
+              showValues: true,
+              fonts: {
+                xAxisTickFontSize: 10,
+                yAxisTickFontSize: 10,
+                xAxisLabelFontSize: 16,
+                yAxisLabelFontSize: 16,
+                legendFontSize: 8,
+                titleFontSize: 18,
+                valueFontSize: 10,
+              },
+              showLegend: false,
+              showBaseline: true,
+              baselineWidth: 1,
+              barBorderRadius: 3
+            }}
     />
   )
 }`;
@@ -56,16 +77,22 @@ function MyChart() {
               margin: { top: 20, right: 20, bottom: 40, left: 60 },
               xAxisLabelPosition: 'center',
               showValues: true,
+              showYAxisZero: true,
               fonts: {
-                xAxisTickFontSize: 6,
-                yAxisTickFontSize: 6,
+                xAxisTickFontSize: 10,
+                yAxisTickFontSize: 10,
                 xAxisLabelFontSize: 16,
                 yAxisLabelFontSize: 16,
                 legendFontSize: 8,
                 titleFontSize: 18,
-                valueFontSize: 8,
+                valueFontSize: 12,
+                valueFontWeight: 100,
               },
               showLegend: false,
+              showBaseline: true,
+              baselineWidth: 1,
+              barBorderRadius: 4,
+              valuePosition: 'outside'
             }}
           />
         </div>

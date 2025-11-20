@@ -329,7 +329,18 @@ export class ScaleManager {
     // 약간의 패딩 추가 (5%)
     const padding = (domainMax - domainMin) * 0.05;
 
-    return [domainMin - padding, domainMax + padding];
+    // 🔧 수정: 모든 데이터가 양수(또는 0)일 때는 0부터 시작하도록 패딩 조정
+    let finalMin = domainMin - padding;
+    let finalMax = domainMax + padding;
+
+    if (min >= 0) {
+      finalMin = 0; // 데이터가 모두 양수면 하단 패딩 없이 0부터 시작
+    }
+    if (max <= 0) {
+      finalMax = 0; // 데이터가 모두 음수면 상단 패딩 없이 0까지
+    }
+
+    return [finalMin, finalMax];
   }
 
   /**

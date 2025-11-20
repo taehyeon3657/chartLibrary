@@ -126,7 +126,7 @@ export class BarRenderer {
     const valuePosition = this.config.valuePosition || 'top';
     const valueFormat = this.config.valueFormat || '.1f';
 
-    // 🔧 FontSizeHelper로 값 폰트 사이즈 가져오기
+    //  FontSizeHelper로 값 폰트 사이즈 가져오기
     const legacyValueFontSize = typeof this.config.fonts?.valueFontSize === 'number'
       ? this.config.fonts?.valueFontSize
       : undefined;
@@ -136,12 +136,6 @@ export class BarRenderer {
     );
 
     const valueColor = this.config.valueColor || '#333';
-
-    console.log('🎨 BarRenderer valueFontSize:', {
-      valueFontSize,
-      fonts: this.config.fonts,
-      legacyValueFontSize: this.config.fonts?.valueFontSize
-    });
 
     const values = barGroup.selectAll('.bar-value')
       .data(positions)
@@ -162,11 +156,11 @@ export class BarRenderer {
           switch (valuePosition) {
           case 'top':
           case 'outside':
-            return d.y - 5;
+            return (d.data.y >= 0) ? (d.y - 10) : (d.y + d.height + 20);
           case 'middle':
             return d.y + d.height / 2;
           case 'bottom':
-            return d.y + d.height - 5;
+            return d.y + d.height - 10;
           default:
             return d.y - 5;
           }

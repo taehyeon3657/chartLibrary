@@ -28,19 +28,13 @@ export class LegendRenderer {
     const legendData = this.calculator.calculateLegendData();
     const legendPosition = this.config.legendPosition || 'top';
 
-    // 🔧 FontSizeHelper로 폰트 사이즈 가져오기
+    //  FontSizeHelper로 폰트 사이즈 가져오기
     const legendFontSize = FontSizeHelper.getLegendFontSize(
       this.config.fonts,
       this.config.fonts?.legendFontSize !== undefined
         ? { fontSize: Number(this.config.fonts.legendFontSize) }
         : undefined
     );
-
-    console.log('🎨 LegendRenderer fontSizes:', {
-      legendFontSize,
-      fontSizes: this.config.fonts,
-      legendStyle: this.config.fonts?.legendFontSize
-    });
 
     const legend = this.context.svg.append('g')
       .attr('class', 'legend')
