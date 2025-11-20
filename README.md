@@ -1,380 +1,179 @@
+다음은 제공해주신 코드베이스와 기능 구현 상태를 바탕으로 최신화된 `README.md` 파일 내용입니다. 실제로 구현되어 있고 사용 가능한 **Line Chart**와 **Bar Chart**를 중심으로 내용을 구성했습니다.
+
+-----
+
 # Chart Library
-D3.js와 모듈러 아키텍처로 구축된 현대적이고 TypeScript 우선 차트 라이브러리입니다. 아름답고 인터랙티브한 차트를 쉽게 만들어보세요.
+
+D3.js와 React를 기반으로 구축된 모듈식 차트 라이브러리입니다. TypeScript를 기본으로 지원하며, 선형(Line) 차트와 막대(Bar) 차트를 통해 데이터를 시각화할 수 있습니다.
 
 ## 🚀 주요 기능
 
-- **TypeScript 네이티브**: 완전한 타입 안전성과 뛰어난 개발 경험
-- **모듈러 아키텍처**: 필요한 것만 가져와서 사용
-- **다양한 차트 타입**: 선형, 막대, 원형, 영역 차트 (더 많은 타입이 곧 추가됩니다)
-- **D3.js 기반**: D3.js의 강력함과 유연성을 활용
-- **인터랙티브**: 내장된 hover, 클릭, 선택 상호작용
-- **반응형**: 자동 크기 조정 및 모바일 친화적
-- **커스터마이징 가능**: 광범위한 테마 및 스타일링 옵션
-- **애니메이션 지원**: 부드러운 전환 및 애니메이션
-- **접근성**: ARIA 레이블 및 키보드 내비게이션
-- **내보내기 기능**: PNG, SVG, PDF로 차트 내보내기
+  - **React 컴포넌트 지원**: React 환경에서 쉽게 사용할 수 있는 래퍼 컴포넌트 제공
+  - **TypeScript 기반**: 강력한 타입 정의 지원 (`@beaubrain/chart-lib-types`)
+  - **주요 차트 지원**:
+      - **Line Chart**: 기본 라인, 멀티 시리즈, 곡선(Curve), 영역 채우기(Area Fill), 추세선(Trend line)
+      - **Bar Chart**: 수직/수평 모드, 그룹화(Grouped), 스택(Stacked)
+  - **다양한 커스터마이징**: 축(Axis), 그리드, 범례(Legend), 툴팁(Tooltip), 폰트 스타일링
+  - **인터랙티브**: Hover, Click 이벤트 및 애니메이션 지원
+  - **내보내기 기능**: 차트를 PNG, SVG 등으로 내보내기 지원
 
 ## 📦 설치
 
 ```bash
-# npm 사용
-npm install @beaubrain/chart-lib-charts
+# npm
+npm install @beaubrain/chart-lib-react @beaubrain/chart-lib-types
 
-# pnpm 사용
-pnpm add @beaubrain/chart-lib-charts
+# pnpm
+pnpm add @beaubrain/chart-lib-react @beaubrain/chart-lib-types
 
-# yarn 사용
-yarn add @beaubrain/chart-lib-charts
+# yarn
+yarn add @beaubrain/chart-lib-react @beaubrain/chart-lib-types
 ```
 
-### peer 종속성
-필수 peer 종속성을 설치해야 합니다:
-```bash
-npm install d3@^7.0.0
-```
+## 🎯 사용 방법 (React)
 
-## 🎯 빠른 시작
+### 1\. Line Chart (선형 차트)
 
-### 기본 선형 차트
-```typescript
-import { LineChart, ChartFactory } from '@beaubrain/chart-lib-charts';
+시계열 데이터나 추세를 표현하기 적합합니다.
 
-// 샘플 데이터
+```tsx
+import { LineChart } from '@beaubrain/chart-lib-react';
+
 const data = [
-  { date: new Date('2023-01-01'), value: 100, group: 'Series A' },
-  { date: new Date('2023-01-02'), value: 120, group: 'Series A' },
-  { date: new Date('2023-01-03'), value: 90, group: 'Series A' },
+  { date: new Date('2024-01-01'), value: 100, group: 'Sales' },
+  { date: new Date('2024-01-02'), value: 120, group: 'Sales' },
+  { date: new Date('2024-01-03'), value: 115, group: 'Sales' },
 ];
 
-// 차트 생성
-const container = document.getElementById('chart-container');
-const chart = new LineChart(container, {
-  width: 800,
-  height: 400,
-  showDots: true,
-  enableAnimation: true,
-})
-.setData(data)
-.render();
-```
-
-### Chart Factory 사용
-```typescript
-import { ChartFactory } from '@beaubrain/chart-lib-charts';
-
-// 팩토리를 사용한 빠른 생성
-const chart = ChartFactory.createLineChart(
-  document.getElementById('chart-container'),
-  data,
-  {
-    title: '시간별 매출',
-    showLegend: true,
-    enableAnimation: true,
-  }
-);
-```
-
-## 📊 차트 타입
-
-### 선형 차트
-시계열 데이터와 트렌드 시각화에 완벽합니다.
-```typescript
-const config = {
-  lineColors: ['#3b82f6', '#ef4444', '#10b981'],
-  lineWidth: 2,
-  enableCurve: true,
-  curveType: 'monotoneX',
-  showDots: true,
-  showAreaFill: false,
-  showLegend: true,
-};
-
-const lineChart = new LineChart(container, config);
-```
-
-### 반응형 차트
-```typescript
-const chart = ChartFactory.createResponsive(
-  'line',
-  container,
-  data,
-  {
-    title: '반응형 차트',
-    responsive: true,
-  }
-);
-```
-
-### 테마 차트
-```typescript
-const chart = ChartFactory.createWithTheme(
-  'line',
-  container,
-  data,
-  'dark', // 'light', 'dark', 또는 'colorful'
-  {
-    title: '다크 테마 차트',
-  }
-);
-```
-
-## 🎨 커스터마이징
-
-### 설정 옵션
-```typescript
-interface LineChartConfig {
-  // 크기
-  width?: number;
-  height?: number;
-  margin?: { top: number; right: number; bottom: number; left: number };
-
-  // 스타일링
-  lineColors?: string[];
-  lineWidth?: number;
-  dotRadius?: number;
-  showDots?: boolean;
-
-  // 곡선
-  enableCurve?: boolean;
-  curveType?: 'linear' | 'monotoneX' | 'monotoneY' | 'natural' | 'step';
-
-  // 영역 채우기
-  showAreaFill?: boolean;
-  areaFillOpacity?: number;
-  areaGradient?: boolean;
-
-  // 축
-  showXAxis?: boolean;
-  showYAxis?: boolean;
-  gridLines?: boolean;
-
-  // 범례 & 제목
-  title?: string;
-  showLegend?: boolean;
-  legendPosition?: 'top' | 'right' | 'bottom' | 'left';
-
-  // 애니메이션
-  enableAnimation?: boolean;
-  animationDuration?: number;
-
-  // 상호작용
-  showTooltip?: boolean;
-  enableZoom?: boolean;
-  enablePan?: boolean;
+function MyLineChart() {
+  return (
+    <LineChart
+      data={data}
+      config={{
+        width: 800,
+        height: 400,
+        // 스타일 설정
+        lineColors: ['#3b82f6'],
+        lineWidth: 2,
+        showDots: true,
+        dotRadius: 4,
+        // 곡선 설정 ('linear' | 'monotoneX' | 'step' 등)
+        enableCurve: true,
+        curveType: 'monotoneX',
+        // 영역 채우기
+        showAreaFill: true,
+        areaFillOpacity: 0.1,
+        // 기타
+        showLegend: true,
+        enableAnimation: true,
+      }}
+    />
+  );
 }
 ```
 
-### 사용자 정의 테마
-```typescript
-const customConfig = {
-  lineColors: ['#8b5cf6', '#06b6d4', '#f97316'],
-  gridColor: '#f0f0f0',
-  axisColor: '#111',
-  titleStyle: {
-    color: '#333',
-    fontSize: 18,
-    fontWeight: 'bold'
-  },
-};
+### 2\. Bar Chart (막대 차트)
+
+범주형 데이터 비교에 적합합니다. 수직, 수평, 스택, 그룹화 모드를 지원합니다.
+
+```tsx
+import { BarChart } from '@beaubrain/chart-lib-react';
+
+const data = [
+  { x: 'Jan', value: 100, group: 'Product A' },
+  { x: 'Feb', value: 120, group: 'Product A' },
+  { x: 'Jan', value: 80, group: 'Product B' },
+  { x: 'Feb', value: 90, group: 'Product B' },
+];
+
+function MyBarChart() {
+  return (
+    <BarChart
+      data={data}
+      config={{
+        width: 800,
+        height: 400,
+        margin: { top: 20, right: 30, bottom: 40, left: 60 },
+        // 방향 설정 ('vertical' | 'horizontal')
+        orientation: 'vertical',
+        // 그룹화 또는 스택 설정
+        grouped: true,
+        // stacked: true,
+
+        // 스타일
+        barColors: ['#3b82f6', '#10b981'],
+        barBorderRadius: 4,
+
+        // 값 표시
+        showValues: true,
+        valuePosition: 'top',
+      }}
+    />
+  );
+}
 ```
 
-## 🎯 고급 사용법
+## 🎨 주요 설정 옵션 (Config)
 
-### 실시간 데이터
-```typescript
-const realTimeChart = ChartFactory.createRealtime(
-  'line',
-  container,
-  initialData,
-  {
-    updateInterval: 1000, // 1초마다 업데이트
-    title: '실시간 데이터 스트림',
-  }
-);
+모든 차트는 `config` props를 통해 세부 사항을 제어할 수 있습니다.
+
+### 공통 설정
+
+| 속성 | 설명 | 타입 |
+|------|------|------|
+| `width` / `height` | 차트의 너비와 높이 | `number` |
+| `margin` | 차트 여백 | `{ top, right, bottom, left }` |
+| `title` | 차트 제목 | `string` |
+| `showLegend` | 범례 표시 여부 | `boolean` |
+| `legendPosition` | 범례 위치 | `'top' | 'bottom' | 'left' | 'right'` |
+| `showTooltip` | 툴팁 표시 여부 | `boolean` |
+| `enableAnimation` | 애니메이션 활성화 | `boolean` |
+| `fonts` | 폰트 스타일 설정 (축, 제목, 범례 등) | `FontConfig` |
+
+### Line Chart 전용
+
+| 속성 | 설명 |
+|------|------|
+| `curveType` | 선의 곡률 타입 (`monotoneX`, `linear`, `step` 등) |
+| `showDots` | 데이터 포인트 점 표시 여부 |
+| `dotRadius` | 점의 크기 |
+| `showAreaFill` | 선 아래 영역 채우기 여부 |
+| `showTrendExtension` | 추세선(점선) 확장 표시 여부 |
+
+### Bar Chart 전용
+
+| 속성 | 설명 |
+|------|------|
+| `orientation` | 바의 방향 (`vertical`, `horizontal`) |
+| `grouped` | 그룹화된 막대 차트 사용 여부 |
+| `stacked` | 누적(스택) 막대 차트 사용 여부 |
+| `barBorderRadius` | 막대 모서리 둥글기 |
+| `showValues` | 막대 위에 값 표시 여부 |
+| `showBaseline` | 기준선 표시 여부 |
+
+## 🎪 이벤트 핸들링
+
+차트의 상호작용을 위해 다음과 같은 이벤트 props를 제공합니다.
+
+```tsx
+<LineChart
+  data={data}
+  onChartClick={(e) => console.log('클릭:', e.data)}
+  onChartHover={(e) => console.log('호버:', e.data)}
+  onLegendToggle={(e) => console.log('범례 토글:', e.group, e.visible)}
+/>
 ```
 
-### 여러 차트가 있는 대시보드
-```typescript
-const dashboard = ChartFactory.createDashboard(
-  container,
-  [
-    {
-      type: 'line',
-      data: salesData,
-      title: '매출 트렌드',
-      config: { showAreaFill: true }
-    },
-    {
-      type: 'line',
-      data: visitorData,
-      title: '웹사이트 방문자',
-      config: { lineColors: ['#ef4444'] }
-    }
-  ],
-  'grid' // 레이아웃: 'grid', 'horizontal', 또는 'vertical'
-);
-```
+## 🛠️ 프로젝트 구조
 
-### 데이터 비교
-```typescript
-const comparison = ChartFactory.createComparison(
-  container,
-  [
-    { name: '2023년 1분기', data: q1Data },
-    { name: '2023년 2분기', data: q2Data },
-    { name: '2023년 3분기', data: q3Data },
-  ],
-  'overlay' // 또는 'sideBySide'
-);
-```
+이 라이브러리는 모노레포 구조로 되어 있습니다.
 
-### 차트 내보내기
-```typescript
-// PNG로 내보내기
-ChartFactory.exportChart(chart, 'png', 'my-chart');
+  - **`packages/react`**: React 컴포넌트 (`LineChart`, `BarChart`)
+  - **`packages/charts`**: 실제 차트 구현 로직 (D3.js 기반)
+  - **`packages/core`**: 공통 로직, 헬퍼 함수, 기본 클래스
+  - **`packages/types`**: TypeScript 타입 정의
+  - **`apps/playground`**: 예제 및 테스트용 Next.js 애플리케이션
 
-// SVG로 내보내기
-ChartFactory.exportChart(chart, 'svg', 'my-chart');
-```
+## 📝 라이선스
 
-## 🎪 이벤트 & 상호작용
-
-```typescript
-chart
-  .on('chartHover', (data) => {
-    console.log('호버됨:', data);
-  })
-  .on('chartClick', (data) => {
-    console.log('클릭됨:', data);
-  })
-  .on('legendToggle', ({ group, visible }) => {
-    console.log(`${group}이 이제 ${visible ? '보임' : '숨김'} 상태입니다`);
-  });
-```
-
-### 사용 가능한 이벤트
-
-- `chartHover` - 데이터 포인트 위에 마우스 호버
-- `chartClick` - 데이터 포인트 클릭
-- `chartMouseenter` / `chartMouseleave` - 마우스 진입/이탈
-- `legendToggle` - 범례 항목 클릭
-- `rendered` - 차트 렌더링 완료
-- `updated` - 차트 업데이트 완료
-
-## 📱 반응형 디자인
-
-차트는 자동으로 컨테이너 크기 변화에 적응합니다:
-```typescript
-// 반응형 동작 활성화
-const chart = new LineChart(container, {
-  responsive: true,
-  width: undefined, // 컨테이너 너비 사용
-  height: undefined, // 컨테이너 높이 사용
-});
-
-// 수동 크기 조정
-chart.updateConfig({
-  width: newWidth,
-  height: newHeight
-}).update();
-```
-
-## 🎨 프리셋
-
-일반적인 사용 사례를 위해 미리 정의된 설정을 사용하세요:
-```typescript
-// 프리셋 설정 적용
-const presetConfig = ChartFactory.applyPreset(baseConfig, 'presentation');
-// 사용 가능한 프리셋: 'minimal', 'detailed', 'presentation', 'dashboard'
-
-const chart = new LineChart(container, presetConfig);
-```
-
-## 🏗️ 아키텍처
-
-이 라이브러리는 모듈러 모노레포 구조를 따릅니다:
-```
-packages/
-├── types/          # TypeScript 타입 정의
-├── core/           # 기본 클래스 및 유틸리티
-└── charts/         # 차트 구현
-    ├── line/       # 선형 차트 컴포넌트
-    ├── shared/     # 공유 유틸리티
-    └── ChartFactory.ts # 편의성 팩토리
-```
-
-### 주요 컴포넌트
-
-- **BaseChart**: 모든 차트 타입의 기반 클래스
-- **ChartFactory**: 차트 생성을 위한 편의 메서드
-- **DataProcessor**: 데이터 변환 및 검증
-- **ScaleManager**: D3 스케일 생성 및 관리
-- **EventManager**: 상호작용 및 이벤트 처리
-- **RenderingUtils**: 공통 렌더링 유틸리티
-
-##  개발
-
-### 설정
-```bash
-# 저장소 복제
-git clone [repository-url]
-cd chart-library
-
-# 종속성 설치
-pnpm install
-
-# 모든 패키지 빌드
-pnpm run build
-
-# 개발 모드
-pnpm run dev
-```
-
-### 스크립트
-
-- `pnpm run build` - 모든 패키지 빌드
-- `pnpm run dev` - 개발 모드
-- `pnpm run test` - 테스트 실행
-- `pnpm run lint` - 코드 린팅
-- `pnpm run clean` - 빌드 아티팩트 정리
-
-### 프로젝트 구조
-```
-chart-library/
-├── packages/
-│   ├── types/      # 공유 TypeScript 정의
-│   ├── core/       # 기본 기능
-│   └── charts/     # 차트 구현
-├── package.json    # 루트 패키지 설정
-├── turbo.json      # Turborepo 설정
-└── pnpm-workspace.yaml # 워크스페이스 설정
-```
-
-## 🗺️ 로드맵
-
-### 현재 상태
-
-- ✅ 완전한 기능 세트를 갖춘 선형 차트
-- ✅ 모듈러 아키텍처
-- ✅ TypeScript 지원
-- ✅ 이벤트 시스템
-- ✅ 내보내기 기능
-
-### 곧 출시 예정
-
-- 막대 차트
-- 원형 차트
-- 영역 차트
-- 산점도
-- 모바일 최적화
-- 더 많은 테마 및 프리셋
-- 인터랙티브 문서
-
-## 🏆 감사의 말
-
-- D3.js로 구축
-- 현대적인 차트 라이브러리에서 영감을 받음
-- TypeScript로 개발
-- Turborepo로 관리
-
----
+MIT
