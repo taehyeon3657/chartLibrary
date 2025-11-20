@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { ChartConfig } from '../base/config';
+import type { ChartConfig, FontConfig } from '../base/config';
 
 export interface LineChartConfig extends ChartConfig {
   // Line 스타일링
@@ -28,19 +28,10 @@ export interface LineChartConfig extends ChartConfig {
   // 제목
   title?: string | null;
   titlePosition?: 'LEFT' | 'CENTER' | 'RIGHT';
-  titleStyle?: {
-    fontSize?: number;
-    fontWeight?: string | number;
-    color?: string;
-  };
 
   // 범례
   showLegend?: boolean;
   legendPosition?: 'top' | 'right' | 'bottom' | 'left';
-  legendStyle?: {
-    fontSize?: number;
-    spacing?: number;
-  };
 
   // 트렌드 연장선
   showTrendExtension?: boolean;
@@ -66,4 +57,6 @@ export interface LineChartConfig extends ChartConfig {
   enablePan?: boolean;
   enableBrush?: boolean;
   crosshair?: boolean;
+
+  fonts?: FontConfig;
 }

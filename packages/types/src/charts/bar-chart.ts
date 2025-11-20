@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { ChartConfig } from '../base/config';
+import type { ChartConfig, FontConfig } from '../base/config';
 
 export interface BarChartConfig extends ChartConfig {
   // 바 방향
@@ -20,7 +20,7 @@ export interface BarChartConfig extends ChartConfig {
   showValues?: boolean;
   valuePosition?: 'top' | 'middle' | 'bottom' | 'outside';
   valueFormat?: string;
-  valueFontSize?: number;
+  // valueFontSize?: number;
   valueColor?: string;
 
   // 축 설정
@@ -53,19 +53,19 @@ export interface BarChartConfig extends ChartConfig {
   // 제목
   title?: string | null;
   titlePosition?: 'LEFT' | 'CENTER' | 'RIGHT';
-  titleStyle?: {
-    fontSize?: number;
-    fontWeight?: string | number;
-    color?: string;
-  };
+  titleFontSize?: number;
+  //   fontSize?: number;
+  //   fontWeight?: string | number;
+  //   color?: string;
+  // };
 
   // 범례
   showLegend?: boolean;
   legendPosition?: 'top' | 'right' | 'bottom' | 'left';
-  legendStyle?: {
-    fontSize?: number;
-    spacing?: number;
-  };
+  // legendStyle?: {
+  //   fontSize?: number;
+  //   spacing?: number;
+  // };
 
   // 애니메이션
   enableAnimation?: boolean;
@@ -84,4 +84,6 @@ export interface BarChartConfig extends ChartConfig {
   // 영역 제약
   minBarWidth?: number;
   maxBarWidth?: number;
+
+  fonts?: FontConfig;
 }

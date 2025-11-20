@@ -406,7 +406,7 @@ export class RenderingUtils {
 
     svg.selectAll('text')
       .style('font-family', styles.fontFamily)
-      .style('font-size', styles.fontSize)
+      .attr('font-size', styles.fontSize)
       .style('font-weight', styles.fontWeight)
       .style('font-style', styles.fontStyle);
   }

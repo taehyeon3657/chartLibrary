@@ -1,4 +1,5 @@
 import { LineChartConfig } from '@beaubrain/chart-lib-types';
+import { FontSizeHelper } from '@beaubrain/chart-lib-core';
 import { CoordinateCalculator } from '../CoordinateCalculator';
 import { RenderContext } from '../LineChart';
 
@@ -27,6 +28,20 @@ export class LegendRenderer {
     const legendData = this.calculator.calculateLegendData();
     const legendPosition = this.config.legendPosition || 'top';
 
+    // 🔧 FontSizeHelper로 폰트 사이즈 가져오기
+    const legendFontSize = FontSizeHelper.getLegendFontSize(
+      this.config.fonts,
+      this.config.fonts?.legendFontSize !== undefined
+        ? { fontSize: Number(this.config.fonts.legendFontSize) }
+        : undefined
+    );
+
+    console.log('🎨 LegendRenderer fontSizes:', {
+      legendFontSize,
+      fontSizes: this.config.fonts,
+      legendStyle: this.config.fonts?.legendFontSize
+    });
+
     const legend = this.context.svg.append('g')
       .attr('class', 'legend')
       .attr('transform', this.calculateLegendTransform(legendPosition));
@@ -51,7 +66,7 @@ export class LegendRenderer {
       .attr('x', 20)
       .attr('y', 0)
       .attr('dy', '0.32em')
-      .style('font-size', this.config.legendStyle?.fontSize || '12px')
+      .attr('font-size', `${legendFontSize}px`)
       .text(d => d.group);
 
     // 범례 클릭 이벤트는 상위에서 처리

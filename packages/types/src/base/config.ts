@@ -17,6 +17,22 @@ export interface ChartAnimation {
   delay?: number;
 }
 
+export interface FontConfig {
+  xAxisTickFontSize?: number | string;
+  yAxisTickFontSize?: number | string;
+  xAxisLabelFontSize?: number | string;
+  yAxisLabelFontSize?: number | string;
+  legendFontSize?: number | string;
+  lengendFontWeight?: number | string;
+  legendColor?: string;
+  valueFontSize?: number | string;
+  valueFontWeight?: number | string;
+  valueColor?: string;
+  titleFontSize?: number | string;
+  titleFontWeight?: number | string;
+  titleFontColor?: string;
+}
+
 export interface ChartTheme {
   colors: {
     primary: string[];
@@ -49,4 +65,5 @@ export interface ChartConfig {
   responsive?: boolean;
   className?: string;
   id?: string;
+  fonts?: FontConfig;
 }

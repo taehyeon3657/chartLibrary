@@ -72,10 +72,14 @@ export default function CustomExample() {
             height: 500,
             title: 'Monthly Sales Performance',
             titlePosition: 'LEFT',
-            titleStyle: {
-              fontSize: 24,
-              fontWeight: 'bold',
-              color: '#1f2937'
+            fonts: {
+              xAxisTickFontSize: 6,
+              yAxisTickFontSize: 6,
+              xAxisLabelFontSize: 16,
+              yAxisLabelFontSize: 16,
+              legendFontSize: 8,
+              titleFontSize: 18,
+              valueFontSize: 8,
             },
             lineColors: ['#8b5cf6', '#06b6d4'],
             lineWidth: 1,
@@ -95,6 +99,7 @@ export default function CustomExample() {
             enableAnimation: false,
             animationDuration: 1200,
             margin: { top: 60, right: 20, bottom: 60, left: 80 }
+
           }}
         />
       </ChartContainer>

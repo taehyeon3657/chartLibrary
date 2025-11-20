@@ -101,7 +101,7 @@ export abstract class BaseChart extends EventEmitter<AllChartEvents> {
           .style('color', 'white')
           .style('padding', '8px')
           .style('border-radius', '4px')
-          .style('font-size', '12px')
+          .attr('font-size', '12px')
           .style('pointer-events', 'none');
       }
       return BaseChart.tooltip;

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as d3 from 'd3';
 import { RenderingUtils } from '../../shared';
+import { FontSizeHelper } from '@beaubrain/chart-lib-core';
 import type { BarChartConfig } from '@beaubrain/chart-lib-types';
 import type { BarChartState } from '../BarChartState';
 import type { CoordinateCalculator } from '../CoordinateCalculator';
@@ -124,15 +125,30 @@ export class BarRenderer {
     const orientation = this.config.orientation || 'vertical';
     const valuePosition = this.config.valuePosition || 'top';
     const valueFormat = this.config.valueFormat || '.1f';
-    const fontSize = this.config.valueFontSize || 11;
+
+    // 🔧 FontSizeHelper로 값 폰트 사이즈 가져오기
+    const legacyValueFontSize = typeof this.config.fonts?.valueFontSize === 'number'
+      ? this.config.fonts?.valueFontSize
+      : undefined;
+    const valueFontSize = FontSizeHelper.getValueFontSize(
+      this.config.fonts,
+      legacyValueFontSize
+    );
+
     const valueColor = this.config.valueColor || '#333';
+
+    console.log('🎨 BarRenderer valueFontSize:', {
+      valueFontSize,
+      fonts: this.config.fonts,
+      legacyValueFontSize: this.config.fonts?.valueFontSize
+    });
 
     const values = barGroup.selectAll('.bar-value')
       .data(positions)
       .enter()
       .append('text')
       .attr('class', 'bar-value')
-      .style('font-size', `${fontSize}px`)
+      .attr('font-size', `${valueFontSize}px`)
       .style('fill', valueColor)
       .style('text-anchor', 'middle')
       .style('pointer-events', 'none')
