@@ -112,8 +112,6 @@ export class BarChartRenderer {
     const computedStyle = window.getComputedStyle(this.container);
     const inheritedFont = computedStyle.fontFamily || 'monospace';
 
-    console.log('Container font-family:', inheritedFont); // 디버깅용
-
     // 격자선 스타일
     svg.selectAll('.grid line')
       .attr('stroke', this.config.gridColor || '#f0f0f0')

@@ -55,6 +55,7 @@ export class BarChart extends BaseChart {
       valuePosition: 'top',
       showXAxis: true,
       showYAxis: true,
+      showYAxisZero: false,
       gridLines: true,
       horizontalGridLines: true,
       verticalGridLines: false,

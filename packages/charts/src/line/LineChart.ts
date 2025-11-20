@@ -149,8 +149,6 @@ export class LineChart extends BaseChart {
       return this;
     }
 
-    console.log('🚀 Calling renderer.render()...');
-
 
     // 렌더링 실행
     try {

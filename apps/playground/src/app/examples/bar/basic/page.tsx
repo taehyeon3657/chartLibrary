@@ -14,7 +14,7 @@ export default function BasicExample() {
   const data = [
     { x: 'Jan', value: 100 },
     { x: 'Feb', value: 80},
-    { x: 'Mar', value: -15},
+    { x: 'Mar', value: -12},
     { x: 'Apr', value: 120},
     { x: 'May', value: 60},
     { x: 'Jun', value: 90},
@@ -24,9 +24,12 @@ export default function BasicExample() {
   const code = `import { BarChart } from '@beaubrain/chart-lib-react'
 
 const data = [
-  { x: 'Jan', value: 100, date: new Date() },
-  { x: 'Feb', value: 120, date: new Date() },
-  { x: 'Mar', value: 115, date: new Date() },
+    { x: 'Jan', value: 100 },
+    { x: 'Feb', value: 80},
+    { x: 'Mar', value: 12},
+    { x: 'Apr', value: 120},
+    { x: 'May', value: 60},
+    { x: 'Jun', value: 90},
   // ...
 ]
 
@@ -74,6 +77,7 @@ function MyChart() {
               margin: { top: 20, right: 20, bottom: 40, left: 60 },
               xAxisLabelPosition: 'center',
               showValues: true,
+              showYAxisZero: true,
               fonts: {
                 xAxisTickFontSize: 10,
                 yAxisTickFontSize: 10,

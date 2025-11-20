@@ -126,7 +126,7 @@ export class BarRenderer {
     const valuePosition = this.config.valuePosition || 'top';
     const valueFormat = this.config.valueFormat || '.1f';
 
-    // 🔧 FontSizeHelper로 값 폰트 사이즈 가져오기
+    //  FontSizeHelper로 값 폰트 사이즈 가져오기
     const legacyValueFontSize = typeof this.config.fonts?.valueFontSize === 'number'
       ? this.config.fonts?.valueFontSize
       : undefined;

@@ -38,18 +38,12 @@ export class AxisRenderer {
     const computedStyle = window.getComputedStyle(this.context.container);
     const inheritedFont = computedStyle.fontFamily || 'inherit';
 
-    // 🔧 FontSizeHelper로 폰트 사이즈 가져오기
+    //  FontSizeHelper로 폰트 사이즈 가져오기
     const xAxisTickSize = FontSizeHelper.getXAxisTickFontSize(this.config.fonts);
     const yAxisTickSize = FontSizeHelper.getYAxisTickFontSize(this.config.fonts);
     const xAxisLabelSize = FontSizeHelper.getXAxisLabelFontSize(this.config.fonts);
     const yAxisLabelSize = FontSizeHelper.getYAxisLabelFontSize(this.config.fonts);
-    console.log('🎨 AxisRenderer fontSizes:', {
-      xAxisTickSize,
-      yAxisTickSize,
-      xAxisLabelSize,
-      yAxisLabelSize,
-      config: this.config.fonts
-    });
+
 
     // X축 렌더링
     if (this.config.showXAxis) {
@@ -58,11 +52,11 @@ export class AxisRenderer {
         .attr('transform', `translate(0, ${innerHeight})`)
         .call(xAxis);
 
-      // 🔧 X축 눈금 텍스트 스타일 적용
+      //  X축 눈금 텍스트 스타일 적용
       xAxisGroup.selectAll('text')
         .style('font-family', inheritedFont)
         .attr('font-size', `${xAxisTickSize}px`)
-        .attr('fill', '#666');
+        .attr('fill', '#111');
 
       // X축 라벨
       if (this.config.xAxisLabel) {
@@ -74,7 +68,7 @@ export class AxisRenderer {
           .style('font-family', inheritedFont)
           .attr('font-size', `${xAxisLabelSize}px`)
           .style('font-weight', '500')
-          .attr('fill', '#666')
+          .attr('fill', '#111')
           .text(this.config.xAxisLabel);
       }
     }
@@ -85,11 +79,11 @@ export class AxisRenderer {
         .attr('class', 'axis y-axis')
         .call(yAxis);
 
-      // 🔧 Y축 눈금 텍스트 스타일 적용
+      //  Y축 눈금 텍스트 스타일 적용
       yAxisGroup.selectAll('text')
         .style('font-family', inheritedFont)
         .attr('font-size', `${yAxisTickSize}px`)
-        .attr('fill', '#666');
+        .attr('fill', '#111');
 
       // Y축 라벨
       if (this.config.yAxisLabel) {
@@ -102,7 +96,7 @@ export class AxisRenderer {
           .style('font-family', inheritedFont)
           .attr('font-size', `${yAxisLabelSize}px`)
           .style('font-weight', '500')
-          .attr('fill', '#666')
+          .attr('fill', '#111')
           .text(this.config.yAxisLabel);
       }
     }

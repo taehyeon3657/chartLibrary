@@ -26,6 +26,8 @@ export interface BarChartConfig extends ChartConfig {
   // 축 설정
   showXAxis?: boolean;
   showYAxis?: boolean;
+  // Y축의 0값 눈금 표시 여부
+  showYAxisZero?: boolean;
   xAxisLabel?: string;
   yAxisLabel?: string;
   xAxisLabelPosition?: 'center' | 'left' | 'right';
