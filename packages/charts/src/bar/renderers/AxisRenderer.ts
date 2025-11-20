@@ -35,26 +35,29 @@ export class AxisRenderer {
     const { innerHeight, innerWidth } = scales;
     const orientation = this.config.orientation || 'vertical';
 
-    // [수정] 색상 통일: config에 값이 없으면 기본값 '#333'(검은색 계열) 사용
     const axisColor = this.config.axisColor || '#333';
 
-    // 부모 컨테이너의 실제 폰트 가져오기
     const computedStyle = window.getComputedStyle(this.context.container);
     const inheritedFont = computedStyle.fontFamily || 'inherit';
 
-    // 🔧 FontSizeHelper로 폰트 사이즈 가져오기
     const xAxisTickSize = FontSizeHelper.getXAxisTickFontSize(this.config.fonts);
     const yAxisTickSize = FontSizeHelper.getYAxisTickFontSize(this.config.fonts);
     const xAxisLabelSize = FontSizeHelper.getXAxisLabelFontSize(this.config.fonts);
     const yAxisLabelSize = FontSizeHelper.getYAxisLabelFontSize(this.config.fonts);
 
+    // =================================================================================
     // X축 렌더링
+    // =================================================================================
     if (this.config.showXAxis) {
-      // vertical 모드일 때 y=0 위치에 x축을 배치하도록 transform 계산 (이전 수정 사항 유지)
       let xAxisTransform = `translate(0, ${innerHeight})`;
+
       if (orientation === 'vertical') {
         const zeroPos = (scales.yScale as any)(0);
         xAxisTransform = `translate(0, ${!isNaN(zeroPos) ? zeroPos : innerHeight})`;
+      }
+
+      if (orientation === 'horizontal') {
+        xAxis.tickSizeOuter(0);
       }
 
       const xAxisGroup = this.context.chartArea.append('g')
@@ -62,29 +65,49 @@ export class AxisRenderer {
         .attr('transform', xAxisTransform)
         .call(xAxis);
 
-      // 🔧 X축 눈금 텍스트 스타일 적용 (색상 통일)
+      // [버그 수정] Vertical 모드일 때 X축 선이 양옆으로 꽉 차지 않는 문제 해결
+      if (orientation === 'vertical') {
+        // X축의 도메인 라인을 0부터 innerWidth까지 강제로 그리기 (M0,0 H{width})
+        xAxisGroup.select('.domain')
+          .attr('d', `M0,0H${innerWidth}`);
+      }
+
+      // Horizontal 모드 조정
+      if (orientation === 'horizontal') {
+        xAxisGroup.select('.domain')
+          .attr('d', `M0,0H${innerWidth}`);
+
+        xAxisGroup.selectAll('.tick')
+          .style('display', (d: any, i, nodes) => {
+            if (i === 0 || i === nodes.length - 1) {
+              return 'none';
+            }
+            if (d === 0 && this.config.showYAxisZero === false) {
+              return 'none';
+            }
+            return null;
+          });
+      }
+
       xAxisGroup.selectAll('text')
         .style('font-family', inheritedFont)
         .attr('font-size', `${xAxisTickSize}px`)
-        .attr('fill', axisColor); // #666 -> axisColor
+        .attr('fill', axisColor);
 
       xAxisGroup.select('.domain')
-        .attr('stroke', axisColor); // #111 -> axisColor
+        .attr('stroke', axisColor);
 
       xAxisGroup.selectAll('.tick line')
-        .attr('stroke', axisColor); // #111 -> axisColor
+        .attr('stroke', axisColor);
 
-      // scaleBand를 사용하는 경우, tick을 바의 중앙에 위치시킴
       if (orientation === 'vertical' && (scales.xScale as any).bandwidth) {
         const bandwidth = (scales.xScale as any).bandwidth();
         xAxisGroup.selectAll('.tick text')
           .attr('transform', `translate(${bandwidth / 2}, 0)`);
       }
 
-      // X축 라벨
       if (this.config.xAxisLabel) {
         const labelPosition = this.config.xAxisLabelPosition || 'center';
-
         let xPosition: number;
         let textAnchor: 'start' | 'middle' | 'end';
 
@@ -104,7 +127,7 @@ export class AxisRenderer {
           .attr('x', xPosition)
           .attr('y', 35)
           .attr('text-anchor', textAnchor)
-          .attr('fill', axisColor) // #666 -> axisColor
+          .attr('fill', axisColor)
           .style('font-family', inheritedFont)
           .attr('font-size', `${xAxisLabelSize}px`)
           .style('font-weight', '500')
@@ -112,51 +135,49 @@ export class AxisRenderer {
       }
     }
 
+    // =================================================================================
     // Y축 렌더링
+    // =================================================================================
     if (this.config.showYAxis) {
-      // tickSizeOuter(0)을 호출하여 축 양 끝단의 값 없는 눈금 제거 (이전 수정 사항 유지)
-      yAxis.tickSizeOuter(0);
+      if (orientation === 'vertical') {
+        yAxis.tickSizeOuter(0);
+      }
 
       const yAxisGroup = this.context.chartArea.append('g')
         .attr('class', 'axis y-axis')
         .call(yAxis);
 
-      yAxisGroup.selectAll('.tick')
-        .style('display', (d: any, i, nodes) => {
-          // 1. 제일 위 눈금은 항상 숨김
-          if (i === nodes.length - 1) {
-            return 'none';
-          }
-          // 2. 값이 0인 눈금은 props에 따라 제어
-          if (d === 0 && this.config.showYAxisZero === false) {
-            return 'none';
-          }
-          return null;
-        });
+      if (orientation === 'horizontal') {
+        yAxisGroup.select('.domain')
+          .attr('d', `M0,0V${innerHeight}`);
+      }
 
-      // Y축 눈금 텍스트 스타일 적용 (색상 통일)
+      if (orientation === 'vertical') {
+        yAxisGroup.selectAll('.tick')
+          .style('display', (d: any, i, nodes) => {
+            if (i === 0 || i === nodes.length - 1) {
+              return 'none';
+            }
+            if (d === 0 && this.config.showYAxisZero === false) {
+              return 'none';
+            }
+            return null;
+          });
+      }
+
       yAxisGroup.selectAll('text')
         .style('font-family', inheritedFont)
         .attr('font-size', `${yAxisTickSize}px`)
-        .attr('fill', axisColor); // #666 -> axisColor
+        .attr('fill', axisColor);
 
       yAxisGroup.select('.domain')
-        .attr('stroke', axisColor); // #111 -> axisColor
+        .attr('stroke', axisColor);
 
       yAxisGroup.selectAll('.tick line')
-        .attr('stroke', axisColor); // #111 -> axisColor
+        .attr('stroke', axisColor);
 
-      // horizontal orientation이고 scaleBand인 경우
-      if (orientation === 'horizontal' && (scales.xScale as any).bandwidth) {
-        const bandwidth = (scales.xScale as any).bandwidth();
-        yAxisGroup.selectAll('.tick text')
-          .attr('transform', `translate(0, ${bandwidth / 2})`);
-      }
-
-      // Y축 라벨
       if (this.config.yAxisLabel) {
         const labelPosition = this.config.yAxisLabelPosition || 'center';
-
         let yPosition: number;
         let textAnchor: 'start' | 'middle' | 'end';
 
@@ -177,7 +198,7 @@ export class AxisRenderer {
           .attr('x', -yPosition)
           .attr('y', -40)
           .attr('text-anchor', textAnchor)
-          .attr('fill', axisColor) // #666 -> axisColor
+          .attr('fill', axisColor)
           .style('font-family', inheritedFont)
           .attr('font-size', `${yAxisLabelSize}px`)
           .style('font-weight', '500')
@@ -201,7 +222,6 @@ export class AxisRenderer {
     const dashArray = gridLineStyle === 'dashed' ? '2,2' : '0';
     const gridColor = this.config.gridColor || '#f0f0f0';
 
-    // 가로 격자선
     if (this.config.horizontalGridLines !== false) {
       const horizontalGrid = this.context.chartArea.append('g')
         .attr('class', 'grid horizontal-grid')
@@ -217,10 +237,9 @@ export class AxisRenderer {
         .attr('stroke-dasharray', dashArray);
 
       horizontalGrid.selectAll('text').remove();
-      horizontalGrid.select('.domain').remove(); // 그리드 라인의 축 선 제거
+      horizontalGrid.select('.domain').remove();
     }
 
-    // 세로 격자선
     if (this.config.verticalGridLines !== false) {
       const verticalGrid = this.context.chartArea.append('g')
         .attr('class', 'grid vertical-grid')
@@ -235,7 +254,7 @@ export class AxisRenderer {
         .attr('stroke-dasharray', dashArray);
 
       verticalGrid.selectAll('text').remove();
-      verticalGrid.select('.domain').remove(); // 그리드 라인의 축 선 제거
+      verticalGrid.select('.domain').remove();
     }
   }
 

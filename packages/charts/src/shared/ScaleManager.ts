@@ -36,6 +36,9 @@ export interface ScaleOptions {
   // 색상 스케일 옵션
   colorScheme?: string[];
   colorDomain?: string[];
+
+  // [추가] 차트 방향
+  orientation?: 'vertical' | 'horizontal';
 }
 
 export interface TimeChartScales {
@@ -136,20 +139,50 @@ export class ScaleManager {
   }
 
   /**
-   * 서수 스케일 생성
+   * 서수 스케일 생성 (Bar Chart용)
    */
   createOrdinalScales(options: ScaleOptions = {}): OrdinalChartScales {
     const innerWidth = this.config.width - this.config.margin.left - this.config.margin.right;
     const innerHeight = this.config.height - this.config.margin.top - this.config.margin.bottom;
+    const { orientation = 'vertical' } = options;
 
     const ordinalDomain = [...new Set(this.data.map(d => String(d.x)))];
-    const bandwidth = innerWidth / ordinalDomain.length;
+
+    let xScale: d3.ScaleOrdinal<string, number>;
+    let yScale: d3.ScaleLinear<number, number>;
+
+    if (orientation === 'horizontal') {
+
+      const bandwidth = innerHeight / ordinalDomain.length;
+      xScale = d3.scaleOrdinal<string, number>()
+        .domain(ordinalDomain)
+        .range(ordinalDomain.map((_, i) => i * bandwidth + bandwidth / 2));
+
+      // yScale (값): 가로 방향으로 배치 (왼쪽 -> 오른쪽: 0 ~ width)
+      const { yDomain, yPadding = 0, yNice = true } = options;
+      const domain = yDomain || this.calculateYDomain();
+
+      yScale = d3.scaleLinear()
+        .domain(domain)
+        .range([yPadding, innerWidth - yPadding]); // 0부터 시작하여 오른쪽으로
+
+      if (yNice) yScale.nice();
+
+    } else {
+      // 세로형 차트 (기본)
+      // xScale (카테고리): 가로 방향으로 배치
+      const bandwidth = innerWidth / ordinalDomain.length;
+      xScale = d3.scaleOrdinal<string, number>()
+        .domain(ordinalDomain)
+        .range(ordinalDomain.map((_, i) => i * bandwidth + bandwidth / 2));
+
+      // yScale (값): 세로 방향으로 배치 (아래 -> 위: height ~ 0)
+      yScale = this.createYScale(options, innerHeight);
+    }
 
     return {
-      xScale: d3.scaleOrdinal<string, number>()
-        .domain(ordinalDomain)
-        .range(ordinalDomain.map((_, i) => i * bandwidth + bandwidth / 2)),
-      yScale: this.createYScale(options, innerHeight),
+      xScale,
+      yScale,
       colorScale: this.createColorScale(options),
       innerWidth,
       innerHeight,
@@ -235,7 +268,7 @@ export class ScaleManager {
 
 
   /**
-   * Y축 스케일 생성
+   * Y축 스케일 생성 (세로형 차트 기준: height -> 0)
    */
   private createYScale(options: ScaleOptions, height: number): d3.ScaleLinear<number, number> {
     const { yDomain, yPadding = 0, yNice = true } = options;
@@ -329,7 +362,7 @@ export class ScaleManager {
     // 약간의 패딩 추가 (5%)
     const padding = (domainMax - domainMin) * 0.05;
 
-    // 🔧 수정: 모든 데이터가 양수(또는 0)일 때는 0부터 시작하도록 패딩 조정
+    // 모든 데이터가 양수(또는 0)일 때는 0부터 시작하도록 패딩 조정
     let finalMin = domainMin - padding;
     let finalMax = domainMax + padding;
 

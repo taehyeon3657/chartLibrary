@@ -95,7 +95,7 @@ export class CoordinateCalculator {
             data: d
           });
         } else {
-          const centerY = this.getXPosition(category) + bandwidth / 2;
+          const centerY = (this.getXPosition(category) + bandwidth / 2) - barWidth / 2 ;
           const xZero = yScale(0);
           const xValue = yScale(d.y);
 
@@ -185,6 +185,7 @@ export class CoordinateCalculator {
         } else {
           const xZero = yScale(0);
           const xValue = yScale(item.y);
+          const centerY = (this.getXPosition(category) - bandwidth / 2) + offset;
 
           let x: number;
           let width: number;
@@ -199,7 +200,7 @@ export class CoordinateCalculator {
 
           groupPositions.push({
             x,
-            y: this.getXPosition(category) + offset,
+            y: centerY,
             width: Math.abs(width),
             height: barWidth,
             data: item
