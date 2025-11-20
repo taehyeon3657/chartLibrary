@@ -23,11 +23,6 @@ export default function CustomExample() {
     // Title styling
     title: 'Monthly Sales Performance',
     titlePosition: 'LEFT',
-    titleStyle: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      color: '#1f2937'
-    },
 
     // Bars
     grouped: true,
@@ -81,7 +76,15 @@ export default function CustomExample() {
             barPadding: 0.2,
             showValues: true,
             valuePosition: 'top',
-            valueFontSize: 11,
+            fonts: {
+              xAxisTickFontSize: 6,
+              yAxisTickFontSize: 6,
+              xAxisLabelFontSize: 16,
+              yAxisLabelFontSize: 16,
+              legendFontSize: 8,
+              titleFontSize: 18,
+              valueFontSize: 8,
+            },
             showXAxis: true,
             showYAxis: true,
             gridLines: true,

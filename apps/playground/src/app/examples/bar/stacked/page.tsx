@@ -74,7 +74,15 @@ export default function StackedExample() {
             showValues: true,
             valuePosition: 'middle',
             valueColor: 'white',
-            valueFontSize: 10
+            fonts: {
+              xAxisTickFontSize: 6,
+              yAxisTickFontSize: 6,
+              xAxisLabelFontSize: 16,
+              yAxisLabelFontSize: 16,
+              legendFontSize: 8,
+              titleFontSize: 18,
+              valueFontSize: 8,
+            },
           }}
         />
       </ChartContainer>

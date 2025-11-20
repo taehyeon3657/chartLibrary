@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { BarChartConfig } from '@beaubrain/chart-lib-types';
+import { FontSizeHelper } from '@beaubrain/chart-lib-core';
 import type { CoordinateCalculator } from '../CoordinateCalculator';
 import type { BarChartState } from '../BarChartState';
 import { RenderContext } from '../BarChart';
@@ -38,6 +39,20 @@ export class AxisRenderer {
     const computedStyle = window.getComputedStyle(this.context.container);
     const inheritedFont = computedStyle.fontFamily || 'inherit';
 
+    // 🔧 FontSizeHelper로 폰트 사이즈 가져오기
+    const xAxisTickSize = FontSizeHelper.getXAxisTickFontSize(this.config.fonts);
+    const yAxisTickSize = FontSizeHelper.getYAxisTickFontSize(this.config.fonts);
+    const xAxisLabelSize = FontSizeHelper.getXAxisLabelFontSize(this.config.fonts);
+    const yAxisLabelSize = FontSizeHelper.getYAxisLabelFontSize(this.config.fonts);
+
+    console.log('🎨 BarChart AxisRenderer fontSizes:', {
+      xAxisTickSize,
+      yAxisTickSize,
+      xAxisLabelSize,
+      yAxisLabelSize,
+      config: this.config.fonts
+    });
+
     // X축 렌더링
     if (this.config.showXAxis) {
       const xAxisGroup = this.context.chartArea.append('g')
@@ -45,12 +60,12 @@ export class AxisRenderer {
         .attr('transform', `translate(0, ${innerHeight})`)
         .call(xAxis);
 
-      // .call() 직후 즉시 폰트 강제 적용
+      // 🔧 X축 눈금 텍스트 스타일 적용
       xAxisGroup.selectAll('text')
-        .attr('style', `font-family: ${inheritedFont} !important`)
+        .style('font-family', inheritedFont)
+        .attr('font-size', `${xAxisTickSize}px`)
         .attr('fill', '#666');
 
-      // 축 domain과 tick line 스타일
       xAxisGroup.select('.domain')
         .attr('stroke', this.config.axisColor || '#111');
 
@@ -88,7 +103,9 @@ export class AxisRenderer {
           .attr('y', 35)
           .attr('text-anchor', textAnchor)
           .attr('fill', this.config.axisColor || '#666')
-          .attr('style', `font-family: ${inheritedFont} !important; font-size: 12px; font-weight: 500;`)
+          .style('font-family', inheritedFont)
+          .attr('font-size', `${xAxisLabelSize}px`)
+          .style('font-weight', '500')
           .text(this.config.xAxisLabel);
       }
     }
@@ -99,12 +116,12 @@ export class AxisRenderer {
         .attr('class', 'axis y-axis')
         .call(yAxis);
 
-      // .call() 직후 즉시 폰트 강제 적용
+      // 🔧 Y축 눈금 텍스트 스타일 적용
       yAxisGroup.selectAll('text')
-        .attr('style', `font-family: ${inheritedFont} !important`)
+        .style('font-family', inheritedFont)
+        .attr('font-size', `${yAxisTickSize}px`)
         .attr('fill', '#666');
 
-      // 축 domain과 tick line 스타일
       yAxisGroup.select('.domain')
         .attr('stroke', this.config.axisColor || '#111');
 
@@ -143,7 +160,9 @@ export class AxisRenderer {
           .attr('y', -40)
           .attr('text-anchor', textAnchor)
           .attr('fill', this.config.axisColor || '#666')
-          .attr('style', `font-family: ${inheritedFont} !important; font-size: 12px; font-weight: 500;`)
+          .style('font-family', inheritedFont)
+          .attr('font-size', `${yAxisLabelSize}px`)
+          .style('font-weight', '500')
           .text(this.config.yAxisLabel);
       }
     }

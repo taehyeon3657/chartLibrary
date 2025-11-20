@@ -129,21 +129,18 @@ export class ChartFactory {
         barColors: ['#3b82f6', '#ef4444', '#10b981', '#f59e0b'],
         gridColor: '#f0f0f0',
         axisColor: '#111',
-        titleStyle: { color: '#333' }
       },
       dark: {
         lineColors: ['#60a5fa', '#f87171', '#34d399', '#fbbf24'],
         barColors: ['#60a5fa', '#f87171', '#34d399', '#fbbf24'],
         gridColor: '#374151',
         axisColor: '#6b7280',
-        titleStyle: { color: '#f9fafb' }
       },
       colorful: {
         lineColors: ['#8b5cf6', '#06b6d4', '#f97316', '#ec4899', '#84cc16'],
         barColors: ['#8b5cf6', '#06b6d4', '#f97316', '#ec4899', '#84cc16'],
         gridColor: '#e5e7eb',
         axisColor: '#9ca3af',
-        titleStyle: { color: '#1f2937' }
       }
     };
 
@@ -463,7 +460,6 @@ export class ChartFactory {
         dotRadius: 6,
         enableAnimation: true,
         animationDuration: 800,
-        titleStyle: { fontSize: 20, fontWeight: 'bold' }
       },
       dashboard: {
         showXAxis: true,

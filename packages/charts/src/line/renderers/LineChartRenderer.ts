@@ -8,6 +8,7 @@ import { LineRenderer } from './LineRenderer';
 import { AxisRenderer } from './AxisRenderer';
 import { LegendRenderer } from './LegendRenderer';
 import { RenderContext } from '../LineChart';
+import { FontSizeHelper } from '@beaubrain/chart-lib-core';
 
 /**
  * 모든 렌더링을 총괄하는 메인 렌더러
@@ -112,8 +113,6 @@ export class LineChartRenderer {
     const computedStyle = window.getComputedStyle(this.container);
     const inheritedFont = computedStyle.fontFamily || 'monospace';
 
-    console.log('LineChart Container font-family:', inheritedFont); // 디버깅용
-
     // 격자선 스타일
     svg.selectAll('.grid line')
       .attr('stroke', this.config.gridColor || '#f0f0f0')
@@ -134,7 +133,7 @@ export class LineChartRenderer {
       }
     });
 
-    // 🔧 FIX: 축 텍스트에 특별히 한번 더 적용
+    // 축 텍스트에 특별히 한번 더 적용
     svg.selectAll('.axis text').each(function() {
       if (this && (this as HTMLElement).style) {
         (this as HTMLElement).style.fontFamily = inheritedFont;
@@ -147,15 +146,27 @@ export class LineChartRenderer {
     if (this.config.title) {
       const margin = this.config.margin || { top: 20, right: 20, bottom: 40, left: 60 };
 
+      // 🔧 FontSizeHelper로 제목 폰트 사이즈 가져오기
+      const titleFontSize = FontSizeHelper.getTitleFontSize(
+        this.config.fonts,
+        { fontSize: this.config.fonts?.titleFontSize }
+      );
+
+      console.log('🎨 LineChartRenderer titleFontSize:', {
+        titleFontSize,
+        fonts: this.config.fonts,
+        titleStyle: this.config.fonts?.titleFontSize
+      });
+
       svg.append('text')
         .attr('class', 'chart-title')
         .attr('x', this.calculateTitleX(this.config.titlePosition))
         .attr('y', margin.top - 5)
         .attr('text-anchor', this.calculateTitleAnchor(this.config.titlePosition))
-        .style('font-size', this.config.titleStyle?.fontSize || '16px')
-        .style('font-weight', this.config.titleStyle?.fontWeight || 'bold')
-        .style('font-family', inheritedFont)  // 제목도 폰트 상속
-        .style('fill', this.config.titleStyle?.color || '#333')
+        .attr('font-size', `${titleFontSize}px`)
+        .style('font-weight', this.config.fonts?.titleFontWeight || 'bold')
+        .style('font-family', inheritedFont)
+        .style('fill', this.config.fonts?.titleFontColor || '#333')
         .text(this.config.title);
     }
   }

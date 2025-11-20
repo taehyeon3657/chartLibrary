@@ -12,7 +12,7 @@ export const CHART_CONFIG = {
   STYLES: {
     font: 'inherit',
     textColor: '#374151',
-    titleColor: '#111827',
+    titleFontColor: '#111827',
     axisColor: '#d1d5db',
     gridColor: '#f3f4f6',
   }

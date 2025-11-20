@@ -1,4 +1,5 @@
 import { LineChartConfig } from '@beaubrain/chart-lib-types';
+import { FontSizeHelper } from '@beaubrain/chart-lib-core';
 import { CoordinateCalculator } from '../CoordinateCalculator';
 import { LineChartState } from '../LineChartState';
 import { RenderContext } from '../LineChart';
@@ -37,6 +38,19 @@ export class AxisRenderer {
     const computedStyle = window.getComputedStyle(this.context.container);
     const inheritedFont = computedStyle.fontFamily || 'inherit';
 
+    // 🔧 FontSizeHelper로 폰트 사이즈 가져오기
+    const xAxisTickSize = FontSizeHelper.getXAxisTickFontSize(this.config.fonts);
+    const yAxisTickSize = FontSizeHelper.getYAxisTickFontSize(this.config.fonts);
+    const xAxisLabelSize = FontSizeHelper.getXAxisLabelFontSize(this.config.fonts);
+    const yAxisLabelSize = FontSizeHelper.getYAxisLabelFontSize(this.config.fonts);
+    console.log('🎨 AxisRenderer fontSizes:', {
+      xAxisTickSize,
+      yAxisTickSize,
+      xAxisLabelSize,
+      yAxisLabelSize,
+      config: this.config.fonts
+    });
+
     // X축 렌더링
     if (this.config.showXAxis) {
       const xAxisGroup = this.context.chartArea.append('g')
@@ -44,17 +58,23 @@ export class AxisRenderer {
         .attr('transform', `translate(0, ${innerHeight})`)
         .call(xAxis);
 
+      // 🔧 X축 눈금 텍스트 스타일 적용
       xAxisGroup.selectAll('text')
-        .attr('style', `font-family: ${inheritedFont} !important`)
+        .style('font-family', inheritedFont)
+        .attr('font-size', `${xAxisTickSize}px`)
         .attr('fill', '#666');
 
       // X축 라벨
       if (this.config.xAxisLabel) {
         xAxisGroup.append('text')
-          .attr('class', 'axis-label')
+          .attr('class', 'axis-label x-axis-label')
           .attr('x', scales.innerWidth / 2)
           .attr('y', 35)
           .attr('text-anchor', 'middle')
+          .style('font-family', inheritedFont)
+          .attr('font-size', `${xAxisLabelSize}px`)
+          .style('font-weight', '500')
+          .attr('fill', '#666')
           .text(this.config.xAxisLabel);
       }
     }
@@ -65,19 +85,24 @@ export class AxisRenderer {
         .attr('class', 'axis y-axis')
         .call(yAxis);
 
-      // .call() 직후 즉시 폰트 강제 적용
+      // 🔧 Y축 눈금 텍스트 스타일 적용
       yAxisGroup.selectAll('text')
-        .attr('style', `font-family: ${inheritedFont} !important`)
+        .style('font-family', inheritedFont)
+        .attr('font-size', `${yAxisTickSize}px`)
         .attr('fill', '#666');
 
       // Y축 라벨
       if (this.config.yAxisLabel) {
         yAxisGroup.append('text')
-          .attr('class', 'axis-label')
+          .attr('class', 'axis-label y-axis-label')
           .attr('transform', 'rotate(-90)')
           .attr('x', -scales.innerHeight / 2)
           .attr('y', -40)
           .attr('text-anchor', 'middle')
+          .style('font-family', inheritedFont)
+          .attr('font-size', `${yAxisLabelSize}px`)
+          .style('font-weight', '500')
+          .attr('fill', '#666')
           .text(this.config.yAxisLabel);
       }
     }

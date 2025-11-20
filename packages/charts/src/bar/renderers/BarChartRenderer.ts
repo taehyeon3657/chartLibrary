@@ -8,6 +8,7 @@ import { BarRenderer } from './BarRenderer';
 import { AxisRenderer } from './AxisRenderer';
 import { LegendRenderer } from '../../line/renderers/LegendRenderer';
 import { RenderContext } from '../BarChart';
+import { FontSizeHelper } from '@beaubrain/chart-lib-core';
 
 /**
  * 모든 렌더링을 총괄하는 메인 렌더러
@@ -144,15 +145,20 @@ export class BarChartRenderer {
     if (this.config.title) {
       const margin = this.config.margin || { top: 20, right: 20, bottom: 40, left: 60 };
 
+      const titleFontSize = FontSizeHelper.getTitleFontSize(
+        this.config.fonts,
+        { fontSize: this.config.fonts?.titleFontSize }
+      );
+
       svg.append('text')
         .attr('class', 'chart-title')
         .attr('x', this.calculateTitleX(this.config.titlePosition))
         .attr('y', margin.top - 5)
         .attr('text-anchor', this.calculateTitleAnchor(this.config.titlePosition))
-        .style('font-size', this.config.titleStyle?.fontSize || '16px')
-        .style('font-weight', this.config.titleStyle?.fontWeight || 'bold')
-        .style('font-family', 'inherit')  // 제목도 폰트 상속
-        .style('fill', this.config.titleStyle?.color || '#333')
+        .attr('font-size', FontSizeHelper.toCSSValue(titleFontSize))
+        .style('font-weight', this.config.fonts?.titleFontWeight || 'bold')
+        .style('font-family', 'inherit')
+        .style('fill', this.config.fonts?.titleFontColor || '#333')
         .text(this.config.title);
     }
   }

@@ -7,6 +7,7 @@ export { BaseChart } from './charts/BaseChart';
 // 헬퍼 함수들
 export * from './helpers/line';
 export * from './helpers/gradient';
+export * from './helpers/fonts';
 
 // 상수들
 export * from './constants';
