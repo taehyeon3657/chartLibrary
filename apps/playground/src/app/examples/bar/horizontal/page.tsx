@@ -8,21 +8,23 @@ import { CodeBlock } from '@/components/CodeBlock';
 import { generateBarChartData } from '@/utils/generateData';
 
 export default function HorizontalExample() {
-  const categories = ['Product A', 'Product B', 'Product C', 'Product D', 'Product E'];
+  const categories = ['Product A', 'Product B', 'Product C'];
   const data = generateBarChartData(categories, 100, 25);
 
   const code = `import { BarChart } from '@beaubrain/chart-lib-react'
 
 <BarChart
-  data={data}
-  config={{
-    width: 800,
-    height: 400,
-    orientation: 'horizontal',
-    barColors: ['#8b5cf6'],
-    showValues: true,
-    valuePosition: 'outside'
-  }}
+    data={data}
+      config={{
+        margin: { top: 20, right: 30, bottom: 40, left: 90 },
+        width: 700,
+        height: 500,
+        orientation: 'horizontal',
+        barColors: ['#8b5cf6'],
+        showValues: true,
+        valuePosition: 'outside',
+        xAxisLabelPosition: 'center',
+      }}
 />`;
 
   return (
@@ -35,12 +37,14 @@ export default function HorizontalExample() {
         <BarChart
           data={data}
           config={{
-            width: 800,
-            height: 400,
+            margin: { top: 20, right: 30, bottom: 40, left: 90 },
+            width: 700,
+            height: 500,
             orientation: 'horizontal',
             barColors: ['#8b5cf6'],
             showValues: true,
-            valuePosition: 'outside'
+            valuePosition: 'outside',
+            xAxisLabelPosition: 'center',
           }}
         />
       </ChartContainer>
@@ -49,6 +53,7 @@ export default function HorizontalExample() {
         <BarChart
           data={data}
           config={{
+            margin: { top: 20, right: 30, bottom: 40, left: 90 },
             width: 800,
             height: 400,
             orientation: 'horizontal',
@@ -56,7 +61,8 @@ export default function HorizontalExample() {
             showValues: true,
             valuePosition: 'middle',
             valueColor: 'white',
-            barBorderRadius: 4
+            barBorderRadius: 2,
+            yAxisLabelPosition: 'center',
           }}
         />
       </ChartContainer>

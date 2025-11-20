@@ -89,7 +89,7 @@ function MyChart() {
                 valueFontWeight: 100,
               },
               showLegend: false,
-              showBaseline: true,
+              showBaseline: false,
               baselineWidth: 1,
               barBorderRadius: 4,
               valuePosition: 'outside'

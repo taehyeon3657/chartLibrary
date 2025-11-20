@@ -55,7 +55,7 @@ export class BarChart extends BaseChart {
       valuePosition: 'top',
       showXAxis: true,
       showYAxis: true,
-      showYAxisZero: false,
+      showYAxisZero: false, // 기본값: 0 눈금 숨김
       gridLines: true,
       horizontalGridLines: true,
       verticalGridLines: false,
@@ -262,11 +262,12 @@ export class BarChart extends BaseChart {
     const options = {
       yNice: true,
       colorScheme: (this.config as BarChartConfig).barColors,
-      colorDomain: this.state.getGroups()
+      colorDomain: this.state.getGroups(),
+      orientation: orientation // [수정] orientation 옵션 추가
     };
 
     // Bar chart는 주로 ordinal 스케일 사용
-    if (scaleType === 'ordinal' || orientation === 'vertical') {
+    if (scaleType === 'ordinal' || orientation === 'vertical' || orientation === 'horizontal') {
       return this.scaleManager.createOrdinalScales(options);
     } else if (scaleType === 'linear') {
       return this.scaleManager.createLinearScales(options);
