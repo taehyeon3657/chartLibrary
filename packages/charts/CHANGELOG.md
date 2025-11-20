@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-charts@1.4.0...@beaubrain/chart-lib-charts@1.5.0) (2025-11-20)
+
+
+### Bug Fixes
+
+* group bar chart center일때 x축 위치 수정 ([1c421cf](https://github.com/taehyeon3657/chartLibrary/commit/1c421cf57bc74223a601b10b4fcc4f60b3cfb1b7))
+* horizontal bar chart y축 눈금 위치 조정 ([c5729b3](https://github.com/taehyeon3657/chartLibrary/commit/c5729b347ccd3bb4b27c0ad2784c9baf33a34136))
+* value 음수일때 value Position 수정 ([4296bcd](https://github.com/taehyeon3657/chartLibrary/commit/4296bcdcadf2560ba8794e76a999aa471ff88138))
+* value값에 따라 x축 디자인에 맞게 수정 ([22497d2](https://github.com/taehyeon3657/chartLibrary/commit/22497d218f053cc728d669c8a4d96b6945d2b1df))
+
+
+### Features
+
+* FontConfig 타입 추가 및 props를 통한 x/y축, 값, 범례, 제목 폰트 커스터마이징 기능 추가 ([1403c83](https://github.com/taehyeon3657/chartLibrary/commit/1403c8309d599e9d0f6c5c98e36c434f8de64013))
+
+
+
+
+
 # [1.4.0](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-charts@1.3.1...@beaubrain/chart-lib-charts@1.4.0) (2025-11-18)
 
 
