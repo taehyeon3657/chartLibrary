@@ -137,12 +137,6 @@ export class BarRenderer {
 
     const valueColor = this.config.valueColor || '#333';
 
-    console.log('🎨 BarRenderer valueFontSize:', {
-      valueFontSize,
-      fonts: this.config.fonts,
-      legacyValueFontSize: this.config.fonts?.valueFontSize
-    });
-
     const values = barGroup.selectAll('.bar-value')
       .data(positions)
       .enter()
@@ -162,11 +156,11 @@ export class BarRenderer {
           switch (valuePosition) {
           case 'top':
           case 'outside':
-            return d.y - 5;
+            return (d.data.y >= 0) ? (d.y - 10) : (d.y + d.height + 20);
           case 'middle':
             return d.y + d.height / 2;
           case 'bottom':
-            return d.y + d.height - 5;
+            return d.y + d.height - 10;
           default:
             return d.y - 5;
           }
