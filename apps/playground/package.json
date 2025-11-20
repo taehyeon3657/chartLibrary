@@ -1,7 +1,7 @@
 {
   "name": "playground",
   "version": "0.1.0",
-   "publishConfig": {
+  "publishConfig": {
     "access": "public"
   },
   "scripts": {
@@ -13,6 +13,7 @@
   "dependencies": {
     "@beaubrain/chart-lib-react": "workspace:*",
     "@beaubrain/chart-lib-types": "workspace:*",
+    "@vercel/analytics": "^1.5.0",
     "lucide-react": "^0.548.0",
     "next": "14.2.30",
     "react": "^18",
