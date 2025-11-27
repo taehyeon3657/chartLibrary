@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.2](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-charts@1.5.1...@beaubrain/chart-lib-charts@1.5.2) (2025-11-27)
+
+
+### Bug Fixes
+
+* centerx d위치값 조정 ([ecd885b](https://github.com/taehyeon3657/chartLibrary/commit/ecd885b817db749b288e3ddc9578d0c330fdcf5b))
+
+
+
+
+
 ## [1.5.1](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-charts@1.5.0...@beaubrain/chart-lib-charts@1.5.1) (2025-11-27)
 
 
