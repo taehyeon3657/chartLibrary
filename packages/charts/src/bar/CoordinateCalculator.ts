@@ -56,7 +56,9 @@ export class CoordinateCalculator {
     const positions = new Map<string, BarPosition[]>();
 
     const bandwidth = (xScale as any).bandwidth ? (xScale as any).bandwidth() : 50;
-    const barWidth = this.calculateBarWidth(bandwidth, 1);
+
+    // ✅ barWidth 제한 제거 - 사용자 지정 값 우선
+    const barWidth = this.config.barWidth || this.calculateBarWidth(bandwidth, 1);
 
     this.state.getGroups().forEach(group => {
       if (!visibleGroups.has(group)) return;
@@ -68,21 +70,18 @@ export class CoordinateCalculator {
         const category = String(d.x);
 
         if (orientation === 'vertical') {
-          const centerX = (this.getXPosition(category) + bandwidth / 2) - barWidth;
-
+          const centerX = (this.getXPosition(category) + bandwidth / 2) - barWidth / 2;
 
           const yZero = yScale(0);
-          const yValue = yScale(d.y);  // 데이터 값의 y 좌표
+          const yValue = yScale(d.y);
 
           let y: number;
           let height: number;
 
           if (d.y >= 0) {
-            // 양수: 0에서 시작해서 위로
             y = yValue;
             height = yZero - yValue;
           } else {
-            // 음수: 0에서 시작해서 아래로
             y = yZero;
             height = yValue - yZero;
           }
@@ -95,7 +94,7 @@ export class CoordinateCalculator {
             data: d
           });
         } else {
-          const centerY = (this.getXPosition(category) + bandwidth / 2) - barWidth / 2 ;
+          const centerY = (this.getXPosition(category) + bandwidth / 2) - barWidth / 2;
           const xZero = yScale(0);
           const xValue = yScale(d.y);
 
@@ -112,7 +111,7 @@ export class CoordinateCalculator {
 
           groupPositions.push({
             x,
-            y: centerY - barWidth / 2,
+            y: centerY,
             width: Math.abs(width),
             height: barWidth,
             data: d
@@ -140,10 +139,13 @@ export class CoordinateCalculator {
 
     const bandwidth = (xScale as any).bandwidth ? (xScale as any).bandwidth() : 50;
     const groupCount = visibleGroups.length;
-    const barWidth = this.calculateBarWidth(bandwidth, groupCount);
-    const barGroupPadding = this.config.barGroupPadding || 0.1;
 
-    const gapWidth = barWidth * barGroupPadding;
+    // ✅ barWidth 제한 제거
+    const barWidth = this.config.barWidth || this.calculateBarWidth(bandwidth, groupCount);
+
+    // ✅ 헬퍼 함수로 barGroupPadding 처리
+    const gapWidth = this.resolveBarGroupPadding(this.config.barGroupPadding, barWidth);
+
     const totalGapsWidth = gapWidth * (groupCount - 1);
     const totalGroupWidth = (barWidth * groupCount) + totalGapsWidth;
     const groupStartOffset = (bandwidth - totalGroupWidth) / 2;
@@ -159,7 +161,7 @@ export class CoordinateCalculator {
         if (!item) return;
 
         if (orientation === 'vertical') {
-          const centerX =  (this.getXPosition(category) - bandwidth / 2) + offset;
+          const centerX = (this.getXPosition(category) - bandwidth / 2) + offset;
 
           const yZero = yScale(0);
           const yValue = yScale(item.y);
@@ -226,7 +228,9 @@ export class CoordinateCalculator {
     const positions = new Map<string, BarPosition[]>();
 
     const bandwidth = (xScale as any).bandwidth ? (xScale as any).bandwidth() : 50;
-    const barWidth = this.calculateBarWidth(bandwidth, 1);
+
+    // ✅ barWidth 제한 제거
+    const barWidth = this.config.barWidth || this.calculateBarWidth(bandwidth, 1);
     const centerOffset = (bandwidth - barWidth) / 2;
 
     stackedData.forEach((data, group) => {
@@ -345,15 +349,42 @@ export class CoordinateCalculator {
     }
   }
 
+
+  private resolveBarGroupPadding(
+    padding: number | string | undefined,
+    barWidth: number
+  ): number {
+    // undefined인 경우 기본값 (20%)
+    if (padding === undefined) {
+      return barWidth * 0.2;
+    }
+
+    // 문자열이고 'px'로 끝나는 경우
+    if (typeof padding === 'string') {
+      if (padding.endsWith('px')) {
+        const pxValue = parseFloat(padding);
+        return isNaN(pxValue) ? barWidth * 0.2 : pxValue;
+      }
+      // 'px'가 없는 문자열은 숫자로 변환 시도
+      const numValue = parseFloat(padding);
+      return isNaN(numValue) ? barWidth * 0.2 : barWidth * numValue;
+    }
+
+    // 숫자인 경우 (비율)
+    if (typeof padding === 'number') {
+      return barWidth * padding;
+    }
+
+    // 그 외의 경우 기본값
+    return barWidth * 0.2;
+  }
+
   private calculateBarWidth(bandwidth: number, groupCount: number): number {
     const barPadding = this.config.barPadding || 0.1;
     const availableWidth = bandwidth / groupCount;
     let barWidth = availableWidth * (1 - barPadding);
 
-    if (this.config.barWidth) {
-      barWidth = Math.min(this.config.barWidth, availableWidth);
-    }
-
+    // ✅ 제한 조건만 적용 (minBarWidth, maxBarWidth)
     if (this.config.minBarWidth) {
       barWidth = Math.max(barWidth, this.config.minBarWidth);
     }
