@@ -15,9 +15,15 @@ export default function GroupedExample() {
   const code = `import { BarChart } from '@beaubrain/chart-lib-react'
 
 const data = [
-  { x: 'Q1', value: 100, group: 'Sales', date: new Date() },
-  { x: 'Q1', value: 80, group: 'Revenue', date: new Date() },
-  { x: 'Q1', value: 60, group: 'Profit', date: new Date() },
+  { x: 'Q1', value: 100, group: 'Sales',},
+  { x: 'Q1', value: 80, group: 'Revenue',},
+  { x: 'Q1', value: 60, group: 'Profit', },
+  { x: 'Q2', value: 120, group: 'Sales',},
+  { x: 'Q2', value: 90, group: 'Revenue',},
+  { x: 'Q2', value: 70, group: 'Profit', },
+  { x: 'Q3', value: 150, group: 'Sales',},
+  { x: 'Q3', value: 110, group: 'Revenue',},
+  { x: 'Q3', value: 80, group: 'Profit', },
   // ...
 ]
 
@@ -46,14 +52,16 @@ function MyChart() {
         <BarChart
           data={data}
           config={{
+            width: 800,
             grouped: true,
-            barPadding: 0.1,
-            barGroupPadding: 0.8,
+            barWidth: 30,
+            barGroupPadding: '15px',
             showBaseline: true,
             showValues: true,
             baselineWidth: 1,
             valuePosition: 'outside',
-            barBorderRadius: 3
+            barBorderRadius: 3,
+            showLegend: false
           }}
         />
       </ChartContainer>
@@ -65,9 +73,12 @@ function MyChart() {
             orientation: 'horizontal',
             grouped: true,
             legendPosition: 'top',
+            barGroupPadding: 1,
+            barPadding: 0.2,
             showValues: true,
             valuePosition: 'outside',
-            barBorderRadius: 3
+            barBorderRadius: 3,
+            showLegend: false
           }}
         />
       </ChartContainer>

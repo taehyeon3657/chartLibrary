@@ -115,6 +115,31 @@ export class BarRenderer {
     }
   }
 
+
+  private formatValue(value: number): string {
+    // 사용자가 valueFormat을 지정한 경우 해당 포맷 사용
+    if (this.config.valueFormat) {
+      return d3.format(this.config.valueFormat)(value);
+    }
+
+    // 정수인지 확인
+    if (Number.isInteger(value)) {
+      return value.toString();
+    }
+
+    // 소수인 경우
+    // 소수점 아래 자리수 확인
+    const decimalPlaces = value.toString().split('.')[1]?.length || 0;
+
+    if (decimalPlaces <= 2) {
+      // 소수점 2자리 이하면 그대로 표시
+      return value.toString();
+    } else {
+      // 그 이상이면 2자리로 반올림
+      return value.toFixed(2);
+    }
+  }
+
   /**
    * 값 표시 렌더링
    */
@@ -124,9 +149,7 @@ export class BarRenderer {
   ): void {
     const orientation = this.config.orientation || 'vertical';
     const valuePosition = this.config.valuePosition || 'top';
-    const valueFormat = this.config.valueFormat || '.1f';
 
-    //  FontSizeHelper로 값 폰트 사이즈 가져오기
     const legacyValueFontSize = typeof this.config.fonts?.valueFontSize === 'number'
       ? this.config.fonts?.valueFontSize
       : undefined;
@@ -146,7 +169,7 @@ export class BarRenderer {
       .style('fill', valueColor)
       .style('text-anchor', 'middle')
       .style('pointer-events', 'none')
-      .text(d => d3.format(valueFormat)(d.data.y));
+      .text(d => this.formatValue(d.data.y));
 
     if (orientation === 'vertical') {
       // 세로 바

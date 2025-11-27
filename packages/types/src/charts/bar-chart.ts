@@ -9,7 +9,7 @@ export interface BarChartConfig extends ChartConfig {
   barColors?: string[];
   barWidth?: number;
   barPadding?: number;
-  barGroupPadding?: number;
+  barGroupPadding?: number | string;
   barBorderRadius?: number;
 
   // 바 유형
@@ -20,13 +20,11 @@ export interface BarChartConfig extends ChartConfig {
   showValues?: boolean;
   valuePosition?: 'top' | 'middle' | 'bottom' | 'outside';
   valueFormat?: string;
-  // valueFontSize?: number;
   valueColor?: string;
 
   // 축 설정
   showXAxis?: boolean;
   showYAxis?: boolean;
-  // Y축의 0값 눈금 표시 여부
   showYAxisZero?: boolean;
   xAxisLabel?: string;
   yAxisLabel?: string;
@@ -35,12 +33,12 @@ export interface BarChartConfig extends ChartConfig {
   xAxisTickFormat?: string;
   yAxisTickFormat?: string;
 
-  // 기준선 (새로 추가!)
+  // 기준선
   showBaseline?: boolean;
-  baselineValue?: number; // 기본값 0
-  baselineColor?: string; // 기본값 '#333'
-  baselineWidth?: number; // 기본값 2
-  baselineStyle?: 'solid' | 'dashed'; // 기본값 'solid'
+  baselineValue?: number;
+  baselineColor?: string;
+  baselineWidth?: number;
+  baselineStyle?: 'solid' | 'dashed';
 
   // 그리드 라인
   gridLines?: boolean;
@@ -56,18 +54,10 @@ export interface BarChartConfig extends ChartConfig {
   title?: string | null;
   titlePosition?: 'LEFT' | 'CENTER' | 'RIGHT';
   titleFontSize?: number;
-  //   fontSize?: number;
-  //   fontWeight?: string | number;
-  //   color?: string;
-  // };
 
   // 범례
   showLegend?: boolean;
   legendPosition?: 'top' | 'right' | 'bottom' | 'left';
-  // legendStyle?: {
-  //   fontSize?: number;
-  //   spacing?: number;
-  // };
 
   // 애니메이션
   enableAnimation?: boolean;
@@ -83,7 +73,7 @@ export interface BarChartConfig extends ChartConfig {
   sortBars?: boolean;
   sortDirection?: 'asc' | 'desc';
 
-  // 영역 제약
+  // 영역 제약 (최소/최대만 제한, 기본 barWidth는 제한 없음)
   minBarWidth?: number;
   maxBarWidth?: number;
 
