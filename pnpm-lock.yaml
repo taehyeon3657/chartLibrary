@@ -68,10 +68,10 @@ importers:
   packages/charts:
     dependencies:
       '@beaubrain/chart-lib-core':
-        specifier: ^1.5.0
+        specifier: ^1.5.1
         version: link:../core
       '@beaubrain/chart-lib-types':
-        specifier: ^1.4.0
+        specifier: ^1.4.1
         version: link:../types
       d3:
         specifier: ^7.0.0
@@ -90,7 +90,7 @@ importers:
   packages/core:
     dependencies:
       '@beaubrain/chart-lib-types':
-        specifier: ^1.4.0
+        specifier: ^1.4.1
         version: link:../types
       d3:
         specifier: ^7.0.0
@@ -109,10 +109,10 @@ importers:
   packages/react:
     dependencies:
       '@beaubrain/chart-lib-charts':
-        specifier: ^1.5.0
+        specifier: ^1.5.1
         version: link:../charts
       '@beaubrain/chart-lib-types':
-        specifier: ^1.4.0
+        specifier: ^1.4.1
         version: link:../types
     devDependencies:
       '@types/react':

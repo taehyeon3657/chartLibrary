@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.5](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-react@0.4.4...@beaubrain/chart-lib-react@0.4.5) (2025-11-27)
+
+**Note:** Version bump only for package @beaubrain/chart-lib-react
+
+
+
+
+
 ## [0.4.4](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-react@0.4.3...@beaubrain/chart-lib-react@0.4.4) (2025-11-20)
 
 **Note:** Version bump only for package @beaubrain/chart-lib-react

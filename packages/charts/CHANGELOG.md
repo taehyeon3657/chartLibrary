@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.1](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-charts@1.5.0...@beaubrain/chart-lib-charts@1.5.1) (2025-11-27)
+
+
+### Bug Fixes
+
+* grouped bar spacing 및 barWidth limit 로직 제거 ([3312375](https://github.com/taehyeon3657/chartLibrary/commit/33123751701fb145218f8da00e43fde23123b962))
+
+
+
+
+
 # [1.5.0](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-charts@1.4.0...@beaubrain/chart-lib-charts@1.5.0) (2025-11-20)
 
 
