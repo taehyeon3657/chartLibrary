@@ -57,7 +57,6 @@ export class CoordinateCalculator {
 
     const bandwidth = (xScale as any).bandwidth ? (xScale as any).bandwidth() : 50;
 
-    // ✅ barWidth 제한 제거 - 사용자 지정 값 우선
     const barWidth = this.config.barWidth || this.calculateBarWidth(bandwidth, 1);
 
     this.state.getGroups().forEach(group => {
@@ -70,7 +69,7 @@ export class CoordinateCalculator {
         const category = String(d.x);
 
         if (orientation === 'vertical') {
-          const centerX = (this.getXPosition(category) + bandwidth / 2) - barWidth / 2;
+          const centerX = (this.getXPosition(category) + bandwidth / 2) - barWidth ;
 
           const yZero = yScale(0);
           const yValue = yScale(d.y);
@@ -111,7 +110,7 @@ export class CoordinateCalculator {
 
           groupPositions.push({
             x,
-            y: centerY,
+            y: centerY - barWidth / 2,
             width: Math.abs(width),
             height: barWidth,
             data: d
@@ -140,10 +139,10 @@ export class CoordinateCalculator {
     const bandwidth = (xScale as any).bandwidth ? (xScale as any).bandwidth() : 50;
     const groupCount = visibleGroups.length;
 
-    // ✅ barWidth 제한 제거
+
     const barWidth = this.config.barWidth || this.calculateBarWidth(bandwidth, groupCount);
 
-    // ✅ 헬퍼 함수로 barGroupPadding 처리
+
     const gapWidth = this.resolveBarGroupPadding(this.config.barGroupPadding, barWidth);
 
     const totalGapsWidth = gapWidth * (groupCount - 1);
@@ -229,7 +228,7 @@ export class CoordinateCalculator {
 
     const bandwidth = (xScale as any).bandwidth ? (xScale as any).bandwidth() : 50;
 
-    // ✅ barWidth 제한 제거
+
     const barWidth = this.config.barWidth || this.calculateBarWidth(bandwidth, 1);
     const centerOffset = (bandwidth - barWidth) / 2;
 
@@ -384,7 +383,7 @@ export class CoordinateCalculator {
     const availableWidth = bandwidth / groupCount;
     let barWidth = availableWidth * (1 - barPadding);
 
-    // ✅ 제한 조건만 적용 (minBarWidth, maxBarWidth)
+    // 제한 조건만 적용 (minBarWidth, maxBarWidth)
     if (this.config.minBarWidth) {
       barWidth = Math.max(barWidth, this.config.minBarWidth);
     }
