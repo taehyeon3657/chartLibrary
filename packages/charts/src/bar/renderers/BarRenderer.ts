@@ -158,6 +158,17 @@ export class BarRenderer {
       legacyValueFontSize
     );
 
+    const legacyValueFontWeight = typeof this.config.fonts?.valueFontWeight === 'string'
+      ? this.config.fonts?.valueFontWeight
+      : typeof this.config.fonts?.valueFontWeight === 'number'
+        ? this.config.fonts?.valueFontWeight
+        : undefined;
+
+    const valueFontWeight = FontSizeHelper.getValueFontWeight(
+      this.config.fonts,
+      legacyValueFontWeight
+    );
+
     const valueColor = this.config.valueColor || '#333';
 
     const values = barGroup.selectAll('.bar-value')
@@ -166,6 +177,7 @@ export class BarRenderer {
       .append('text')
       .attr('class', 'bar-value')
       .attr('font-size', `${valueFontSize}px`)
+      .style('font-weight', valueFontWeight)
       .style('fill', valueColor)
       .style('text-anchor', 'middle')
       .style('pointer-events', 'none')

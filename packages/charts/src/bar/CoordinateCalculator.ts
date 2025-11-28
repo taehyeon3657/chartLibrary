@@ -45,6 +45,7 @@ export class CoordinateCalculator {
     }
   }
 
+
   private calculateSingleBarPositions(): Map<string, BarPosition[]> {
     const scales = this.state.getScales();
     if (!scales) return new Map();
@@ -69,7 +70,8 @@ export class CoordinateCalculator {
         const category = String(d.x);
 
         if (orientation === 'vertical') {
-          const centerX = (this.getXPosition(category) + bandwidth / 2) - barWidth ;
+          const startX = this.getXPosition(category);
+          const centerX = startX  - barWidth/ 2;
 
           const yZero = yScale(0);
           const yValue = yScale(d.y);
@@ -93,7 +95,7 @@ export class CoordinateCalculator {
             data: d
           });
         } else {
-          const centerY = (this.getXPosition(category) + bandwidth / 2) - barWidth / 2;
+          const centerY = (this.getXPosition(category));
           const xZero = yScale(0);
           const xValue = yScale(d.y);
 

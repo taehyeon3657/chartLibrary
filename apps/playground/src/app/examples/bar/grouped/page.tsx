@@ -61,7 +61,10 @@ function MyChart() {
             baselineWidth: 1,
             valuePosition: 'outside',
             barBorderRadius: 3,
-            showLegend: false
+            showLegend: false,
+            fonts: {
+              valueFontWeight: 700
+            }
           }}
         />
       </ChartContainer>
