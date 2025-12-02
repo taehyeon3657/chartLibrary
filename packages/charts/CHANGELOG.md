@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.2](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-charts@1.6.1...@beaubrain/chart-lib-charts@1.6.2) (2025-12-02)
+
+
+### Bug Fixes
+
+* yValue axis domain padding값 수정 ([179bf07](https://github.com/taehyeon3657/chartLibrary/commit/179bf073d9191c8c284d22ba22e1b693b2332591))
+
+
+
+
+
 ## [1.6.1](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-charts@1.6.0...@beaubrain/chart-lib-charts@1.6.1) (2025-12-02)
 
 
