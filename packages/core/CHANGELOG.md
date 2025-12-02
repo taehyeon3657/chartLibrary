@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-core@1.5.1...@beaubrain/chart-lib-core@1.6.0) (2025-12-02)
+
+
+### Features
+
+* singleBar x값 위치 수정 & fontWeight helper생성 ([7958fbe](https://github.com/taehyeon3657/chartLibrary/commit/7958fbe442cd9486922d3f3697c89447aa3b3b51))
+
+
+
+
+
 ## [1.5.1](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-core@1.5.0...@beaubrain/chart-lib-core@1.5.1) (2025-11-27)
 
 **Note:** Version bump only for package @beaubrain/chart-lib-core

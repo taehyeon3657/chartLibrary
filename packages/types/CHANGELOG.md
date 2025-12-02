@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-types@1.4.1...@beaubrain/chart-lib-types@1.5.0) (2025-12-02)
+
+
+### Features
+
+* scale 그룹화 및 scale에 대한 로직 수정 ([1441aee](https://github.com/taehyeon3657/chartLibrary/commit/1441aee8c5d82ce0c85de53190e4592570f97eea))
+
+
+
+
+
 ## [1.4.1](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-types@1.4.0...@beaubrain/chart-lib-types@1.4.1) (2025-11-27)
 
 
