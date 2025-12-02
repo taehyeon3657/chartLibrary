@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.1](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-charts@1.6.0...@beaubrain/chart-lib-charts@1.6.1) (2025-12-02)
+
+
+### Bug Fixes
+
+* y눈금 격자선/ x,y축 스타일 및 로직 수정 ([c639b3f](https://github.com/taehyeon3657/chartLibrary/commit/c639b3f6ad21080678f85c240b0e3e6d88eb0b2c))
+
+
+
+
+
 # [1.6.0](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-charts@1.5.2...@beaubrain/chart-lib-charts@1.6.0) (2025-12-02)
 
 
