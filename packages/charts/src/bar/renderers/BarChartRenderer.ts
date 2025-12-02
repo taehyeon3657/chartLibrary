@@ -156,7 +156,7 @@ export class BarChartRenderer {
         .attr('font-size', FontSizeHelper.toCSSValue(titleFontSize))
         .style('font-weight', this.config.fonts?.titleFontWeight || 'bold')
         .style('font-family', 'inherit')
-        .style('fill', this.config.fonts?.titleFontColor || '#333')
+        .style('fill', this.config.fonts?.titleFontColor || '#434343')
         .text(this.config.title);
     }
   }

@@ -38,20 +38,22 @@ function MyChart() {
     <BarChart
           data={data}
           config={{
-            margin: { top: 20, right: 20, bottom: 40, left: 60 },
+            margin: { top: 20, right: 20, bottom: 20, left: 60 },
             xAxisLabelPosition: 'center',
             showValues: true,
             showYAxisZero: true,
-            showXAxis: true,
+            horizontalGridLines: false,
+            gridLines: true,
+            gridLineStyle: 'solid',
+            verticalGridLines: true,
             xAxisDisplay: {
-              showAxisLine: false,   // 라인 O
-              showTicks: false,     // 눈금 X
-              showTickLabels: true  // 텍스트 O
+              showAxisLine: false,
+              showTicks: false,
+              showTickLabels: true,
             },
             scale: {
-
               xAxisPosition: 'bottom',
-              yAxisTickInterval: 10
+              yAxisTickInterval: 20
             },
             fonts: {
               xAxisTickFontSize: 10,
@@ -65,6 +67,7 @@ function MyChart() {
             },
             showLegend: false,
             showBaseline: true,
+            baselineValue: 0,
             baselineWidth: 1,
             barBorderRadius: 4,
             valuePosition: 'outside'
@@ -85,18 +88,22 @@ function MyChart() {
         <BarChart
           data={data}
           config={{
-            margin: { top: 20, right: 20, bottom: 40, left: 60 },
+            margin: { top: 20, right: 20, bottom: 20, left: 60 },
             xAxisLabelPosition: 'center',
             showValues: true,
             showYAxisZero: true,
+            horizontalGridLines: false,
+            gridLines: true,
+            gridLineStyle: 'solid',
+            verticalGridLines: true,
             xAxisDisplay: {
               showAxisLine: false,
               showTicks: false,
-              showTickLabels: true
+              showTickLabels: true,
             },
             scale: {
               xAxisPosition: 'bottom',
-              yAxisTickInterval: 10
+              yAxisTickInterval: 20
             },
             fonts: {
               xAxisTickFontSize: 10,
@@ -110,6 +117,7 @@ function MyChart() {
             },
             showLegend: false,
             showBaseline: true,
+            baselineValue: 0,
             baselineWidth: 1,
             barBorderRadius: 4,
             valuePosition: 'outside'

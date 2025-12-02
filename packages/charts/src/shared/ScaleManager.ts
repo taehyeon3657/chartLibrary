@@ -244,7 +244,7 @@ export class ScaleManager {
       // 최대값을 interval 단위로 올림
       const adjustedMax = Math.ceil(maxVal / yAxisTickInterval) * yAxisTickInterval;
 
-      domain = [adjustedMin, adjustedMax];
+      domain = [adjustedMin - yAxisTickInterval, adjustedMax + yAxisTickInterval];
     }
 
     const scale = d3.scaleLinear()

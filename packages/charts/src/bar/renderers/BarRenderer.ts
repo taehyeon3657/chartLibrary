@@ -169,7 +169,7 @@ export class BarRenderer {
       legacyValueFontWeight
     );
 
-    const valueColor = this.config.valueColor || '#333';
+    const valueColor = this.config.valueColor || '#434343';
 
     const values = barGroup.selectAll('.bar-value')
       .data(positions)

@@ -35,7 +35,7 @@ export class AxisRenderer {
     const { innerHeight, innerWidth } = scales;
     const orientation = this.config.orientation || 'vertical';
 
-    const axisColor = this.config.axisColor || '#333';
+    const axisColor = this.config.axisColor || '#434343';
 
     const computedStyle = window.getComputedStyle(this.context.container);
     const inheritedFont = computedStyle.fontFamily || 'inherit';
@@ -323,10 +323,18 @@ export class AxisRenderer {
             : xAxis.tickSize(-innerHeight).tickFormat(() => '')
         );
 
+      // 1. 모든 라인에 기본 스타일 적용
       verticalGrid.selectAll('line')
         .attr('stroke', gridColor)
         .attr('stroke-dasharray', dashArray);
 
+      // 2. [추가된 부분] 첫 번째(0)와 마지막(length-1) 틱의 선을 찾아서 제거
+      verticalGrid.selectAll('.tick')
+        .filter((d, i, nodes) => i === 0 || i === nodes.length - 1)
+        .select('line')
+        .remove(); // 또는 .attr('display', 'none')
+
+      // 기존 텍스트 및 도메인 라인 제거 로직
       verticalGrid.selectAll('text').remove();
       verticalGrid.select('.domain').remove();
     }
@@ -342,7 +350,7 @@ export class AxisRenderer {
     const orientation = this.config.orientation || 'vertical';
 
     const baselineValue = this.config.baselineValue ?? 0;
-    const baselineColor = this.config.baselineColor || '#333';
+    const baselineColor = this.config.baselineColor || '#434343';
     const baselineWidth = this.config.baselineWidth || 2;
     const baselineStyle = this.config.baselineStyle || 'solid';
     const dashArray = baselineStyle === 'dashed' ? '4,4' : '0';
@@ -359,8 +367,8 @@ export class AxisRenderer {
         .attr('stroke', baselineColor)
         .attr('stroke-width', baselineWidth)
         .attr('stroke-dasharray', dashArray)
-        .style('pointer-events', 'none')
-        .lower();
+        .style('pointer-events', 'none');
+      // .lower();
 
     } else {
       const xPosition = yScale(baselineValue);
@@ -374,8 +382,8 @@ export class AxisRenderer {
         .attr('stroke', baselineColor)
         .attr('stroke-width', baselineWidth)
         .attr('stroke-dasharray', dashArray)
-        .style('pointer-events', 'none')
-        .lower();
+        .style('pointer-events', 'none');
+      // .lower();
     }
   }
 }

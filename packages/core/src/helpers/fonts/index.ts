@@ -72,8 +72,6 @@ export class FontSizeHelper {
     fonts?: FontConfig,
     legacyValueFontWeight?: number | string
   ): string {
-    console.log('fonts?.valueFontWeight', fonts?.valueFontWeight);
-    console.log('legacyValueFontWeight', legacyValueFontWeight);
     if (fonts?.valueFontWeight !== undefined) {
       return String(fonts.valueFontWeight);
     }

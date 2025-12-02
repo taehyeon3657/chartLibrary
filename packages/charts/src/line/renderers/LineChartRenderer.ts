@@ -160,7 +160,7 @@ export class LineChartRenderer {
         .attr('font-size', `${titleFontSize}px`)
         .style('font-weight', this.config.fonts?.titleFontWeight || 'bold')
         .style('font-family', inheritedFont)
-        .style('fill', this.config.fonts?.titleFontColor || '#333')
+        .style('fill', this.config.fonts?.titleFontColor || '#434343')
         .text(this.config.title);
     }
   }
