@@ -309,7 +309,7 @@ export class ScaleManager {
     const domainMin = Math.min(0, min);
     const domainMax = Math.max(0, max);
 
-    const padding = (domainMax - domainMin) * 0.05;
+    const padding = (domainMax - domainMin) / 1.5;
 
     let finalMin = domainMin - padding;
     let finalMax = domainMax + padding;
