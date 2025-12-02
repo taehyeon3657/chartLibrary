@@ -14,6 +14,8 @@ export * from './utils';
 export type {
   DataPoint as ChartDataPoint,
   ChartConfig as BaseChartConfig,
+  ScaleConfig,
+  AxisDisplayConfig
 } from './base';
 
 export type {

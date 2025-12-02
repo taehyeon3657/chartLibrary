@@ -263,7 +263,9 @@ export class BarChart extends BaseChart {
       yNice: true,
       colorScheme: (this.config as BarChartConfig).barColors,
       colorDomain: this.state.getGroups(),
-      orientation: orientation // [수정] orientation 옵션 추가
+      orientation: orientation,
+      // scale config의 yAxisTickInterval 전달
+      yAxisTickInterval: this.config.scale?.yAxisTickInterval
     };
 
     // Bar chart는 주로 ordinal 스케일 사용

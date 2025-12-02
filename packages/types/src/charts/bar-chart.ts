@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { ChartConfig, FontConfig } from '../base/config';
+import type { ChartConfig, FontConfig, ScaleConfig, AxisDisplayConfig } from '../base/config';
 
 export interface BarChartConfig extends ChartConfig {
   // 바 방향
@@ -23,8 +23,34 @@ export interface BarChartConfig extends ChartConfig {
   valueColor?: string;
 
   // 축 설정
+  /**
+   * X축 전체 표시 여부 (전체 제어)
+   * @default true
+   */
   showXAxis?: boolean;
+
+  /**
+   * X축 세부 표시 설정
+   * - showAxisLine: X축 라인 표시 여부
+   * - showTicks: X축 눈금 라인 표시 여부
+   * - showTickLabels: X축 눈금 값 표시 여부
+   */
+  xAxisDisplay?: AxisDisplayConfig;
+
+  /**
+   * Y축 전체 표시 여부 (전체 제어)
+   * @default true
+   */
   showYAxis?: boolean;
+
+  /**
+   * Y축 세부 표시 설정
+   * - showAxisLine: Y축 라인 표시 여부
+   * - showTicks: Y축 눈금 라인 표시 여부
+   * - showTickLabels: Y축 눈금 값 표시 여부
+   */
+  yAxisDisplay?: AxisDisplayConfig;
+
   showYAxisZero?: boolean;
   xAxisLabel?: string;
   yAxisLabel?: string;
@@ -78,4 +104,10 @@ export interface BarChartConfig extends ChartConfig {
   maxBarWidth?: number;
 
   fonts?: FontConfig;
+
+  /**
+   * 축 스케일 설정
+   * X축 위치, Y축 눈금 간격 등을 제어
+   */
+  scale?: ScaleConfig;
 }

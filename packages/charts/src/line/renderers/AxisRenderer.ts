@@ -4,9 +4,6 @@ import { CoordinateCalculator } from '../CoordinateCalculator';
 import { LineChartState } from '../LineChartState';
 import { RenderContext } from '../LineChart';
 
-/**
- * 축 렌더링만 담당하는 클래스
- */
 export class AxisRenderer {
   constructor(
     private state: LineChartState,
@@ -32,37 +29,76 @@ export class AxisRenderer {
     if (!axesData || !scales) return;
 
     const { xAxis, yAxis } = axesData;
-    const { innerHeight } = scales;
+    const { innerHeight, innerWidth } = scales;
 
-    // 부모 컨테이너의 실제 폰트 가져오기
     const computedStyle = window.getComputedStyle(this.context.container);
     const inheritedFont = computedStyle.fontFamily || 'inherit';
 
-    //  FontSizeHelper로 폰트 사이즈 가져오기
     const xAxisTickSize = FontSizeHelper.getXAxisTickFontSize(this.config.fonts);
     const yAxisTickSize = FontSizeHelper.getYAxisTickFontSize(this.config.fonts);
     const xAxisLabelSize = FontSizeHelper.getXAxisLabelFontSize(this.config.fonts);
     const yAxisLabelSize = FontSizeHelper.getYAxisLabelFontSize(this.config.fonts);
 
+    // X축 위치 설정
+    const xAxisPosition = this.config.scale?.xAxisPosition || 'center';
 
+    // X축 세부 표시 설정 (기본값: 모두 true)
+    const xAxisDisplay = this.config.xAxisDisplay || {};
+    const showXAxisLine = xAxisDisplay.showAxisLine !== false;
+    const showXTicks = xAxisDisplay.showTicks !== false;
+    const showXTickLabels = xAxisDisplay.showTickLabels !== false;
+
+    // Y축 세부 표시 설정 (기본값: 모두 true)
+    const yAxisDisplay = this.config.yAxisDisplay || {};
+    const showYAxisLine = yAxisDisplay.showAxisLine !== false;
+    const showYTicks = yAxisDisplay.showTicks !== false;
+    const showYTickLabels = yAxisDisplay.showTickLabels !== false;
+
+    // ============================================
     // X축 렌더링
-    if (this.config.showXAxis) {
+    // ============================================
+    if (this.config.showXAxis !== false) {
+      let xAxisTransform = `translate(0, ${innerHeight})`;
+
+      if (xAxisPosition === 'bottom') {
+        xAxisTransform = `translate(0, ${innerHeight})`;
+      } else if (xAxisPosition === 'top') {
+        xAxisTransform = 'translate(0, 0)';
+      } else {
+        const zeroPos = scales.yScale(0);
+        xAxisTransform = `translate(0, ${!isNaN(zeroPos) ? zeroPos : innerHeight})`;
+      }
+
       const xAxisGroup = this.context.chartArea.append('g')
         .attr('class', 'axis x-axis')
-        .attr('transform', `translate(0, ${innerHeight})`)
+        .attr('transform', xAxisTransform)
         .call(xAxis);
 
-      //  X축 눈금 텍스트 스타일 적용
-      xAxisGroup.selectAll('text')
-        .style('font-family', inheritedFont)
-        .attr('font-size', `${xAxisTickSize}px`)
-        .attr('fill', '#111');
+      // X축 라인 제어
+      if (!showXAxisLine) {
+        xAxisGroup.select('.domain').style('display', 'none');
+      }
+
+      // X축 눈금 라인 제어
+      if (!showXTicks || xAxisPosition === 'top' || xAxisPosition === 'bottom') {
+        xAxisGroup.selectAll('.tick line').style('display', 'none');
+      }
+
+      // X축 눈금 텍스트 제어
+      if (!showXTickLabels) {
+        xAxisGroup.selectAll('.tick text').style('display', 'none');
+      } else {
+        xAxisGroup.selectAll('text')
+          .style('font-family', inheritedFont)
+          .attr('font-size', `${xAxisTickSize}px`)
+          .attr('fill', '#111');
+      }
 
       // X축 라벨
       if (this.config.xAxisLabel) {
         xAxisGroup.append('text')
           .attr('class', 'axis-label x-axis-label')
-          .attr('x', scales.innerWidth / 2)
+          .attr('x', innerWidth / 2)
           .attr('y', 35)
           .attr('text-anchor', 'middle')
           .style('font-family', inheritedFont)
@@ -73,24 +109,54 @@ export class AxisRenderer {
       }
     }
 
+    // ============================================
     // Y축 렌더링
-    if (this.config.showYAxis) {
+    // ============================================
+    if (this.config.showYAxis !== false) {
+      // yAxisTickInterval 적용
+      const yTickInterval = this.config.scale?.yAxisTickInterval;
+      if (yTickInterval && yTickInterval > 0) {
+        const domain = scales.yScale.domain();
+        const [minVal, maxVal] = domain;
+
+        const ticks: number[] = [];
+        for (let val = minVal; val <= maxVal; val += yTickInterval) {
+          ticks.push(val);
+        }
+
+        yAxis.tickValues(ticks);
+      }
+
       const yAxisGroup = this.context.chartArea.append('g')
         .attr('class', 'axis y-axis')
         .call(yAxis);
 
-      //  Y축 눈금 텍스트 스타일 적용
-      yAxisGroup.selectAll('text')
-        .style('font-family', inheritedFont)
-        .attr('font-size', `${yAxisTickSize}px`)
-        .attr('fill', '#111');
+      // Y축 라인 제어
+      if (!showYAxisLine) {
+        yAxisGroup.select('.domain').style('display', 'none');
+      }
+
+      // Y축 눈금 라인 제어
+      if (!showYTicks) {
+        yAxisGroup.selectAll('.tick line').style('display', 'none');
+      }
+
+      // Y축 눈금 텍스트 제어
+      if (!showYTickLabels) {
+        yAxisGroup.selectAll('.tick text').style('display', 'none');
+      } else {
+        yAxisGroup.selectAll('text')
+          .style('font-family', inheritedFont)
+          .attr('font-size', `${yAxisTickSize}px`)
+          .attr('fill', '#111');
+      }
 
       // Y축 라벨
       if (this.config.yAxisLabel) {
         yAxisGroup.append('text')
           .attr('class', 'axis-label y-axis-label')
           .attr('transform', 'rotate(-90)')
-          .attr('x', -scales.innerHeight / 2)
+          .attr('x', -innerHeight / 2)
           .attr('y', -40)
           .attr('text-anchor', 'middle')
           .style('font-family', inheritedFont)
@@ -111,6 +177,20 @@ export class AxisRenderer {
 
     const { xAxis, yAxis } = axesData;
     const { innerWidth, innerHeight } = scales;
+
+    // yAxisTickInterval 적용
+    const yTickInterval = this.config.scale?.yAxisTickInterval;
+    if (yTickInterval && yTickInterval > 0) {
+      const domain = scales.yScale.domain();
+      const [minVal, maxVal] = domain;
+
+      const ticks: number[] = [];
+      for (let val = minVal; val <= maxVal; val += yTickInterval) {
+        ticks.push(val);
+      }
+
+      yAxis.tickValues(ticks);
+    }
 
     // X 격자선
     this.context.chartArea.append('g')

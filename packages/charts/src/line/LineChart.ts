@@ -256,7 +256,9 @@ export class LineChart extends BaseChart {
     const options = {
       yNice: true,
       colorScheme: (this.config as LineChartConfig).lineColors,
-      colorDomain: this.state.getGroups()
+      colorDomain: this.state.getGroups(),
+      // scale config의 yAxisTickInterval 전달
+      yAxisTickInterval: this.config.scale?.yAxisTickInterval
     };
 
     switch (scaleType) {

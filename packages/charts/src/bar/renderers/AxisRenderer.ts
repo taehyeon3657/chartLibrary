@@ -45,15 +45,36 @@ export class AxisRenderer {
     const xAxisLabelSize = FontSizeHelper.getXAxisLabelFontSize(this.config.fonts);
     const yAxisLabelSize = FontSizeHelper.getYAxisLabelFontSize(this.config.fonts);
 
-    // =================================================================================
+    // X축 위치 설정
+    const xAxisPosition = this.config.scale?.xAxisPosition || 'center';
+
+    // X축 세부 표시 설정 (기본값: 모두 true)
+    const xAxisDisplay = this.config.xAxisDisplay || {};
+    const showXAxisLine = xAxisDisplay.showAxisLine !== false;
+    const showXTicks = xAxisDisplay.showTicks !== false;
+    const showXTickLabels = xAxisDisplay.showTickLabels !== false;
+
+    // Y축 세부 표시 설정 (기본값: 모두 true)
+    const yAxisDisplay = this.config.yAxisDisplay || {};
+    const showYAxisLine = yAxisDisplay.showAxisLine !== false;
+    const showYTicks = yAxisDisplay.showTicks !== false;
+    const showYTickLabels = yAxisDisplay.showTickLabels !== false;
+
+    // ============================================
     // X축 렌더링
-    // =================================================================================
-    if (this.config.showXAxis) {
+    // ============================================
+    if (this.config.showXAxis !== false) {
       let xAxisTransform = `translate(0, ${innerHeight})`;
 
       if (orientation === 'vertical') {
-        const zeroPos = (scales.yScale as any)(0);
-        xAxisTransform = `translate(0, ${!isNaN(zeroPos) ? zeroPos : innerHeight})`;
+        if (xAxisPosition === 'bottom') {
+          xAxisTransform = `translate(0, ${innerHeight})`;
+        } else if (xAxisPosition === 'top') {
+          xAxisTransform = 'translate(0, 0)';
+        } else {
+          const zeroPos = (scales.yScale as any)(0);
+          xAxisTransform = `translate(0, ${!isNaN(zeroPos) ? zeroPos : innerHeight})`;
+        }
       }
 
       if (orientation === 'horizontal') {
@@ -65,18 +86,46 @@ export class AxisRenderer {
         .attr('transform', xAxisTransform)
         .call(xAxis);
 
-      // [버그 수정] Vertical 모드일 때 X축 선이 양옆으로 꽉 차지 않는 문제 해결
-      if (orientation === 'vertical') {
-        // X축의 도메인 라인을 0부터 innerWidth까지 강제로 그리기 (M0,0 H{width})
-        xAxisGroup.select('.domain')
-          .attr('d', `M0,0H${innerWidth}`);
+      // X축 라인 제어
+      if (!showXAxisLine) {
+        xAxisGroup.select('.domain').style('display', 'none');
+      } else {
+        if (orientation === 'vertical') {
+          xAxisGroup.select('.domain')
+            .attr('d', `M0,0H${innerWidth}`)
+            .attr('stroke', axisColor);
+        } else {
+          xAxisGroup.select('.domain')
+            .attr('d', `M0,0H${innerWidth}`)
+            .attr('stroke', axisColor);
+        }
+      }
+
+      // X축 눈금 라인 제어
+      if (!showXTicks || xAxisPosition === 'top' || xAxisPosition === 'bottom') {
+        xAxisGroup.selectAll('.tick line').style('display', 'none');
+      } else {
+        xAxisGroup.selectAll('.tick line').attr('stroke', axisColor);
+      }
+
+      // X축 눈금 텍스트 제어
+      if (!showXTickLabels) {
+        xAxisGroup.selectAll('.tick text').style('display', 'none');
+      } else {
+        xAxisGroup.selectAll('text')
+          .style('font-family', inheritedFont)
+          .attr('font-size', `${xAxisTickSize}px`)
+          .attr('fill', axisColor);
+
+        if (orientation === 'vertical' && (scales.xScale as any).bandwidth) {
+          const bandwidth = (scales.xScale as any).bandwidth();
+          xAxisGroup.selectAll('.tick text')
+            .attr('transform', `translate(${bandwidth / 2}, 0)`);
+        }
       }
 
       // Horizontal 모드 조정
       if (orientation === 'horizontal') {
-        xAxisGroup.select('.domain')
-          .attr('d', `M0,0H${innerWidth}`);
-
         xAxisGroup.selectAll('.tick')
           .style('display', (d: any, i, nodes) => {
             if (i === 0 || i === nodes.length - 1) {
@@ -89,23 +138,7 @@ export class AxisRenderer {
           });
       }
 
-      xAxisGroup.selectAll('text')
-        .style('font-family', inheritedFont)
-        .attr('font-size', `${xAxisTickSize}px`)
-        .attr('fill', axisColor);
-
-      xAxisGroup.select('.domain')
-        .attr('stroke', axisColor);
-
-      xAxisGroup.selectAll('.tick line')
-        .attr('stroke', axisColor);
-
-      if (orientation === 'vertical' && (scales.xScale as any).bandwidth) {
-        const bandwidth = (scales.xScale as any).bandwidth();
-        xAxisGroup.selectAll('.tick text')
-          .attr('transform', `translate(${bandwidth / 2}, 0)`);
-      }
-
+      // X축 라벨
       if (this.config.xAxisLabel) {
         const labelPosition = this.config.xAxisLabelPosition || 'center';
         let xPosition: number;
@@ -135,47 +168,75 @@ export class AxisRenderer {
       }
     }
 
-    // =================================================================================
+    // ============================================
     // Y축 렌더링
-    // =================================================================================
-    if (this.config.showYAxis) {
+    // ============================================
+    if (this.config.showYAxis !== false) {
       if (orientation === 'vertical') {
         yAxis.tickSizeOuter(0);
+      }
+
+      // yAxisTickInterval 적용
+      const yTickInterval = this.config.scale?.yAxisTickInterval;
+      if (yTickInterval && yTickInterval > 0) {
+        const domain = scales.yScale.domain();
+        const [minVal, maxVal] = domain;
+
+        const ticks: number[] = [];
+        for (let val = minVal; val <= maxVal; val += yTickInterval) {
+          ticks.push(val);
+        }
+
+        yAxis.tickValues(ticks);
       }
 
       const yAxisGroup = this.context.chartArea.append('g')
         .attr('class', 'axis y-axis')
         .call(yAxis);
 
-      if (orientation === 'horizontal') {
-        yAxisGroup.select('.domain')
-          .attr('d', `M0,0V${innerHeight}`);
+      // Y축 라인 제어
+      if (!showYAxisLine) {
+        yAxisGroup.select('.domain').style('display', 'none');
+      } else {
+        if (orientation === 'horizontal') {
+          yAxisGroup.select('.domain')
+            .attr('d', `M0,0V${innerHeight}`)
+            .attr('stroke', axisColor);
+        } else {
+          yAxisGroup.select('.domain').attr('stroke', axisColor);
+        }
       }
 
-      if (orientation === 'vertical') {
-        yAxisGroup.selectAll('.tick')
-          .style('display', (d: any, i, nodes) => {
-            if (i === 0 || i === nodes.length - 1) {
-              return 'none';
-            }
-            if (d === 0 && this.config.showYAxisZero === false) {
-              return 'none';
-            }
-            return null;
-          });
+      // Y축 눈금 라인 제어
+      if (!showYTicks) {
+        yAxisGroup.selectAll('.tick line').style('display', 'none');
+      } else {
+        if (orientation === 'vertical') {
+          yAxisGroup.selectAll('.tick')
+            .style('display', (d: any, i, nodes) => {
+              if (i === 0 || i === nodes.length - 1) {
+                return 'none';
+              }
+              if (d === 0 && this.config.showYAxisZero === false) {
+                return 'none';
+              }
+              return null;
+            });
+        }
+        yAxisGroup.selectAll('.tick line').attr('stroke', axisColor);
       }
 
-      yAxisGroup.selectAll('text')
-        .style('font-family', inheritedFont)
-        .attr('font-size', `${yAxisTickSize}px`)
-        .attr('fill', axisColor);
+      // Y축 눈금 텍스트 제어
+      if (!showYTickLabels) {
+        yAxisGroup.selectAll('.tick text').style('display', 'none');
+      } else {
+        yAxisGroup.selectAll('text')
+          .style('font-family', inheritedFont)
+          .attr('font-size', `${yAxisTickSize}px`)
+          .attr('fill', axisColor);
+      }
 
-      yAxisGroup.select('.domain')
-        .attr('stroke', axisColor);
-
-      yAxisGroup.selectAll('.tick line')
-        .attr('stroke', axisColor);
-
+      // Y축 라벨
       if (this.config.yAxisLabel) {
         const labelPosition = this.config.yAxisLabelPosition || 'center';
         let yPosition: number;
@@ -221,6 +282,19 @@ export class AxisRenderer {
     const gridLineStyle = this.config.gridLineStyle || 'dashed';
     const dashArray = gridLineStyle === 'dashed' ? '2,2' : '0';
     const gridColor = this.config.gridColor || '#f0f0f0';
+
+    const yTickInterval = this.config.scale?.yAxisTickInterval;
+    if (yTickInterval && yTickInterval > 0) {
+      const domain = scales.yScale.domain();
+      const [minVal, maxVal] = domain;
+
+      const ticks: number[] = [];
+      for (let val = minVal; val <= maxVal; val += yTickInterval) {
+        ticks.push(val);
+      }
+
+      yAxis.tickValues(ticks);
+    }
 
     if (this.config.horizontalGridLines !== false) {
       const horizontalGrid = this.context.chartArea.append('g')
