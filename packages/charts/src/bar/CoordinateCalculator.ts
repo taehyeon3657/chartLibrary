@@ -232,19 +232,20 @@ export class CoordinateCalculator {
 
 
     const barWidth = this.config.barWidth || this.calculateBarWidth(bandwidth, 1);
-    const centerOffset = (bandwidth - barWidth) / 2;
+
 
     stackedData.forEach((data, group) => {
       const groupPositions: BarPosition[] = [];
 
       data.forEach(d => {
         if (orientation === 'vertical') {
-          const x = this.getXPosition(d.category) + centerOffset;
+          const startX = this.getXPosition(d.category);
+          const centerX = startX  - barWidth/ 2;
           const y = yScale(d.y1);
           const height = yScale(d.y0) - y;
 
           groupPositions.push({
-            x,
+            x: centerX,
             y,
             width: barWidth,
             height: Math.abs(height),
@@ -252,12 +253,12 @@ export class CoordinateCalculator {
           });
         } else {
           const x = yScale(d.y0);
-          const y = this.getXPosition(d.category) + centerOffset;
+          const centerY = this.getXPosition(d.category);
           const width = yScale(d.y1) - x;
 
           groupPositions.push({
             x,
-            y,
+            y: centerY - barWidth / 2,
             width: Math.abs(width),
             height: barWidth,
             data: { ...d, y: d.value } as any
