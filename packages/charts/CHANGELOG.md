@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.1](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-charts@1.7.0...@beaubrain/chart-lib-charts@1.7.1) (2026-01-20)
+
+
+### Bug Fixes
+
+* package gitHead ([9e3e63e](https://github.com/taehyeon3657/chartLibrary/commit/9e3e63ea0933c73303ab627434dd5127dbe5c466))
+
+
+
+
+
 # [1.7.0](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-charts@1.6.2...@beaubrain/chart-lib-charts@1.7.0) (2026-01-20)
 
 
