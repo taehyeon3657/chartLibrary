@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-charts@1.6.2...@beaubrain/chart-lib-charts@1.7.0) (2026-01-20)
+
+
+### Features
+
+* stacked bar chart position & scale rendering error ([c75231d](https://github.com/taehyeon3657/chartLibrary/commit/c75231d5fef0c653855f47f003b3e20d18a426c4))
+
+
+
+
+
 ## [1.6.2](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-charts@1.6.1...@beaubrain/chart-lib-charts@1.6.2) (2025-12-02)
 
 
