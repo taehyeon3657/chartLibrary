@@ -5,11 +5,12 @@ import { BarChart } from '@beaubrain/chart-lib-react';
 import { ExampleLayout } from '@/components/ExampleLayout';
 import { ChartContainer } from '@/components/ChartContainer';
 import { CodeBlock } from '@/components/CodeBlock';
-
+import { generateStackedBarData } from '@/utils/generateData';
 
 export default function StackedExample() {
-
-
+  const categories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+  const series = ['Desktop', 'Mobile', 'Tablet'];
+  const data = generateStackedBarData(categories, series);
 
   const code = `import { BarChart } from '@beaubrain/chart-lib-react'
 
@@ -25,35 +26,6 @@ export default function StackedExample() {
   }}
 />`;
 
-  const data = [{
-    'x': 'Jan',
-    'value': 52,
-    'group': 'Desktop',
-    'date': 'Tue Jan 20 2026'
-  }, {
-    'x': 'Jan',
-    'value': 34,
-    'group': 'Mobile',
-    'date': 'Tue Jan 20 2026'
-  }, {
-    'x': 'Jan',
-    'value': 120,
-    'group': 'Tablet',
-    'date': 'Tue Jan 20 2026'
-  },
-  {
-    'x': 'Jan',
-    'value': 44,
-    'group': 'Mobile2',
-    'date': 'Tue Jan 20 2026'
-
-  }, {
-    'x': 'Jan',
-    'value': 23,
-    'group': 'Mobile3',
-    'date': 'Tue Jan 20 2026'
-  }];
-
   return (
     <ExampleLayout
       type="bar"
@@ -64,12 +36,11 @@ export default function StackedExample() {
         <BarChart
           data={data}
           config={{
-            stacked: true,
-            showValues: true,
-            showLegend: false,
-            valuePosition: 'middle',
-            valueColor: 'white',
 
+            stacked: true,
+            showLegend: true,
+            legendPosition: 'top',
+            barBorderRadius: 4
           }}
         />
       </ChartContainer>
@@ -78,12 +49,13 @@ export default function StackedExample() {
         <BarChart
           data={data}
           config={{
+
             orientation: 'horizontal',
             stacked: true,
-            showValues: true,
-            showLegend: false,
-            valuePosition: 'middle',
-            valueColor: 'white',
+            showLegend: true,
+            legendPosition: 'top',
+            barBorderRadius: 4,
+            barColors: ['#3b82f6', '#10b981', '#f59e0b']
           }}
         />
       </ChartContainer>
@@ -92,12 +64,22 @@ export default function StackedExample() {
         <BarChart
           data={data}
           config={{
+
             stacked: true,
+            showLegend: true,
+            legendPosition: 'top',
             showValues: true,
-            showLegend: false,
             valuePosition: 'middle',
             valueColor: 'white',
-
+            fonts: {
+              xAxisTickFontSize: 6,
+              yAxisTickFontSize: 6,
+              xAxisLabelFontSize: 16,
+              yAxisLabelFontSize: 16,
+              legendFontSize: 8,
+              titleFontSize: 18,
+              valueFontSize: 8,
+            },
           }}
         />
       </ChartContainer>

@@ -256,53 +256,25 @@ export class BarChart extends BaseChart {
   // ============================================
 
   private createScales() {
-    const config = this.config as BarChartConfig;
     const scaleType = this.state.getScaleType();
-    const orientation = config.orientation || 'vertical';
-    const isStacked = config.stacked || false;
+    const orientation = (this.config as BarChartConfig).orientation || 'vertical';
 
-    // 1. 수정된 State 로직을 통해 정확한 도메인 가져오기
-    const { xDomain, yDomain: rawYDomain } = this.state.getDataExtent(isStacked);
-
-    let [yMin, yMax] = rawYDomain;
-
-    // 2. 패딩 설정 (Bar가 꽉 차게 보이도록 5% 여유만 부여)
-    const range = yMax - yMin;
-    const padding = range === 0 ? (yMax || 100) * 0.1 : range * 0.05;
-
-    if (yMax > 0) yMax += padding;
-    if (yMin < 0) yMin -= padding;
-
-    // 3. Scale 생성
-    const baseOptions = {
-      yNice: false, // [중요] D3 자동 뻥튀기 방지
-      colorScheme: config.barColors,
+    const options = {
+      yNice: true,
+      colorScheme: (this.config as BarChartConfig).barColors,
       colorDomain: this.state.getGroups(),
       orientation: orientation,
-      yAxisTickInterval: config.scale?.yAxisTickInterval,
-      yDomain: [yMin, yMax]
+      // scale config의 yAxisTickInterval 전달
+      yAxisTickInterval: this.config.scale?.yAxisTickInterval
     };
 
+    // Bar chart는 주로 ordinal 스케일 사용
     if (scaleType === 'ordinal' || orientation === 'vertical' || orientation === 'horizontal') {
-      return this.scaleManager.createOrdinalScales({
-        ...baseOptions,
-        xDomain: xDomain as unknown as any,
-        yDomain: [yMin, yMax] as [number, number]
-      });
+      return this.scaleManager.createOrdinalScales(options);
     } else if (scaleType === 'linear') {
-      // ... (기존 Linear 로직, xDomain만 계산하여 baseOptions 합침)
-      const visibleData = this.state.getVisibleData();
-      const xValues = visibleData.map(d => Number(d.x));
-      const xMin = xValues.length ? Math.min(...xValues) : 0;
-      const xMax = xValues.length ? Math.max(...xValues) : 100;
-      return this.scaleManager.createLinearScales({ ...baseOptions, xDomain: [xMin, xMax], yDomain: [yMin, yMax] as [number, number] });
+      return this.scaleManager.createLinearScales(options);
     } else {
-      // ... (기존 Time 로직)
-      const visibleData = this.state.getVisibleData();
-      const xValues = visibleData.map(d => new Date(d.x as any).getTime());
-      const xMin = xValues.length ? Math.min(...xValues) : Date.now();
-      const xMax = xValues.length ? Math.max(...xValues) : Date.now();
-      return this.scaleManager.createTimeScales({ ...baseOptions, xDomain: [new Date(xMin), new Date(xMax)], yDomain: [yMin, yMax] as [number, number] });
+      return this.scaleManager.createTimeScales(options);
     }
   }
 
