@@ -34,8 +34,9 @@ export default function ResponsiveExample() {
             data={data}
             responsive={true}
             config={{
-              showLegend: true,
-              lineWidth: 2
+              height: 400,
+              showLegend: false,
+              lineWidth: 2,
             }}
           />
         </div>
@@ -47,6 +48,11 @@ export default function ResponsiveExample() {
             <LineChart
               data={data}
               responsive={true}
+              config={{
+                height: 200,
+                showXAxis: false,
+                showLegend: false,
+              }}
             />
           </div>
         </ChartContainer>
@@ -56,6 +62,10 @@ export default function ResponsiveExample() {
             <LineChart
               data={data}
               responsive={true}
+              config={{
+                showXAxis: false,
+                showLegend: false,
+              }}
             />
           </div>
         </ChartContainer>

@@ -17,6 +17,7 @@ export default function CustomExample() {
   config={{
     width: 800,
     height: 500,
+    responsive={true}
 
     // Title styling
     title: 'Monthly Sales Performance',
@@ -65,13 +66,15 @@ export default function CustomExample() {
       description="Heavily customized chart with various styling options"
     >
       <ChartContainer>
+
         <LineChart
           data={data}
+          responsive={true}
           config={{
             width: 800,
             height: 500,
-            title: 'Monthly Sales Performance',
-            titlePosition: 'LEFT',
+
+
             fonts: {
               xAxisTickFontSize: 6,
               yAxisTickFontSize: 6,
@@ -94,8 +97,6 @@ export default function CustomExample() {
             yAxisLabel: 'Sales ($)',
             gridColor: '#e5e7eb',
             axisColor: '#9ca3af',
-            showLegend: true,
-            legendPosition: 'right',
             enableAnimation: false,
             animationDuration: 1200,
             margin: { top: 60, right: 20, bottom: 60, left: 80 }
