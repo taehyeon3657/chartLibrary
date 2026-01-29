@@ -97,6 +97,7 @@ export default function CustomExample() {
             yAxisLabel: 'Sales ($)',
             gridColor: '#e5e7eb',
             axisColor: '#9ca3af',
+            showLegend: false,
             enableAnimation: false,
             animationDuration: 1200,
             margin: { top: 60, right: 20, bottom: 60, left: 80 }

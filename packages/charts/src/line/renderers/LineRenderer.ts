@@ -4,17 +4,23 @@ import type { LineChartConfig } from '@beaubrain/chart-lib-types';
 import type { LineChartState } from '../LineChartState';
 import type { CoordinateCalculator } from '../CoordinateCalculator';
 import type { RenderContext } from '../LineChart';
+import { DotRenderer } from './DotRenderer';
 
 /**
  * 라인과 영역 렌더링만 담당하는 클래스
  */
 export class LineRenderer {
+
+  private dotRenderer: DotRenderer;
+
   constructor(
     private state: LineChartState,
     private calculator: CoordinateCalculator,
     private config: LineChartConfig,
     private context: RenderContext
-  ) {}
+  ) {
+    this.dotRenderer = new DotRenderer(state, calculator, config, context);
+  }
 
   render(): void {
     if (this.state.isEmpty()) return;
@@ -26,10 +32,15 @@ export class LineRenderer {
     }
 
     this.renderLines();
+
+    if (this.config.showDots) {
+      this.dotRenderer.render();
+    }
   }
 
   private clearPreviousRender(): void {
     this.context.chartArea.selectAll('.line-group').remove();
+    this.context.chartArea.selectAll('.dots-group').remove();
   }
 
   private renderAreas(): void {
