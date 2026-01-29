@@ -20,12 +20,7 @@ export interface RenderContext {
 }
 
 /**
- * BarChart 클래스
- *
- * - 외부 API 제공
- * - 구성 요소들 간 조정
- * - 이벤트 전달
- * 만을 담당합니다.
+ * BarChart 클래스 - 완전한 반응형 지원
  */
 export class BarChart extends BaseChart {
   // 핵심 구성 요소들
@@ -38,6 +33,13 @@ export class BarChart extends BaseChart {
   // 렌더링 컨텍스트
   private renderContext: RenderContext | null = null;
 
+  // 반응형 관련
+  private resizeObserver: ResizeObserver | null = null;
+  private resizeTimeout: NodeJS.Timeout | null = null;
+
+  // 초기 설정 백업 (반응형 계산용)
+  private initialConfig: Partial<BarChartConfig>;
+
   constructor(container: HTMLElement, config: Partial<BarChartConfig> = {}) {
     // 기본 설정
     const defaultConfig: Partial<BarChartConfig> = {
@@ -45,7 +47,7 @@ export class BarChart extends BaseChart {
       height: 400,
       margin: { top: 20, right: 20, bottom: 40, left: 60 },
       orientation: 'vertical',
-      barColors: ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6'],
+      barColors: ['#3b82f6', '#ef4444', '#10b981', '#f59e0f', '#8b5cf6'],
       barPadding: 0.1,
       barGroupPadding: 0.2,
       barBorderRadius: 0,
@@ -55,7 +57,7 @@ export class BarChart extends BaseChart {
       valuePosition: 'top',
       showXAxis: true,
       showYAxis: true,
-      showYAxisZero: false, // 기본값: 0 눈금 숨김
+      showYAxisZero: false,
       gridLines: true,
       horizontalGridLines: true,
       verticalGridLines: false,
@@ -64,14 +66,13 @@ export class BarChart extends BaseChart {
       animationDelay: 0,
       showTooltip: true,
       showLegend: true,
-      legendPosition: 'top'
+      legendPosition: 'top',
+      responsive: false
     };
 
-    // config 병합
     const mergedConfig = { ...defaultConfig, ...config };
 
     // Title과 Legend가 모두 top일 때 margin.top 자동 증가
-    // showLegend가 명시적으로 false로 설정되지 않은 경우에만 margin 조정
     if (mergedConfig.title &&
         (mergedConfig.legendPosition === 'top' || !mergedConfig.legendPosition) &&
         mergedConfig.showLegend !== false) {
@@ -85,11 +86,12 @@ export class BarChart extends BaseChart {
 
     super(container, mergedConfig);
 
+    // 초기 설정 백업 (반응형 계산의 기준)
+    this.initialConfig = { ...mergedConfig };
+
     // 구성 요소들 초기화
     this.state = new BarChartState();
-
     this.calculator = new CoordinateCalculator(this.state, this.config as BarChartConfig);
-
     this.renderer = new BarChartRenderer(
       container,
       this.state,
@@ -111,6 +113,178 @@ export class BarChart extends BaseChart {
     });
 
     this.setupEventForwarding();
+
+    // 반응형 설정
+    if ((this.config as BarChartConfig).responsive) {
+      this.setupResponsive();
+    }
+  }
+
+  // ============================================
+  // 반응형 처리
+  // ============================================
+
+  private setupResponsive(): void {
+    if (typeof ResizeObserver === 'undefined') {
+      console.warn('ResizeObserver is not supported in this browser');
+      return;
+    }
+
+    this.resizeObserver = new ResizeObserver((entries) => {
+      if (this.resizeTimeout) {
+        clearTimeout(this.resizeTimeout);
+      }
+
+      this.resizeTimeout = setTimeout(() => {
+        for (const entry of entries) {
+          const { width, height } = entry.contentRect;
+
+          // 크기가 있을 때만 리사이징 (최소 크기 제한 제거)
+          if (width > 0 && height > 0) {
+            this.handleResize(width, height);
+          }
+        }
+      }, 100); // 디바운스 100ms
+    });
+
+    this.resizeObserver.observe(this.container);
+  }
+
+  private handleResize(width: number, height: number): void {
+    // 최소 크기를 더 작게 설정 (모바일 대응)
+    const minWidth = 200;
+    const minHeight = 150;
+
+    const newWidth = Math.max(minWidth, width);
+    const newHeight = Math.max(minHeight, height);
+
+    // 완전한 반응형 설정 계산
+    const responsiveConfig = this.calculateResponsiveConfig(newWidth, newHeight);
+
+    // 설정 업데이트
+    this.updateConfig(responsiveConfig);
+
+    // 차트 다시 렌더링
+    if (this.state.isChartRendered()) {
+      this.update();
+    }
+  }
+
+  /**
+   * 컨테이너 크기에 따라 모든 설정을 동적으로 계산
+   */
+  private calculateResponsiveConfig(width: number, height: number): Partial<BarChartConfig> {
+    const baseWidth = this.initialConfig.width || 600;
+    const baseHeight = this.initialConfig.height || 400;
+
+    // 너비와 높이 비율 계산
+    const widthRatio = width / baseWidth;
+    const heightRatio = height / baseHeight;
+
+    // 최소 비율 사용 (더 작은 쪽에 맞춤)
+    const scale = Math.min(widthRatio, heightRatio);
+
+    // 폰트 계산 (최대 제한 제거, 최소값만 보장)
+    const fonts = this.calculateResponsiveFonts(scale);
+
+    // Bar 관련 설정 계산
+    const barConfig = this.calculateResponsiveBarConfig(width, height, scale);
+
+    // Margin 계산
+    const margin = this.calculateResponsiveMargin(scale);
+
+    return {
+      width,
+      height,
+      margin,
+      fonts,
+      ...barConfig
+    };
+  }
+
+  /**
+   * 반응형 폰트 크기 계산
+   */
+  private calculateResponsiveFonts(scale: number) {
+    const initialFonts = this.initialConfig.fonts || {};
+
+    // 기본값 정의
+    const defaults = {
+      xAxisTickFontSize: 10,
+      yAxisTickFontSize: 10,
+      xAxisLabelFontSize: 16,
+      yAxisLabelFontSize: 16,
+      legendFontSize: 8,
+      titleFontSize: 18,
+      valueFontSize: 12,
+      valueFontWeight: 100
+    };
+
+    // 각 폰트 크기 계산 (최소값만 보장, 최대값 제한 제거)
+    return {
+      xAxisTickFontSize: Math.max(6, Math.round(Number(initialFonts.xAxisTickFontSize ?? defaults.xAxisTickFontSize) * scale)),
+      yAxisTickFontSize: Math.max(6, Math.round(Number(initialFonts.yAxisTickFontSize ?? defaults.yAxisTickFontSize) * scale)),
+      xAxisLabelFontSize: Math.max(8, Math.round(Number(initialFonts.xAxisLabelFontSize ?? defaults.xAxisLabelFontSize) * scale)),
+      yAxisLabelFontSize: Math.max(8, Math.round(Number(initialFonts.yAxisLabelFontSize ?? defaults.yAxisLabelFontSize) * scale)),
+      legendFontSize: Math.max(6, Math.round(Number(initialFonts.legendFontSize ?? defaults.legendFontSize) * scale)),
+      titleFontSize: Math.max(10, Math.round(Number(initialFonts.titleFontSize ?? defaults.titleFontSize) * scale)),
+      valueFontSize: Math.max(6, Math.round(Number(initialFonts.valueFontSize ?? defaults.valueFontSize) * scale)),
+      valueFontWeight: initialFonts.valueFontWeight ?? defaults.valueFontWeight
+    };
+  }
+
+  /**
+   * 반응형 Bar 설정 계산
+   */
+  private calculateResponsiveBarConfig(width: number, height: number, scale: number) {
+    const config = this.initialConfig;
+    const orientation = config.orientation || 'vertical';
+
+    // barWidth가 명시적으로 지정된 경우에도 스케일 적용
+    let barWidth: number | undefined;
+    if (config.barWidth) {
+      // 사용자 지정 barWidth를 스케일에 따라 조정
+      barWidth = Math.max(2, Math.round(config.barWidth * scale));
+    }
+    // barWidth를 지정하지 않으면 undefined로 두어 자동 계산되도록 함
+
+    // barBorderRadius도 스케일 적용
+    const barBorderRadius = config.barBorderRadius
+      ? Math.max(0, Math.round(config.barBorderRadius * scale))
+      : 0;
+
+    // barGroupPadding 처리 (문자열일 수 있음)
+    let barGroupPadding: number | string | undefined = config.barGroupPadding;
+    if (typeof barGroupPadding === 'string' && barGroupPadding.endsWith('px')) {
+      const pxValue = parseFloat(barGroupPadding);
+      if (!isNaN(pxValue)) {
+        barGroupPadding = `${Math.max(1, Math.round(pxValue * scale))}px`;
+      }
+    } else if (typeof barGroupPadding === 'number') {
+      // 숫자인 경우는 비율이므로 그대로 유지
+      barGroupPadding = config.barGroupPadding;
+    }
+
+    return {
+      barWidth,
+      barBorderRadius,
+      barGroupPadding,
+      barPadding: config.barPadding // 비율이므로 그대로 유지
+    };
+  }
+
+  /**
+   * 반응형 Margin 계산
+   */
+  private calculateResponsiveMargin(scale: number) {
+    const initialMargin = this.initialConfig.margin || { top: 20, right: 20, bottom: 40, left: 60 };
+
+    return {
+      top: Math.max(10, Math.round(initialMargin.top * scale)),
+      right: Math.max(10, Math.round(initialMargin.right * scale)),
+      bottom: Math.max(20, Math.round(initialMargin.bottom * scale)),
+      left: Math.max(30, Math.round(initialMargin.left * scale))
+    };
   }
 
   // ============================================
@@ -118,28 +292,21 @@ export class BarChart extends BaseChart {
   // ============================================
 
   public setData(data: ChartDataPoint[]): this {
-    // 1. 데이터 유효성 검증
     const validation = DataProcessor.validateData(data);
     if (!validation.isValid) {
       console.error('Invalid data:', validation.errors);
       return this;
     }
 
-    // 2. 데이터 처리 및 상태 업데이트
     const processedData = DataProcessor.process(data, {
       sort: (this.config as BarChartConfig).sortBars,
       sortBy: 'x'
     });
     this.state.setData(processedData);
-
-    // 3. 스케일 매니저에 데이터 전달
     this.scaleManager.setData(processedData, this.state.getGroups());
 
-    // 4. 스케일 생성 및 상태에 저장
     const scales = this.createScales();
     this.state.setScales(scales);
-
-    // 5. 이벤트 매니저 업데이트
     this.eventManager.updateData(processedData);
 
     return this;
@@ -151,7 +318,6 @@ export class BarChart extends BaseChart {
       return this;
     }
 
-    // 렌더링 실행
     try {
       this.renderContext = this.renderer.render();
     } catch (error) {
@@ -159,23 +325,18 @@ export class BarChart extends BaseChart {
       throw error;
     }
 
-    // 상호작용 설정
     this.setupInteractions();
-
-    // 상태 업데이트
     this.state.setRendered(true);
-
     this.emit('rendered', { chart: this });
+
     return this;
   }
 
   public update(): this {
     if (this.state.isChartRendered() && this.renderContext) {
-      // 스케일 다시 생성
       const scales = this.createScales();
       this.state.setScales(scales);
 
-      // 다시 렌더링
       this.renderContext = this.renderer.render();
       this.setupInteractions();
 
@@ -188,11 +349,8 @@ export class BarChart extends BaseChart {
     const wasVisible = this.state.isGroupVisible(group);
     this.state.toggleGroup(group);
 
-    // 부분 업데이트
     if (this.renderContext) {
       this.renderer.updateBars(this.renderContext);
-
-      // showLegend가 false가 아닐 때만 legend 업데이트
       if ((this.config as BarChartConfig).showLegend !== false) {
         this.renderer.updateLegend(this.renderContext);
       }
@@ -210,17 +368,13 @@ export class BarChart extends BaseChart {
   public updateConfig(newConfig: Partial<BarChartConfig>): this {
     this.config = { ...this.config, ...newConfig };
 
-    // 스케일 매니저 설정 업데이트
     this.scaleManager.updateSize({
       width: this.config.width!,
       height: this.config.height!,
       margin: this.config.margin!
     });
 
-    // 계산기 재생성
     this.calculator = new CoordinateCalculator(this.state, this.config as BarChartConfig);
-
-    // 렌더러 재생성
     this.renderer = new BarChartRenderer(
       this.container,
       this.state,
@@ -261,21 +415,18 @@ export class BarChart extends BaseChart {
     const orientation = config.orientation || 'vertical';
     const isStacked = config.stacked || false;
 
-    // 1. 수정된 State 로직을 통해 정확한 도메인 가져오기
     const { xDomain, yDomain: rawYDomain } = this.state.getDataExtent(isStacked);
 
     let [yMin, yMax] = rawYDomain;
 
-    // 2. 패딩 설정 (Bar가 꽉 차게 보이도록 5% 여유만 부여)
     const range = yMax - yMin;
     const padding = range === 0 ? (yMax || 100) * 0.1 : range * 0.05;
 
     if (yMax > 0) yMax += padding;
     if (yMin < 0) yMin -= padding;
 
-    // 3. Scale 생성
     const baseOptions = {
-      yNice: false, // [중요] D3 자동 뻥튀기 방지
+      yNice: false,
       colorScheme: config.barColors,
       colorDomain: this.state.getGroups(),
       orientation: orientation,
@@ -290,35 +441,38 @@ export class BarChart extends BaseChart {
         yDomain: [yMin, yMax] as [number, number]
       });
     } else if (scaleType === 'linear') {
-      // ... (기존 Linear 로직, xDomain만 계산하여 baseOptions 합침)
       const visibleData = this.state.getVisibleData();
       const xValues = visibleData.map(d => Number(d.x));
       const xMin = xValues.length ? Math.min(...xValues) : 0;
       const xMax = xValues.length ? Math.max(...xValues) : 100;
-      return this.scaleManager.createLinearScales({ ...baseOptions, xDomain: [xMin, xMax], yDomain: [yMin, yMax] as [number, number] });
+      return this.scaleManager.createLinearScales({
+        ...baseOptions,
+        xDomain: [xMin, xMax],
+        yDomain: [yMin, yMax] as [number, number]
+      });
     } else {
-      // ... (기존 Time 로직)
       const visibleData = this.state.getVisibleData();
       const xValues = visibleData.map(d => new Date(d.x as any).getTime());
       const xMin = xValues.length ? Math.min(...xValues) : Date.now();
       const xMax = xValues.length ? Math.max(...xValues) : Date.now();
-      return this.scaleManager.createTimeScales({ ...baseOptions, xDomain: [new Date(xMin), new Date(xMax)], yDomain: [yMin, yMax] as [number, number] });
+      return this.scaleManager.createTimeScales({
+        ...baseOptions,
+        xDomain: [new Date(xMin), new Date(xMax)],
+        yDomain: [yMin, yMax] as [number, number]
+      });
     }
   }
 
   private setupInteractions(): void {
     if (!this.renderContext) return;
 
-    // 1. 이벤트 매니저 설정
     this.eventManager.setup(this.container, this.state.getData());
     this.setupHitTesting();
 
-    // 2. 툴팁 설정
     if ((this.config as BarChartConfig).showTooltip) {
       this.setupTooltipEvents();
     }
 
-    // 3. 범례 클릭 이벤트 설정 - showLegend 확인
     if ((this.config as BarChartConfig).showLegend !== false) {
       this.setupLegendEvents();
     }
@@ -343,7 +497,6 @@ export class BarChart extends BaseChart {
     const config = this.config as BarChartConfig;
     const tooltip = this.setupTooltip();
 
-    // 바에 툴팁 이벤트 연결
     this.renderContext.chartArea.selectAll('.bar')
       .on('mouseenter', (event, d: any) => {
         const data = d.data;
@@ -411,7 +564,6 @@ export class BarChart extends BaseChart {
     let x = event.clientX + 10;
     let y = event.clientY - 10;
 
-    // 화면 경계 체크
     if (x + tooltipWidth > window.innerWidth) {
       x = event.clientX - tooltipWidth - 10;
     }
@@ -424,7 +576,6 @@ export class BarChart extends BaseChart {
   }
 
   private setupEventForwarding(): void {
-    // EventManager의 이벤트를 BaseChart의 이벤트로 전달
     this.eventManager.on('chartHover', (data) => this.emit('chartHover', data));
     this.eventManager.on('chartClick', (data) => this.emit('chartClick', data));
     this.eventManager.on('chartMouseenter', (data) => this.emit('chartMouseenter', data));
@@ -432,6 +583,17 @@ export class BarChart extends BaseChart {
   }
 
   public destroy(): void {
+    // ResizeObserver 정리
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+      this.resizeObserver = null;
+    }
+
+    if (this.resizeTimeout) {
+      clearTimeout(this.resizeTimeout);
+      this.resizeTimeout = null;
+    }
+
     this.eventManager.destroy();
 
     if (this.renderContext) {

@@ -20,26 +20,22 @@ export interface RenderContext {
 }
 
 /**
- * LineChart 클래스
- *
- * - 외부 API 제공
- * - 구성 요소들 간 조정
- * - 이벤트 전달
- * 만을 담당합니다.
+ * LineChart 클래스 with 반응형 지원
  */
 export class LineChart extends BaseChart {
-  // 핵심 구성 요소들
   private state: LineChartState;
   private calculator: CoordinateCalculator;
   private renderer: LineChartRenderer;
   private scaleManager: ScaleManager;
   private eventManager: EventManager;
 
-  // 렌더링 컨텍스트
   private renderContext: RenderContext | null = null;
 
+  // 반응형 관련
+  private resizeObserver: ResizeObserver | null = null;
+  private resizeTimeout: NodeJS.Timeout | null = null;
+
   constructor(container: HTMLElement, config: Partial<LineChartConfig> = {}) {
-    // 기본 설정
     const defaultConfig: Partial<LineChartConfig> = {
       width: 600,
       height: 400,
@@ -60,34 +56,27 @@ export class LineChart extends BaseChart {
       animationDuration: 300,
       showTooltip: true,
       showLegend: true,
-      legendPosition: 'top'
+      legendPosition: 'top',
+      responsive: false
     };
 
-    // Title과 Legend가 모두 top일 때 margin.top 자동 증가
     const mergedConfig = { ...defaultConfig, ...config };
+
     if (mergedConfig.title &&
         (mergedConfig.legendPosition === 'top' || !mergedConfig.legendPosition) &&
         mergedConfig.showLegend !== false) {
-      // Margin이 사용자 정의되지 않았다면 자동으로 top 증가
       if (!config.margin?.top) {
         mergedConfig.margin = {
           ...mergedConfig.margin!,
-          top: 50 // 20 → 50으로 증가 (title + legend + 여백)
+          top: 50
         };
       }
     }
 
     super(container, { ...defaultConfig, ...config });
 
-
-
-    // 구성 요소들 초기화
     this.state = new LineChartState();
-
-
     this.calculator = new CoordinateCalculator(this.state, this.config as LineChartConfig);
-
-
     this.renderer = new LineChartRenderer(
       container,
       this.state,
@@ -108,60 +97,138 @@ export class LineChart extends BaseChart {
       enableKeyboard: true
     });
 
-
     this.setupEventForwarding();
 
+    // 반응형 설정
+    if ((this.config as LineChartConfig).responsive) {
+      this.setupResponsive();
+    }
   }
 
   // ============================================
-  // 공개 API 메서드들 (대폭 단순화됨)
+  // 반응형 처리
+  // ============================================
+
+  private setupResponsive(): void {
+    if (typeof ResizeObserver === 'undefined') {
+      console.warn('ResizeObserver is not supported in this browser');
+      return;
+    }
+
+    this.resizeObserver = new ResizeObserver((entries) => {
+      if (this.resizeTimeout) {
+        clearTimeout(this.resizeTimeout);
+      }
+
+      this.resizeTimeout = setTimeout(() => {
+        for (const entry of entries) {
+          const { width, height } = entry.contentRect;
+
+          if (width > 0 && height > 0) {
+            this.handleResize(width, height);
+          }
+        }
+      }, 100); // 디바운스 100ms
+    });
+
+    this.resizeObserver.observe(this.container);
+  }
+
+  private handleResize(width: number, height: number): void {
+    const margin = this.config.margin || { top: 20, right: 20, bottom: 40, left: 60 };
+
+    const minWidth = 300;
+    const minHeight = 200;
+
+    const newWidth = Math.max(minWidth, width);
+    const newHeight = Math.max(minHeight, height);
+
+    this.updateConfig({
+      width: newWidth,
+      height: newHeight,
+      fonts: this.calculateResponsiveFonts(newWidth, newHeight),
+      dotRadius: this.calculateResponsiveDotRadius(newWidth, newHeight),
+      lineWidth: this.calculateResponsiveLineWidth(newWidth, newHeight)
+    });
+
+    if (this.state.isChartRendered()) {
+      this.update();
+    }
+  }
+
+  private calculateResponsiveFonts(width: number, height: number) {
+    const baseWidth = 600;
+    const baseHeight = 400;
+
+    const widthRatio = width / baseWidth;
+    const heightRatio = height / baseHeight;
+    const scale = Math.min(widthRatio, heightRatio, 1.5);
+
+    const fonts = this.config.fonts || {};
+
+    return {
+      xAxisTickFontSize: Math.max(8, Math.round((Number(fonts.xAxisTickFontSize) || 12) * scale)),
+      yAxisTickFontSize: Math.max(8, Math.round((Number(fonts.yAxisTickFontSize) || 12) * scale)),
+      xAxisLabelFontSize: Math.max(10, Math.round((Number(fonts.xAxisLabelFontSize) || 12) * scale)),
+      yAxisLabelFontSize: Math.max(10, Math.round((Number(fonts.yAxisLabelFontSize) || 12) * scale)),
+      legendFontSize: Math.max(8, Math.round((Number(fonts.legendFontSize) || 12) * scale)),
+      titleFontSize: Math.max(12, Math.round((Number(fonts.titleFontSize) || 16) * scale)),
+      valueFontSize: Math.max(8, Math.round((Number(fonts.valueFontSize) || 11) * scale))
+    };
+  }
+
+  private calculateResponsiveDotRadius(width: number, height: number): number {
+    const baseWidth = 600;
+    const scale = Math.min(width / baseWidth, 1.5);
+    const baseDotRadius = (this.config as LineChartConfig).dotRadius || 4;
+    return Math.max(2, Math.round(baseDotRadius * scale));
+  }
+
+  private calculateResponsiveLineWidth(width: number, height: number): number {
+    const baseWidth = 600;
+    const scale = Math.min(width / baseWidth, 1.5);
+    const baseLineWidth = (this.config as LineChartConfig).lineWidth || 2;
+    return Math.max(1, Math.round(baseLineWidth * scale));
+  }
+
+  // ============================================
+  // 공개 API
   // ============================================
 
   public setData(data: ChartDataPoint[]): this {
-    // 1. 데이터 유효성 검증
     const validation = DataProcessor.validateData(data);
     if (!validation.isValid) {
       console.error('Invalid data:', validation.errors);
       return this;
     }
 
-    // 2. 데이터 처리 및 상태 업데이트
     const processedData = DataProcessor.process(data, { sort: true, sortBy: 'x' });
     this.state.setData(processedData);
 
-    // 3. 스케일 매니저에 데이터 전달
     this.scaleManager.setData(processedData, this.state.getGroups());
 
-    // 4. 스케일 생성 및 상태에 저장
     const scales = this.createScales();
     this.state.setScales(scales);
 
-    // 5. 이벤트 매니저 업데이트
     this.eventManager.updateData(processedData);
 
     return this;
   }
 
   public render(): this {
-
     if (this.state.isEmpty()) {
       console.warn('No data to render');
       return this;
     }
 
-
-    // 렌더링 실행
     try {
       this.renderContext = this.renderer.render();
     } catch (error) {
-      console.error('❌ Renderer.render() failed:', error);
+      console.error('Renderer.render() failed:', error);
       throw error;
     }
 
-    // 상호작용 설정
     this.setupInteractions();
-
-    // 상태 업데이트
     this.state.setRendered(true);
 
     this.emit('rendered', { chart: this });
@@ -170,11 +237,9 @@ export class LineChart extends BaseChart {
 
   public update(): this {
     if (this.state.isChartRendered() && this.renderContext) {
-      // 스케일 다시 생성
       const scales = this.createScales();
       this.state.setScales(scales);
 
-      // 다시 렌더링
       this.renderContext = this.renderer.render();
       this.setupInteractions();
 
@@ -187,7 +252,6 @@ export class LineChart extends BaseChart {
     const wasVisible = this.state.isGroupVisible(group);
     this.state.toggleGroup(group);
 
-    // 부분 업데이트 (성능 최적화)
     if (this.renderContext) {
       this.renderer.updateLines(this.renderContext);
       this.renderer.updateDots(this.renderContext);
@@ -206,17 +270,14 @@ export class LineChart extends BaseChart {
   public updateConfig(newConfig: Partial<LineChartConfig>): this {
     this.config = { ...this.config, ...newConfig };
 
-    // 스케일 매니저 설정 업데이트
     this.scaleManager.updateSize({
       width: this.config.width!,
       height: this.config.height!,
       margin: this.config.margin!
     });
 
-    // 계산기 재생성 (새 설정 반영)
     this.calculator = new CoordinateCalculator(this.state, this.config as LineChartConfig);
 
-    // 렌더러 재생성
     this.renderer = new LineChartRenderer(
       this.container,
       this.state,
@@ -228,7 +289,7 @@ export class LineChart extends BaseChart {
   }
 
   // ============================================
-  // 헬퍼 메서드들 (상태에서 위임받음)
+  // 헬퍼
   // ============================================
 
   public getState(): any {
@@ -248,7 +309,7 @@ export class LineChart extends BaseChart {
   }
 
   // ============================================
-  // 내부 메서드들
+  // 내부
   // ============================================
 
   private createScales() {
@@ -257,7 +318,6 @@ export class LineChart extends BaseChart {
       yNice: true,
       colorScheme: (this.config as LineChartConfig).lineColors,
       colorDomain: this.state.getGroups(),
-      // scale config의 yAxisTickInterval 전달
       yAxisTickInterval: this.config.scale?.yAxisTickInterval
     };
 
@@ -274,23 +334,19 @@ export class LineChart extends BaseChart {
   private setupInteractions(): void {
     if (!this.renderContext) return;
 
-    // 1. 이벤트 매니저 설정
     this.eventManager.setup(this.container, this.state.getData());
     this.setupHitTesting();
 
-    // 2. 툴팁 설정
     if ((this.config as LineChartConfig).showTooltip) {
       this.setupTooltipEvents();
     }
 
-    // 3. 범례 클릭 이벤트 설정
     if ((this.config as LineChartConfig).showLegend) {
       this.setupLegendEvents();
     }
   }
 
   private setupHitTesting(): void {
-    // EventManager에 히트 테스트 로직 주입
     (this.eventManager as any).findDataAtPosition = (event: { clientX: number; clientY: number }) => {
       if (!this.renderContext) return null;
 
@@ -309,7 +365,6 @@ export class LineChart extends BaseChart {
     const config = this.config as LineChartConfig;
     const tooltip = this.setupTooltip();
 
-    // 점에 툴팁 이벤트 연결
     this.renderContext.chartArea.selectAll('.dot')
       .on('mouseenter', (event, d: any) => {
         const data = d.data;
@@ -380,7 +435,6 @@ export class LineChart extends BaseChart {
     let x = event.clientX + 10;
     let y = event.clientY - 10;
 
-    // 화면 경계 체크
     if (x + tooltipWidth > window.innerWidth) {
       x = event.clientX - tooltipWidth - 10;
     }
@@ -393,7 +447,6 @@ export class LineChart extends BaseChart {
   }
 
   private setupEventForwarding(): void {
-    // EventManager의 이벤트를 BaseChart의 이벤트로 전달
     this.eventManager.on('chartHover', (data) => this.emit('chartHover', data));
     this.eventManager.on('chartClick', (data) => this.emit('chartClick', data));
     this.eventManager.on('chartMouseenter', (data) => this.emit('chartMouseenter', data));
@@ -401,6 +454,17 @@ export class LineChart extends BaseChart {
   }
 
   public destroy(): void {
+    // ResizeObserver 정리
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+      this.resizeObserver = null;
+    }
+
+    if (this.resizeTimeout) {
+      clearTimeout(this.resizeTimeout);
+      this.resizeTimeout = null;
+    }
+
     this.eventManager.destroy();
 
     if (this.renderContext) {
