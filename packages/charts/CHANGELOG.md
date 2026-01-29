@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.3](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-charts@1.7.1...@beaubrain/chart-lib-charts@1.7.3) (2026-01-29)
+
+
+### Bug Fixes
+
+* bar/line chart font size responsive ([91ef370](https://github.com/taehyeon3657/chartLibrary/commit/91ef3702081dde7094460e576f48028a95ce557d))
+* dotRenderer 인스턴스 생성 ([d3e869e](https://github.com/taehyeon3657/chartLibrary/commit/d3e869e3e0587b05059a9f27e255ba89a2206577))
+
+
+### Reverts
+
+* Revert "feat: stacked bar chart position & scale rendering error" ([0bc47d6](https://github.com/taehyeon3657/chartLibrary/commit/0bc47d614ce8522ed5ae4f7561f76318a1674852))
+
+
+
+
+
 ## [1.7.2](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-charts@1.7.1...@beaubrain/chart-lib-charts@1.7.2) (2026-01-28)
 
 

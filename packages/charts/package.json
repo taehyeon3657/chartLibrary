@@ -1,6 +1,6 @@
 {
   "name": "@beaubrain/chart-lib-charts",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "description": "Chart implementations for charts library",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
