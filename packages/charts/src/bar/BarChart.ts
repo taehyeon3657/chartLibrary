@@ -19,33 +19,29 @@ export interface RenderContext {
   defs: d3.Selection<SVGDefsElement, unknown, null, undefined>;
 }
 
-/**
- * BarChart 클래스 - 완전한 반응형 지원
- */
 export class BarChart extends BaseChart {
-  // 핵심 구성 요소들
+
   private state: BarChartState;
   private calculator: CoordinateCalculator;
   private renderer: BarChartRenderer;
   private scaleManager: ScaleManager;
   private eventManager: EventManager;
-
-  // 렌더링 컨텍스트
   private renderContext: RenderContext | null = null;
-
-  // 반응형 관련
   private resizeObserver: ResizeObserver | null = null;
   private resizeTimeout: NodeJS.Timeout | null = null;
-
-  // 초기 설정 백업 (반응형 계산용)
   private initialConfig: Partial<BarChartConfig>;
 
+  private readonly MIN_BAR_WIDTH = 20;
+  private readonly BAR_PADDING_RATIO = 0.3;
+  private readonly MAX_SCALE = 1.25;
+  private readonly MAX_AUTO_BAR_WIDTH = 36;
+
   constructor(container: HTMLElement, config: Partial<BarChartConfig> = {}) {
-    // 기본 설정
+
     const defaultConfig: Partial<BarChartConfig> = {
       width: 600,
       height: 400,
-      margin: { top: 20, right: 20, bottom: 40, left: 60 },
+      margin: { top: 20, right: 30, bottom: 40, left: 30 },
       orientation: 'vertical',
       barColors: ['#3b82f6', '#ef4444', '#10b981', '#f59e0f', '#8b5cf6'],
       barPadding: 0.1,
@@ -86,10 +82,9 @@ export class BarChart extends BaseChart {
 
     super(container, mergedConfig);
 
-    // 초기 설정 백업 (반응형 계산의 기준)
+
     this.initialConfig = { ...mergedConfig };
 
-    // 구성 요소들 초기화
     this.state = new BarChartState();
     this.calculator = new CoordinateCalculator(this.state, this.config as BarChartConfig);
     this.renderer = new BarChartRenderer(
@@ -114,15 +109,11 @@ export class BarChart extends BaseChart {
 
     this.setupEventForwarding();
 
-    // 반응형 설정
+
     if ((this.config as BarChartConfig).responsive) {
       this.setupResponsive();
     }
   }
-
-  // ============================================
-  // 반응형 처리
-  // ============================================
 
   private setupResponsive(): void {
     if (typeof ResizeObserver === 'undefined') {
@@ -139,62 +130,93 @@ export class BarChart extends BaseChart {
         for (const entry of entries) {
           const { width, height } = entry.contentRect;
 
-          // 크기가 있을 때만 리사이징 (최소 크기 제한 제거)
           if (width > 0 && height > 0) {
             this.handleResize(width, height);
           }
         }
-      }, 100); // 디바운스 100ms
+      }, 10);
     });
 
     this.resizeObserver.observe(this.container);
   }
 
-  private handleResize(width: number, height: number): void {
-    // 최소 크기를 더 작게 설정 (모바일 대응)
-    const minWidth = 200;
-    const minHeight = 150;
+  private handleResize(containerWidth: number, containerHeight: number): void {
+    const baseWidth = this.initialConfig.width || 600;
 
-    const newWidth = Math.max(minWidth, width);
-    const newHeight = Math.max(minHeight, height);
 
-    // 완전한 반응형 설정 계산
-    const responsiveConfig = this.calculateResponsiveConfig(newWidth, newHeight);
+    const rawWidthRatio = containerWidth / baseWidth;
+    const clampedScale = Math.min(rawWidthRatio, this.MAX_SCALE);
 
-    // 설정 업데이트
+
+    const visibleData = this.state.getVisibleData();
+    const uniqueX = new Set(visibleData.map(d => String(d.x)));
+    const categoryCount = uniqueX.size || 1;
+
+
+    const margin = this.config.margin || { left: 60, right: 20 };
+    const currentContentWidth = containerWidth - margin.left - margin.right;
+
+
+
+
+    let maxBarWidth: number;
+    if (this.initialConfig.barWidth) {
+      maxBarWidth = this.initialConfig.barWidth;
+    } else {
+      maxBarWidth = this.MAX_AUTO_BAR_WIDTH;
+    }
+
+    const currentSlotWidth = currentContentWidth / categoryCount;
+    let targetBarWidth = currentSlotWidth * (1 - this.BAR_PADDING_RATIO);
+
+    targetBarWidth = Math.min(targetBarWidth, maxBarWidth);
+
+
+    let finalChartWidth = containerWidth;
+    let finalBarWidth: number | undefined = targetBarWidth;
+
+
+    if (targetBarWidth < this.MIN_BAR_WIDTH) {
+      const minRequiredContentWidth = categoryCount * (this.MIN_BAR_WIDTH / (1 - this.BAR_PADDING_RATIO));
+      finalChartWidth = minRequiredContentWidth + margin.left + margin.right;
+
+      finalBarWidth = this.MIN_BAR_WIDTH;
+      this.container.style.overflowX = 'auto';
+    } else {
+      finalChartWidth = containerWidth;
+      finalBarWidth = targetBarWidth;
+      this.container.style.overflowX = 'hidden';
+    }
+
+    const responsiveConfig = this.calculateResponsiveConfig(
+      clampedScale,
+      containerHeight,
+      finalChartWidth,
+      finalBarWidth
+    );
+
     this.updateConfig(responsiveConfig);
 
-    // 차트 다시 렌더링
     if (this.state.isChartRendered()) {
       this.update();
     }
   }
 
-  /**
-   * 컨테이너 크기에 따라 모든 설정을 동적으로 계산
-   */
-  private calculateResponsiveConfig(width: number, height: number): Partial<BarChartConfig> {
-    const baseWidth = this.initialConfig.width || 600;
-    const baseHeight = this.initialConfig.height || 400;
+  private calculateResponsiveConfig(
+    scale: number,
+    height: number,
+    actualChartWidth: number,
+    targetBarWidth: number | undefined
+  ): Partial<BarChartConfig> {
 
-    // 너비와 높이 비율 계산
-    const widthRatio = width / baseWidth;
-    const heightRatio = height / baseHeight;
 
-    // 최소 비율 사용 (더 작은 쪽에 맞춤)
-    const scale = Math.min(widthRatio, heightRatio);
-
-    // 폰트 계산 (최대 제한 제거, 최소값만 보장)
     const fonts = this.calculateResponsiveFonts(scale);
-
-    // Bar 관련 설정 계산
-    const barConfig = this.calculateResponsiveBarConfig(width, height, scale);
-
-    // Margin 계산
     const margin = this.calculateResponsiveMargin(scale);
 
+    const barConfig = this.calculateResponsiveBarConfig(scale, targetBarWidth);
+
     return {
-      width,
+      width: actualChartWidth,
       height,
       margin,
       fonts,
@@ -202,9 +224,7 @@ export class BarChart extends BaseChart {
     };
   }
 
-  /**
-   * 반응형 폰트 크기 계산
-   */
+
   private calculateResponsiveFonts(scale: number) {
     const initialFonts = this.initialConfig.fonts || {};
 
@@ -233,49 +253,21 @@ export class BarChart extends BaseChart {
     };
   }
 
-  /**
-   * 반응형 Bar 설정 계산
-   */
-  private calculateResponsiveBarConfig(width: number, height: number, scale: number) {
+  private calculateResponsiveBarConfig(scale: number, targetBarWidth: number | undefined) {
     const config = this.initialConfig;
-    const orientation = config.orientation || 'vertical';
-
-    // barWidth가 명시적으로 지정된 경우에도 스케일 적용
-    let barWidth: number | undefined;
-    if (config.barWidth) {
-      // 사용자 지정 barWidth를 스케일에 따라 조정
-      barWidth = Math.max(2, Math.round(config.barWidth * scale));
-    }
-    // barWidth를 지정하지 않으면 undefined로 두어 자동 계산되도록 함
-
-    // barBorderRadius도 스케일 적용
-    const barBorderRadius = config.barBorderRadius
-      ? Math.max(0, Math.round(config.barBorderRadius * scale))
-      : 0;
-
-    // barGroupPadding 처리 (문자열일 수 있음)
-    let barGroupPadding: number | string | undefined = config.barGroupPadding;
-    if (typeof barGroupPadding === 'string' && barGroupPadding.endsWith('px')) {
-      const pxValue = parseFloat(barGroupPadding);
-      if (!isNaN(pxValue)) {
-        barGroupPadding = `${Math.max(1, Math.round(pxValue * scale))}px`;
-      }
-    } else if (typeof barGroupPadding === 'number') {
-      // 숫자인 경우는 비율이므로 그대로 유지
-      barGroupPadding = config.barGroupPadding;
-    }
 
     return {
-      barWidth,
-      barBorderRadius,
-      barGroupPadding,
-      barPadding: config.barPadding // 비율이므로 그대로 유지
+      barWidth: targetBarWidth,
+      barBorderRadius: config.barBorderRadius
+        ? Math.max(0, Math.round(config.barBorderRadius * scale))
+        : 0,
+
+      barGroupPadding: config.barGroupPadding,
+      barPadding: config.barPadding
     };
   }
 
-  /**
-   * 반응형 Margin 계산
-   */
+
   private calculateResponsiveMargin(scale: number) {
     const initialMargin = this.initialConfig.margin || { top: 20, right: 20, bottom: 40, left: 60 };
 

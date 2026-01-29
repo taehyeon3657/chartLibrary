@@ -34,7 +34,7 @@ export default function ResponsiveExample() {
           data={data}
           responsive={true}
           config={{
-            showLegend: true
+            showLegend: false
           }}
         />
 
@@ -45,6 +45,9 @@ export default function ResponsiveExample() {
           <BarChart
             data={data}
             responsive={true}
+            config={{
+              showLegend: false,
+            }}
           />
 
         </ChartContainer>
@@ -55,8 +58,10 @@ export default function ResponsiveExample() {
             data={data}
             responsive={true}
             config={{
-              orientation: 'horizontal'
+              orientation: 'horizontal',
+              showLegend: false,
             }}
+
           />
 
         </ChartContainer>

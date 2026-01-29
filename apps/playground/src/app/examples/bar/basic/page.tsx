@@ -39,6 +39,7 @@ function MyChart() {
           data={data}
            config={{
             margin: { top: 20, right: 20, bottom: 20, left: 60 },
+            responsive: true,
             xAxisLabelPosition: 'center',
             showValues: true,
             showYAxisZero: true,
@@ -88,6 +89,7 @@ function MyChart() {
           data={data}
           config={{
             margin: { top: 20, right: 20, bottom: 20, left: 60 },
+            responsive: true,
             xAxisLabelPosition: 'center',
             showValues: true,
             showYAxisZero: true,

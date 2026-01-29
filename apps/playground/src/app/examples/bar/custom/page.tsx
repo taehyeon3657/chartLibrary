@@ -19,6 +19,7 @@ export default function CustomExample() {
   config={{
     width: 800,
     height: 500,
+    responsive: true,
 
     // Title styling
     title: 'Monthly Sales Performance',
@@ -67,7 +68,8 @@ export default function CustomExample() {
           data={data}
           config={{
             width: 800,
-            height: 500,
+            height: 400,
+            responsive: true,
             grouped: true,
             xAxisLabelPosition: 'center',
             barColors: ['#8b5cf6', '#06b6d4'],
