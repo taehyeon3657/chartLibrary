@@ -14,8 +14,7 @@
       "ignoreChanges": [
         "**/__tests__/**",
         "**/*.test.ts",
-        "**/*.test.tsx",
-        "**/*.md"
+        "**/*.test.tsx"
       ]
     },
     "publish": {
@@ -23,8 +22,7 @@
       "ignoreChanges": [
         "**/__tests__/**",
         "**/*.test.ts",
-        "**/*.test.tsx",
-        "**/*.md"
+        "**/*.test.tsx"
       ],
       "message": "chore(release): publish"
     },
