@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.14](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-react@0.4.13...@beaubrain/chart-lib-react@0.4.14) (2026-02-03)
+
+
+### Bug Fixes
+
+* isResponsive props 관련 중첩 버그 수정 ([9442441](https://github.com/taehyeon3657/chartLibrary/commit/9442441cc6cf5f34d7b91962f2fb9bef5b7cf328))
+
+
+
+
+
 ## [0.4.13](https://github.com/taehyeon3657/chartLibrary/compare/@beaubrain/chart-lib-react@0.4.12...@beaubrain/chart-lib-react@0.4.13) (2026-02-02)
 
 **Note:** Version bump only for package @beaubrain/chart-lib-react
