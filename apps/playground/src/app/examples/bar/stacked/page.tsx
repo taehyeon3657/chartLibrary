@@ -69,7 +69,6 @@ export default function StackedExample() {
             showLegend: false,
             valuePosition: 'middle',
             valueColor: 'white',
-
           }}
         />
       </ChartContainer>

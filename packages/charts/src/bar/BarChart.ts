@@ -30,13 +30,14 @@ export class BarChart extends BaseChart {
   private resizeObserver: ResizeObserver | null = null;
   private resizeTimeout: NodeJS.Timeout | null = null;
   private initialConfig: Partial<BarChartConfig>;
+  private isResponsiveMode: boolean = false;
 
-  private readonly MIN_BAR_WIDTH = 20;
+  private readonly MIN_BAR_WIDTH = 12;
   private readonly BAR_PADDING_RATIO = 0.3;
-  private readonly MAX_SCALE = 1.25;
-  private readonly MAX_AUTO_BAR_WIDTH = 36;
+  private readonly MAX_SCALE = 1.04;
+  private readonly MAX_AUTO_BAR_WIDTH = 28;
 
-  constructor(container: HTMLElement, config: Partial<BarChartConfig> = {}) {
+  constructor(container: HTMLElement, config: Partial<BarChartConfig> = {}, isResponsive: boolean = false) {
 
     const defaultConfig: Partial<BarChartConfig> = {
       width: 600,
@@ -63,7 +64,6 @@ export class BarChart extends BaseChart {
       showTooltip: true,
       showLegend: true,
       legendPosition: 'top',
-      responsive: false
     };
 
     const mergedConfig = { ...defaultConfig, ...config };
@@ -82,7 +82,7 @@ export class BarChart extends BaseChart {
 
     super(container, mergedConfig);
 
-
+    this.isResponsiveMode = isResponsive;
     this.initialConfig = { ...mergedConfig };
 
     this.state = new BarChartState();
@@ -110,9 +110,9 @@ export class BarChart extends BaseChart {
     this.setupEventForwarding();
 
 
-    if ((this.config as BarChartConfig).responsive) {
-      this.setupResponsive();
-    }
+    if (this.isResponsiveMode) {
+          this.setupResponsive();
+        }
   }
 
   private setupResponsive(): void {

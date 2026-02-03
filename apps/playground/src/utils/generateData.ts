@@ -81,7 +81,7 @@ export function generateBarChartData(
 ): ChartDataPoint[] {
   return categories.map(category => ({
     x: category,
-    value: Math.max(0, baseValue + (Math.random() - 0.5) * volatility * 2),
+    value: baseValue + (Math.random() - 0.5) * volatility * 2,
   }));
 }
 

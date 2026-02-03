@@ -66,6 +66,7 @@ export default function CustomExample() {
       <ChartContainer>
         <BarChart
           data={data}
+          responsive={true}
           config={{
             width: 800,
             height: 400,

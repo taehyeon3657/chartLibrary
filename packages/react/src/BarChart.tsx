@@ -93,7 +93,8 @@ export const BarChart = forwardRef<any, BarChartProps>(
             'bar',
             containerRef.current,
             data,
-            finalConfig as any
+            finalConfig as any,
+            responsive
           );
         } else {
           chartRef.current = ChartFactory.createBarChart(

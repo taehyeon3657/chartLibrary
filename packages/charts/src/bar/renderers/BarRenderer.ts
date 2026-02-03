@@ -191,7 +191,7 @@ export class BarRenderer {
           switch (valuePosition) {
           case 'top':
           case 'outside':
-            return (d.data.y >= 0) ? (d.y - 10) : (d.y + d.height + 20);
+            return (d.data.y >= 0) ? (d.y - 4) : (d.y + d.height + 12);
           case 'middle':
             return d.y + d.height / 2;
           case 'bottom':

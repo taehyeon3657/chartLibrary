@@ -10,12 +10,11 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
+    responsive: {
+      control: 'boolean',
+    },
     config: {
       control: 'object',
-    },
-    theme: {
-      control: 'select',
-      options: ['light', 'dark', 'colorful'],
     },
   },
 } satisfies Meta<typeof BarChart>;
@@ -26,14 +25,27 @@ type Story = StoryObj<typeof meta>;
 // 기본 바 차트
 export const Basic: Story = {
   args: {
-    data: generateBarChartData(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'], 100, 30),
-    config: {
-      width: 800,
-      height: 400,
-      margin: { top: 20, right: 20, bottom: 40, left: 60 },
-      showValues: true,
-      barBorderRadius: 4,
-    },
+    data: generateBarChartData(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'], 20, 100),
+    config:{
+            margin: { top: 20, right: 20, bottom: 20, left: 60 },
+            xAxisLabelPosition: 'center',
+            showValues: true,
+            showYAxisZero: true,
+            horizontalGridLines: false,
+            showLegend: false,
+            xAxisDisplay: {
+              showAxisLine: false,
+              showTicks: false,
+            },
+            scale: {
+              xAxisPosition: 'bottom',
+            },
+            showBaseline: true,
+            baselineValue: 0,
+            baselineWidth: 1,
+            barBorderRadius: 4,
+            valuePosition: 'outside',
+          },
   },
 };
 
@@ -45,7 +57,7 @@ export const Grouped: Story = {
       width: 800,
       height: 400,
       grouped: true,
-      showLegend: true,
+      showLegend: false,
       legendPosition: 'top',
       showValues: true,
       valuePosition: 'outside',

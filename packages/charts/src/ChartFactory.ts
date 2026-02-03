@@ -24,14 +24,15 @@ export class ChartFactory {
   static create(
     type: ChartType,
     container: HTMLElement,
-    config: BaseChartConfig
+    config: BaseChartConfig,
+    isResponsive: boolean = false
   ) {
     switch (type) {
     case 'line':
       return new LineChart(container, config as LineChartConfig);
 
     case 'bar':
-      return new BarChart(container, config as BarChartConfig);
+      return new BarChart(container, config as BarChartConfig, isResponsive) ;
 
       // case 'pie':
       //   return new PieChart(container, config as PieChartConfig);
@@ -78,6 +79,7 @@ export class ChartFactory {
     container: HTMLElement,
     data: ChartDataPoint[],
     config: BaseChartConfig,
+    isResponsive: boolean,
   ) {
     // 컨테이너 크기 측정
     const rect = container.getBoundingClientRect();
@@ -85,30 +87,9 @@ export class ChartFactory {
       ...config,
       width: config.width || Math.max(300, rect.width),
       height: config.height || Math.max(200, rect.height * 0.6),
-      responsive: true
     };
 
-    const chart = this.create(type, container, responsiveConfig);
-
-    // 윈도우 리사이즈 이벤트 리스너
-    if (responsiveConfig.responsive) {
-      const handleResize = () => {
-        const newRect = container.getBoundingClientRect();
-        chart.updateConfig({
-          width: Math.max(300, newRect.width),
-          height: Math.max(200, newRect.height * 0.6)
-        }).update();
-      };
-
-      window.addEventListener('resize', handleResize);
-
-      // 정리 시 이벤트 리스너 제거
-      const originalDestroy = chart.destroy.bind(chart);
-      chart.destroy = () => {
-        window.removeEventListener('resize', handleResize);
-        originalDestroy();
-      };
-    }
+    const chart = this.create(type, container, responsiveConfig, isResponsive);
 
     return chart.setData(data).render();
   }

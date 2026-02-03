@@ -36,6 +36,7 @@ export default function HorizontalExample() {
       <ChartContainer title="Horizontal Bars">
         <BarChart
           data={data}
+          responsive={true}
           config={{
             margin: { top: 20, right: 30, bottom: 40, left: 90 },
             orientation: 'horizontal',
